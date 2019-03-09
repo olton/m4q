@@ -1,0 +1,49 @@
+{
+  "name": "m4q",
+  "title": "m4q",
+  "description": "Helper for DOM manipulation",
+  "version": "0.1.0",
+  "build": "1",
+  "status": "alpha",
+  "main": "build/m4q.js",
+  "homepage": "",
+  "author": {
+    "name": "Sergey Pimenov",
+    "url": "https://pimenov.oom.ua"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/olton/m4q.git"
+  },
+  "keywords": [
+    "metro4",
+    "mquery",
+    "javascript",
+    "browser",
+    "library",
+    "dom"
+  ],
+  "bugs": {
+    "url": "https://github.com/olton/m4q/issues"
+  },
+  "license": "MIT",
+  "dependencies": {},
+  "scripts": {
+    "build": "npm install && grunt",
+    "start": "grunt watch",
+    "test": "node-qunit-phantomjs ./test/qunit.html"
+  },
+  "devDependencies": {
+    "grunt": "^1.0.3",
+    "grunt-contrib-clean": "^2.0.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-uglify": "^4.0.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-replace": "^1.0.1",
+    "load-grunt-tasks": "^4.0.0",
+    "node-qunit-phantomjs": "^2.0.1",
+    "qunit": "^2.9.1",
+    "grunt-ftp-push": "^1.2.1",
+    "grunt-build-number": "^1.0.0"
+  }
+}
