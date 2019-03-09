@@ -1,5 +1,5 @@
 
-var m4qVersion = "@@VERSION @@STATUS @@TIME";
+var m4qVersion = "v@@VERSION build @@BUILD @@STATUS @@TIME";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -40,8 +40,10 @@ m4q.import = function(ctx){
     return this.merge(out, res);
 };
 
+m4q.version = m4qVersion;
+
 m4q.fn = m4q.prototype = {
-    m4q: m4qVersion,
+    version: m4qVersion,
     constructor: m4q,
     length: 0,
     uid: "",

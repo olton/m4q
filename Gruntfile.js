@@ -41,7 +41,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         copyright: '/*\n' +
-            ' * m4q v<%= pkg.version %> build <%= pkg.version %> (<%= pkg.repository.url %>)\n' +
+            ' * m4q v<%= pkg.version %> build <%= pkg.build %> (<%= pkg.repository.url %>)\n' +
             ' * Copyright 2018 - <%= grunt.template.today("yyyy") %> by <%= pkg.author.name %>\n' +
             ' * <%= pkg.description %>\n' +
             ' * Licensed under <%= pkg.license %>\n' +
