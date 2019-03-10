@@ -39,6 +39,13 @@
         console.log($.version);
         console.log($.fn.version);
 
+        console.log($("hr"),$($("hr")));
+
+        var div = $("<div>", {
+            id: "elementID",
+            class: "element_class"
+        }).html("inserted div with attributes").appendTo($("body"));
+
         function submitFormLong(){
             $.get(
                 "shigakukan.zip",

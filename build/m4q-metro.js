@@ -1,5 +1,5 @@
 /*
- * m4q v0.1.0 build 9 (https://github.com/olton/m4q.git)
+ * m4q v0.1.0 build 11 (https://github.com/olton/m4q.git)
  * Copyright 2018 - 2019 by Sergey Pimenov
  * Helper for DOM manipulation
  * Licensed under MIT
@@ -523,7 +523,7 @@
 	    }
 	}(window));
 
-	var m4qVersion = "v0.1.0 build 9 alpha 09/03/2019 23:34:45";
+	var m4qVersion = "v0.1.0 build 11 alpha 10/03/2019 11:54:22";
 	var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 	
 	var matches = Element.prototype.matches
