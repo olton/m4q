@@ -42,7 +42,7 @@
         function submitFormLong(){
             $.get(
                 "shigakukan.zip",
-                null, null, {
+                null, {
                     onprogress: function(e, x){
                         console.log(e.loaded + " bytes transferred\n");
                         if (e.loaded > 104267776) {

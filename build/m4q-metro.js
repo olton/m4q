@@ -1,5 +1,5 @@
 /*
- * m4q v0.1.0 build 7 (https://github.com/olton/m4q.git)
+ * m4q v0.1.0 build 9 (https://github.com/olton/m4q.git)
  * Copyright 2018 - 2019 by Sergey Pimenov
  * Helper for DOM manipulation
  * Licensed under MIT
@@ -523,7 +523,7 @@
 	    }
 	}(window));
 
-	var m4qVersion = "v0.1.0 build 7 alpha 09/03/2019 21:19:31";
+	var m4qVersion = "v0.1.0 build 9 alpha 09/03/2019 23:34:45";
 	var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 	
 	var matches = Element.prototype.matches
@@ -1304,7 +1304,7 @@
 	            var _action = p.data.getAttribute("action");
 	            var _method = p.data.getAttribute("method");
 	
-	            if (_action && _action.trim() !== "") url = _action;
+	            if (not(url) && _action && _action.trim() !== "") url = _action;
 	            if (_method && _method.trim() !== "") method = _method.toUpperCase();
 	        }
 	
@@ -1392,13 +1392,12 @@
 	};
 	
 	['get', 'post', 'put', 'patch', 'delete', 'json'].forEach(function(method){
-	    m4q[method] = function(url, data, headers, options){
+	    m4q[method] = function(url, data, options){
 	        var _method = method.toUpperCase();
 	        var _options = {
 	            method: _method === 'JSON' ? 'GET' : _method,
 	            url: url,
 	            data: data,
-	            headers: headers,
 	            parseJson: _method === 'JSON'
 	        };
 	        return m4q.ajax(m4q.extend({}, _options, options));

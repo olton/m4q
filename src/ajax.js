@@ -15,7 +15,7 @@ m4q.ajax = function(p){
             var _action = p.data.getAttribute("action");
             var _method = p.data.getAttribute("method");
 
-            if (_action && _action.trim() !== "") url = _action;
+            if (not(url) && _action && _action.trim() !== "") url = _action;
             if (_method && _method.trim() !== "") method = _method.toUpperCase();
         }
 
@@ -103,13 +103,12 @@ m4q.ajax = function(p){
 };
 
 ['get', 'post', 'put', 'patch', 'delete', 'json'].forEach(function(method){
-    m4q[method] = function(url, data, headers, options){
+    m4q[method] = function(url, data, options){
         var _method = method.toUpperCase();
         var _options = {
             method: _method === 'JSON' ? 'GET' : _method,
             url: url,
             data: data,
-            headers: headers,
             parseJson: _method === 'JSON'
         };
         return m4q.ajax(m4q.extend({}, _options, options));
