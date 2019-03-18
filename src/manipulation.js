@@ -120,7 +120,7 @@ m4q.fn.extend({
             if (typeof html === "string") {
                 el.insertAdjacentHTML('afterend', html);
             } else {
-                $(html).insertAfter($(el));
+                m4q(html).insertAfter($(el));
             }
         })
     },
@@ -130,7 +130,7 @@ m4q.fn.extend({
             if (typeof html === "string") {
                 el.insertAdjacentHTML('beforebegin', html);
             } else {
-                $(html).insertAfter($(el));
+                m4q(html).insertBefore($(el));
             }
         });
     },
