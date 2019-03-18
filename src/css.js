@@ -6,7 +6,7 @@ var numProps = ['opacity'];
 m4q.fn.extend({
     style: function(name){
         if (this.length === 0) {
-            return ;
+            return this;
         }
         var el = this[0];
         if (arguments.length === 0 || name === undefined) {
@@ -18,7 +18,7 @@ m4q.fn.extend({
 
     css: function(o, v){
         if (this.length === 0) {
-            return ;
+            return this;
         }
 
         var el = this[0];

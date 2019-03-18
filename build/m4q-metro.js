@@ -1,5 +1,5 @@
 /*
- * m4q v0.1.0 build 11 (https://github.com/olton/m4q.git)
+ * m4q v0.1.0 build 13 (https://github.com/olton/m4q.git)
  * Copyright 2018 - 2019 by Sergey Pimenov
  * Helper for DOM manipulation
  * Licensed under MIT
@@ -523,7 +523,7 @@
 	    }
 	}(window));
 
-	var m4qVersion = "v0.1.0 build 11 alpha 10/03/2019 11:54:22";
+	var m4qVersion = "v0.1.0 build @@BUILD alpha 18/03/2019 11:22:36";
 	var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 	
 	var matches = Element.prototype.matches
@@ -1238,7 +1238,7 @@
 	    }
 	});
 	
-	( "blur focus resize scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select submit keydown keypress keyup contextmenu load" )
+	( "blur focus resize scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select submit keydown keypress keyup contextmenu load touchstart touchend touchmove touchcancel" )
 	    .split( " " )
 	    .forEach(
 	    function( name ) {
@@ -1412,7 +1412,7 @@
 	m4q.fn.extend({
 	    style: function(name){
 	        if (this.length === 0) {
-	            return ;
+	            return this;
 	        }
 	        var el = this[0];
 	        if (arguments.length === 0 || name === undefined) {
@@ -1424,7 +1424,7 @@
 	
 	    css: function(o, v){
 	        if (this.length === 0) {
-	            return ;
+	            return this;
 	        }
 	
 	        var el = this[0];
@@ -1895,7 +1895,7 @@
 	        var attributes = {};
 	
 	        if (this.length === 0) {
-	            return ;
+	            return this;
 	        }
 	
 	        if (arguments.length === 0) {
@@ -1905,11 +1905,8 @@
 	            return attributes;
 	        }
 	
-	        if (name === undefined) {
-	            return undefined;
-	        }
-	        if (name === null) {
-	            return null;
+	        if (not(name)) {
+	            return name;
 	        }
 	
 	        if (name && !isPlainObject(name) && val === undefined) {
@@ -1934,7 +1931,7 @@
 	
 	    removeAttr: function(name){
 	        if (this.length === 0) {
-	            return ;
+	            return this;
 	        }
 	        this.each(function(el){
 	            if (el.hasAttribute(name)) el.removeAttribute(name);
@@ -1945,7 +1942,7 @@
 	
 	    toggleAttr: function(name, val){
 	        if (this.length === 0) {
-	            return ;
+	            return this;
 	        }
 	        this.each(function(el){
 	            if (val && !el.hasAttribute(name) || !el.getAttribute(name)) {
