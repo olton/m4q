@@ -523,7 +523,7 @@
 	    }
 	}(window));
 
-	var m4qVersion = "v0.1.0 build @@BUILD alpha 18/03/2019 11:22:36";
+	var m4qVersion = "v0.1.0 build @@BUILD alpha 18/03/2019 12:18:27";
 	var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 	
 	var matches = Element.prototype.matches
