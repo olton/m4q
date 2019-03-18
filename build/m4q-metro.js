@@ -1,5 +1,5 @@
 /*
- * m4q v0.1.0 build 13 (https://github.com/olton/m4q.git)
+ * m4q v0.1.0 build 15 (https://github.com/olton/m4q.git)
  * Copyright 2018 - 2019 by Sergey Pimenov
  * Helper for DOM manipulation
  * Licensed under MIT
@@ -523,7 +523,7 @@
 	    }
 	}(window));
 
-	var m4qVersion = "v0.1.0 build 13 alpha 18/03/2019 12:18:44";
+	var m4qVersion = "v0.1.0 build @@BUILD alpha 18/03/2019 15:35:20";
 	var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 	
 	var matches = Element.prototype.matches
@@ -2086,14 +2086,22 @@
 	
 	    after: function(html){
 	        return this.each(function(el){
-	            el.insertAdjacentHTML('afterend', html);
+	            if (typeof html === "string") {
+	                el.insertAdjacentHTML('afterend', html);
+	            } else {
+	                $(html).insertAfter($(el));
+	            }
 	        })
 	    },
 	
 	    before: function(html){
 	        return this.each(function(el){
-	            el.insertAdjacentHTML('beforebegin', html);
-	        })
+	            if (typeof html === "string") {
+	                el.insertAdjacentHTML('beforebegin', html);
+	            } else {
+	                $(html).insertAfter($(el));
+	            }
+	        });
 	    },
 	
 	    clone: function(){

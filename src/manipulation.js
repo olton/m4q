@@ -117,14 +117,22 @@ m4q.fn.extend({
 
     after: function(html){
         return this.each(function(el){
-            el.insertAdjacentHTML('afterend', html);
+            if (typeof html === "string") {
+                el.insertAdjacentHTML('afterend', html);
+            } else {
+                $(html).insertAfter($(el));
+            }
         })
     },
 
     before: function(html){
         return this.each(function(el){
-            el.insertAdjacentHTML('beforebegin', html);
-        })
+            if (typeof html === "string") {
+                el.insertAdjacentHTML('beforebegin', html);
+            } else {
+                $(html).insertAfter($(el));
+            }
+        });
     },
 
     clone: function(){
