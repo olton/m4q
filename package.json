@@ -3,7 +3,7 @@
   "title": "m4q",
   "description": "Helper for DOM manipulation",
   "version": "0.1.0",
-  "build": "15",
+  "build": "16",
   "status": "alpha",
   "main": "build/m4q.js",
   "homepage": "",
