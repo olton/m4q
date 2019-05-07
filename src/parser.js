@@ -27,7 +27,8 @@ m4q.parseHTML = function(data, context){
     }
 
     if (context && !(context instanceof m4q) && isPlainObject(context)) {
-        m4q.each(result,function(el){
+        m4q.each(result,function(){
+            var el = this;
             for(var name in context) {
                 if (context.hasOwnProperty(name))
                     el.setAttribute(name, context[name]);

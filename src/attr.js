@@ -8,8 +8,8 @@ m4q.fn.extend({
         }
 
         if (arguments.length === 0) {
-            m4q.each(this[0].attributes, function(a){
-                attributes[a.nodeName] = a.nodeValue;
+            m4q.each(this[0].attributes, function(){
+                attributes[this.nodeName] = this.nodeValue;
             });
             return attributes;
         }
@@ -23,15 +23,15 @@ m4q.fn.extend({
         }
 
         if (isPlainObject(name)) {
-            this.each(function(el){
+            this.each(function(){
                 for (var key in name) {
                     if (name.hasOwnProperty(key))
-                        el.setAttribute(key, name[key]);
+                        this.setAttribute(key, name[key]);
                 }
             });
         } else {
-            this.each(function(el){
-                el.setAttribute(name, val);
+            this.each(function(){
+                this.setAttribute(name, val);
             });
         }
 
@@ -39,27 +39,25 @@ m4q.fn.extend({
     },
 
     removeAttr: function(name){
-        if (this.length === 0) {
-            return this;
-        }
-        this.each(function(el){
-            if (el.hasAttribute(name)) el.removeAttribute(name);
+        return this.each(function(){
+            if (this.hasAttribute(name)) this.removeAttribute(name);
         });
-
-        return this;
     },
 
     toggleAttr: function(name, val){
-        if (this.length === 0) {
-            return this;
-        }
-        this.each(function(el){
+        return this.each(function(){
+            var el = this;
             if (val && !el.hasAttribute(name) || !el.getAttribute(name)) {
                 el.setAttribute(name, val);
             } else {
                 el.removeAttribute(name);
             }
         });
-        return this;
+    }
+});
+
+m4q.extend({
+    meta: function(name){
+        return not(name) ? m4q("meta") : $("meta[name='$name']".replace("$name", name));
     }
 });

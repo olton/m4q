@@ -17,7 +17,8 @@ m4q.fn.extend({
             }
         }
 
-        return this.each(function(el){
+        return this.each(function(){
+            var el = this;
             if (el === window || el === document) {return ;}
             el.style[prop] = isNaN(val) ? val : val + 'px';
         });
@@ -39,7 +40,8 @@ m4q.fn.extend({
         }
 
         if (val !== undefined && typeof val !== "boolean") {
-            return this.each(function(el){
+            return this.each(function(){
+                var el = this;
                 if (el === window || el === document) {return ;}
                 var style = getComputedStyle(el, null),
                     bs = prop === 'width' ? parseInt(style['border-left-width']) + parseInt(style['border-right-width']) : parseInt(style['border-top-width']) + parseInt(style['border-bottom-width']),

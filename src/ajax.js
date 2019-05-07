@@ -30,7 +30,7 @@ m4q.ajax = function(p){
         }
 
         if (p.headers) {
-            m4q.each(function(v, k){
+            m4q.each(function(k, v){
                 xhr.setRequestHeader(k, v);
                 headers.push(k);
             });
@@ -46,7 +46,7 @@ m4q.ajax = function(p){
             }
         } else if (isPlainObject(p.data)) {
             var _data = [];
-            m4q.each(p.data, function(v, k){
+            m4q.each(p.data, function(k, v){
                 _data.push(k+"="+v);
             });
             data = _data.join("&");

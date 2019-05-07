@@ -34,8 +34,8 @@ m4q.toArray = function(n){
 
 m4q.import = function(ctx){
     var res = [], out = m4q();
-    this.each(ctx, function(el){
-        res.push(el);
+    this.each(ctx, function(){
+        res.push(this);
     });
     return this.merge(out, res);
 };
@@ -60,7 +60,8 @@ m4q.fn = m4q.prototype = {
             return -1;
         }
 
-        m4q.each(this[0].parentNode.children, function(el){
+        m4q.each(this[0].parentNode.children, function(){
+            var el = this;
             if (selector) {
                 if (matches.call(el, selector)) res.push(el);
             } else {
@@ -84,8 +85,8 @@ m4q.fn = m4q.prototype = {
 
     clone: function(){
         var res = [], out = m4q();
-        this.each(function(el){
-            res.push(el.cloneNode(true));
+        this.each(function(){
+            res.push(this.cloneNode(true));
         });
         return m4q.merge(out, res);
     },
@@ -118,16 +119,18 @@ m4q.fn = m4q.prototype = {
         var result = false;
 
         if (typeof  s === "string") {
-            this.each(function(el){
-                if (matches.call(el, s)) {
+            this.each(function(){
+                if (matches.call(this, s)) {
                     result = true;
                 }
             });
         } else
 
         if (isArrayLike(s)) {
-            this.each(function(el){
-                m4q.each(s, function(sel){
+            this.each(function(){
+                var el = this;
+                m4q.each(s, function(){
+                    var sel = this;
                     if (el === sel) {
                         result = true;
                     }
@@ -136,8 +139,8 @@ m4q.fn = m4q.prototype = {
         } else
 
         if (typeof s === "object" && s.nodeType === 1) {
-            this.each(function(el){
-                if  (el === s) {
+            this.each(function(){
+                if  (this === s) {
                     result = true;
                 }
             })
@@ -183,11 +186,14 @@ m4q.fn = m4q.prototype = {
             value = '';
         }
 
-        this.each(function(el){
+        this.each(function(){
+            var el = this;
+
             el[prop] = value;
 
             if (prop === "innerHTML") {
-                m4q.each(m4q(el).find("script"), function(script){
+                m4q.each(m4q(el).find("script"), function(){
+                    var script = this;
                     var s = document.createElement('script');
                     s.type = 'text/javascript';
                     if (script.src) {

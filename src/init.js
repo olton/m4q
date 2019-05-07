@@ -54,8 +54,8 @@ m4q.init = function(sel, ctx){
     }
 
     if (ctx !== undefined && (ctx instanceof m4q || ctx instanceof HTMLElement)) {
-        this.each(function(el){
-            $(ctx).append($(el))
+        this.each(function(){
+            $(ctx).append($(this))
         });
     }
 

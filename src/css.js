@@ -27,7 +27,8 @@ m4q.fn.extend({
             return  el.style[o] ? el.style[o] : getComputedStyle(el, null)[o];
         }
 
-        this.each(function(el){
+        this.each(function(){
+            var el = this;
             if (typeof o === "object") {
                 for (var key in o) {
                     if (["scrollLeft", "scrollTop"].indexOf(key) > -1) {
@@ -52,8 +53,8 @@ m4q.fn.extend({
         if (not(val)) {
             return this.length === 0 ? undefined : this[0] === window ? pageYOffset : this[0].scrollTop;
         }
-        return this.each(function(el){
-            el.scrollTop = val;
+        return this.each(function(){
+            this.scrollTop = val;
         })
     },
 
@@ -61,8 +62,8 @@ m4q.fn.extend({
         if (not(val)) {
             return this.length === 0 ? undefined : this[0] === window ? pageXOffset : this[0].scrollLeft;
         }
-        return this.each(function(el){
-            el.scrollLeft = val;
+        return this.each(function(){
+            this.scrollLeft = val;
         })
     }
 });

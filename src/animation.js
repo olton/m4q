@@ -112,14 +112,14 @@ m4q.extend({
 
 m4q.fn.extend({
     animate: function (draw, dur, timing, cb) {
-        return this.each(function(el){
-            return m4q.animate(el, draw, dur, timing, cb);
+        return this.each(function(){
+            return m4q.animate(this, draw, dur, timing, cb);
         })
     },
 
     stop: function(done){
-        return this.each(function(el){
-            return m4q.stop(el, done);
+        return this.each(function(){
+            return m4q.stop(this, done);
         })
     }
 });

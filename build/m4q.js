@@ -1,5 +1,5 @@
 /*
- * m4q v0.1.0 build 16 (https://github.com/olton/m4q.git)
+ * m4q v0.1.0 build 17 (https://github.com/olton/m4q.git)
  * Copyright 2018 - 2019 by Sergey Pimenov
  * Helper for DOM manipulation
  * Licensed under MIT
@@ -538,7 +538,7 @@
 	    }
 	}(window));
 
-	var m4qVersion = "v0.1.0 build 16 alpha 18/03/2019 15:45:16";
+	var m4qVersion = "v0.1.0 build @@BUILD alpha 07/05/2019 12:31:23";
 	var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 	
 	var matches = Element.prototype.matches
@@ -573,8 +573,8 @@
 	
 	m4q.import = function(ctx){
 	    var res = [], out = m4q();
-	    this.each(ctx, function(el){
-	        res.push(el);
+	    this.each(ctx, function(){
+	        res.push(this);
 	    });
 	    return this.merge(out, res);
 	};
@@ -599,7 +599,8 @@
 	            return -1;
 	        }
 	
-	        m4q.each(this[0].parentNode.children, function(el){
+	        m4q.each(this[0].parentNode.children, function(){
+	            var el = this;
 	            if (selector) {
 	                if (matches.call(el, selector)) res.push(el);
 	            } else {
@@ -623,8 +624,8 @@
 	
 	    clone: function(){
 	        var res = [], out = m4q();
-	        this.each(function(el){
-	            res.push(el.cloneNode(true));
+	        this.each(function(){
+	            res.push(this.cloneNode(true));
 	        });
 	        return m4q.merge(out, res);
 	    },
@@ -657,16 +658,18 @@
 	        var result = false;
 	
 	        if (typeof  s === "string") {
-	            this.each(function(el){
-	                if (matches.call(el, s)) {
+	            this.each(function(){
+	                if (matches.call(this, s)) {
 	                    result = true;
 	                }
 	            });
 	        } else
 	
 	        if (isArrayLike(s)) {
-	            this.each(function(el){
-	                m4q.each(s, function(sel){
+	            this.each(function(){
+	                var el = this;
+	                m4q.each(s, function(){
+	                    var sel = this;
 	                    if (el === sel) {
 	                        result = true;
 	                    }
@@ -675,8 +678,8 @@
 	        } else
 	
 	        if (typeof s === "object" && s.nodeType === 1) {
-	            this.each(function(el){
-	                if  (el === s) {
+	            this.each(function(){
+	                if  (this === s) {
 	                    result = true;
 	                }
 	            })
@@ -722,11 +725,14 @@
 	            value = '';
 	        }
 	
-	        this.each(function(el){
+	        this.each(function(){
+	            var el = this;
+	
 	            el[prop] = value;
 	
 	            if (prop === "innerHTML") {
-	                m4q.each(m4q(el).find("script"), function(script){
+	                m4q.each(m4q(el).find("script"), function(){
+	                    var script = this;
 	                    var s = document.createElement('script');
 	                    s.type = 'text/javascript';
 	                    if (script.src) {
@@ -795,12 +801,12 @@
 	    var index = 0;
 	    if (isArrayLike(ctx)) {
 	        [].forEach.call(ctx, function(el) {
-	            cb.apply(el, arguments);
+	            cb.apply(el, [arguments[1], arguments[0]]);
 	        });
 	    } else {
 	        for(var key in ctx) {
 	            if (ctx.hasOwnProperty(key))
-	                cb.apply(ctx[key], [ctx[key], key,  index++]);
+	                cb.apply(ctx[key], [key, ctx[key],  index++]);
 	        }
 	    }
 	
@@ -809,11 +815,7 @@
 	
 	m4q.fn.extend({
 	    each: function(cb){
-	        [].forEach.call(this, function(el) {
-	            cb.apply(el, arguments);
-	        });
-	
-	        return this;
+	        return m4q.each(this, cb);
 	    }
 	});
 	
@@ -1125,8 +1127,8 @@
 	    },
 	
 	    off: function(){
-	        m4q.each(this.events, function(e){
-	            e.element.removeEventListener(e.eventName, e.handler);
+	        m4q.each(this.events, function(){
+	            this.element.removeEventListener(this.eventName, this.handler);
 	        });
 	        this.events = [];
 	        return this;
@@ -1162,9 +1164,10 @@
 	            once: options.once && options.once === true
 	        };
 	
-	        return this.each(function(el){
-	            m4q.each(str2arr(eventsList), function(ev){
-	                var h,
+	        return this.each(function(){
+	            var el = this;
+	            m4q.each(str2arr(eventsList), function(){
+	                var h, ev = this,
 	                    event = ev.split("."),
 	                    name = event[0],
 	                    ns = event[1],
@@ -1203,8 +1206,10 @@
 	        }
 	
 	        if (eventsList.toLowerCase() === 'all') {
-	            return this.each(function(el){
-	                m4q.each(m4q.events, function(e){
+	            return this.each(function(){
+	                var el = this;
+	                m4q.each(m4q.events, function(){
+	                    var e = this;
 	                    if (e.element === el) {
 	                        el.removeEventListener(e.eventName, e.handler);
 	                        e.handler = null;
@@ -1214,9 +1219,10 @@
 	            });
 	        }
 	
-	        return this.each(function(el){
-	            m4q.each(str2arr(eventsList), function(event){
-	                var evMap = event.split("."),
+	        return this.each(function(){
+	            var el = this;
+	            m4q.each(str2arr(eventsList), function(){
+	                var evMap = this.split("."),
 	                    name = evMap[0],
 	                    ns = evMap[1],
 	                    originEvent, index;
@@ -1235,7 +1241,6 @@
 	    },
 	
 	    trigger: function(name, data){
-	        var e;
 	        if (this.length === 0) {
 	            return ;
 	        }
@@ -1245,11 +1250,30 @@
 	            return this;
 	        }
 	
-	        e = new CustomEvent(name, data || {});
-	        this.each(function(el){
-	            el.dispatchEvent(e);
+	        var e = new CustomEvent(name, data || {});
+	
+	        return this.each(function(){
+	            this.dispatchEvent(e);
 	        });
-	        return this;
+	    },
+	
+	    fire: function(name, data){
+	        if (this.length === 0) {
+	            return ;
+	        }
+	
+	        if (['focus', 'blur'].indexOf(name) > -1) {
+	            this[0][name]();
+	            return this;
+	        }
+	
+	        var e = document.createEvent('Events');
+	        e.detail = data;
+	        e.initEvent(name, true, false);
+	
+	        return this.each(function(){
+	            this.dispatchEvent(e);
+	        });
 	    }
 	});
 	
@@ -1293,11 +1317,9 @@
 	    },
 	
 	    empty: function(){
-	        if (this.length > 0) this.each(function(el){
-	            el.innerHTML = "";
+	        return this.each(function(){
+	            this.innerHTML = "";
 	        });
-	
-	        return this;
 	    }
 	});
 	
@@ -1334,7 +1356,7 @@
 	        }
 	
 	        if (p.headers) {
-	            m4q.each(function(v, k){
+	            m4q.each(function(k, v){
 	                xhr.setRequestHeader(k, v);
 	                headers.push(k);
 	            });
@@ -1350,7 +1372,7 @@
 	            }
 	        } else if (isPlainObject(p.data)) {
 	            var _data = [];
-	            m4q.each(p.data, function(v, k){
+	            m4q.each(p.data, function(k, v){
 	                _data.push(k+"="+v);
 	            });
 	            data = _data.join("&");
@@ -1448,7 +1470,8 @@
 	            return  el.style[o] ? el.style[o] : getComputedStyle(el, null)[o];
 	        }
 	
-	        this.each(function(el){
+	        this.each(function(){
+	            var el = this;
 	            if (typeof o === "object") {
 	                for (var key in o) {
 	                    if (["scrollLeft", "scrollTop"].indexOf(key) > -1) {
@@ -1473,8 +1496,8 @@
 	        if (not(val)) {
 	            return this.length === 0 ? undefined : this[0] === window ? pageYOffset : this[0].scrollTop;
 	        }
-	        return this.each(function(el){
-	            el.scrollTop = val;
+	        return this.each(function(){
+	            this.scrollTop = val;
 	        })
 	    },
 	
@@ -1482,8 +1505,8 @@
 	        if (not(val)) {
 	            return this.length === 0 ? undefined : this[0] === window ? pageXOffset : this[0].scrollLeft;
 	        }
-	        return this.each(function(el){
-	            el.scrollLeft = val;
+	        return this.each(function(){
+	            this.scrollLeft = val;
 	        })
 	    }
 	});
@@ -1502,8 +1525,8 @@
 	    hasClass: function(cls){
 	        var result = false;
 	
-	        this.each(function(el){
-	            if (el.classList.contains(cls)) {
+	        this.each(function(){
+	            if (this.classList.contains(cls)) {
 	                result = true;
 	            }
 	        });
@@ -1521,11 +1544,12 @@
 	['add', 'remove', 'toggle'].forEach(function (method) {
 	    m4q.fn[method + "Class"] = function(cls){
 	        if (!cls || (""+cls).trim() === "") return this;
-	        return this.each(function(el){
+	        return this.each(function(){
+	            var el = this;
 	            m4q.each(cls.split(" ").filter(function(v){
 	                return (""+v).trim() !== "";
-	            }), function(name){
-	                el.classList[method](name);
+	            }), function(){
+	                el.classList[method](this);
 	            });
 	        });
 	    }
@@ -1560,7 +1584,8 @@
 	    }
 	
 	    if (context && !(context instanceof m4q) && isPlainObject(context)) {
-	        m4q.each(result,function(el){
+	        m4q.each(result,function(){
+	            var el = this;
 	            for(var name in context) {
 	                if (context.hasOwnProperty(name))
 	                    el.setAttribute(name, context[name]);
@@ -1590,7 +1615,8 @@
 	            }
 	        }
 	
-	        return this.each(function(el){
+	        return this.each(function(){
+	            var el = this;
 	            if (el === window || el === document) {return ;}
 	            el.style[prop] = isNaN(val) ? val : val + 'px';
 	        });
@@ -1612,7 +1638,8 @@
 	        }
 	
 	        if (val !== undefined && typeof val !== "boolean") {
-	            return this.each(function(el){
+	            return this.each(function(){
+	                var el = this;
 	                if (el === window || el === document) {return ;}
 	                var style = getComputedStyle(el, null),
 	                    bs = prop === 'width' ? parseInt(style['border-left-width']) + parseInt(style['border-right-width']) : parseInt(style['border-top-width']) + parseInt(style['border-bottom-width']),
@@ -1652,8 +1679,8 @@
 	                left: rect.left + pageXOffset
 	            }
 	        }
-	        return this.each(function(el){ //?
-	            $(el).css({
+	        return this.each(function(){ //?
+	            $(this).css({
 	                top: val.top,
 	                left: val.left
 	            })
@@ -1695,7 +1722,8 @@
 	            return this;
 	        }
 	
-	        this.each(function (el) {
+	        this.each(function () {
+	            var el = this;
 	            if (typeof el.querySelectorAll !== "undefined") res = [].slice.call(el.querySelectorAll(s));
 	        });
 	        return m4q.merge(out, res);
@@ -1706,7 +1734,8 @@
 	
 	        if (s instanceof m4q) return s;
 	
-	        this.each(function(el){
+	        this.each(function(){
+	            var el = this;
 	            for(i = 0; i < el.children.length; i++) {
 	                if (el.children[i].nodeType === 1)
 	                    res.push(el.children[i]);
@@ -1726,9 +1755,9 @@
 	
 	        if (s instanceof m4q) return s;
 	
-	        this.each(function(el){
-	            if (el.parentNode) {
-	                res.push(el.parentNode);
+	        this.each(function(){
+	            if (this.parentNode) {
+	                res.push(this.parentNode);
 	            }
 	        });
 	        res = s ? res.filter(function(el){
@@ -1746,8 +1775,8 @@
 	
 	        if (s instanceof m4q) return s;
 	
-	        this.each(function(el){
-	            var par = el.parentNode;
+	        this.each(function(){
+	            var par = this.parentNode;
 	            while (par) {
 	                if (par.nodeType === 1) {
 	
@@ -1777,8 +1806,8 @@
 	
 	        if (s instanceof m4q) return s;
 	
-	        this.each(function(el){
-	            var elems = [].filter.call(el.parentNode.children, function(child){
+	        this.each(function(){
+	            var el = this, elems = [].filter.call(el.parentNode.children, function(child){
 	                return child !== el && (s ? matches.call(child, s) : true);
 	            });
 	
@@ -1799,7 +1828,8 @@
 	
 	        if (s instanceof m4q) return s;
 	
-	        this.each(function(el){
+	        this.each(function(){
+	            var el = this;
 	            while (el) {
 	                el = el[dir];
 	                if (!el) break;
@@ -1827,8 +1857,8 @@
 	
 	        out = m4q();
 	
-	        this.each(function(el){
-	            var sib = el[dir];
+	        this.each(function(){
+	            var sib = this[dir];
 	            if (sib && sib.nodeType === 1) {
 	                if (not(s)) {
 	                    m4q.merge(out, m4q(sib));
@@ -1872,7 +1902,8 @@
 	            return this.parent(s);
 	        }
 	
-	        this.each(function(el){
+	        this.each(function(){
+	            var el = this;
 	            while (el) {
 	                el = el.parentElement;
 	                if (!el) break;
@@ -1893,11 +1924,11 @@
 	            return ;
 	        }
 	
-	        this.each(function(el){
-	            var $el = m4q(el);
-	            var child = $el.children(selector);
+	        this.each(function(){
+	            var el = m4q(this);
+	            var child = el.children(selector);
 	            if (child.length > 0) {
-	                m4q.merge(out, $el);
+	                m4q.merge(out, el);
 	            }
 	        });
 	
@@ -1914,8 +1945,8 @@
 	        }
 	
 	        if (arguments.length === 0) {
-	            m4q.each(this[0].attributes, function(a){
-	                attributes[a.nodeName] = a.nodeValue;
+	            m4q.each(this[0].attributes, function(){
+	                attributes[this.nodeName] = this.nodeValue;
 	            });
 	            return attributes;
 	        }
@@ -1929,15 +1960,15 @@
 	        }
 	
 	        if (isPlainObject(name)) {
-	            this.each(function(el){
+	            this.each(function(){
 	                for (var key in name) {
 	                    if (name.hasOwnProperty(key))
-	                        el.setAttribute(key, name[key]);
+	                        this.setAttribute(key, name[key]);
 	                }
 	            });
 	        } else {
-	            this.each(function(el){
-	                el.setAttribute(name, val);
+	            this.each(function(){
+	                this.setAttribute(name, val);
 	            });
 	        }
 	
@@ -1945,28 +1976,26 @@
 	    },
 	
 	    removeAttr: function(name){
-	        if (this.length === 0) {
-	            return this;
-	        }
-	        this.each(function(el){
-	            if (el.hasAttribute(name)) el.removeAttribute(name);
+	        return this.each(function(){
+	            if (this.hasAttribute(name)) this.removeAttribute(name);
 	        });
-	
-	        return this;
 	    },
 	
 	    toggleAttr: function(name, val){
-	        if (this.length === 0) {
-	            return this;
-	        }
-	        this.each(function(el){
+	        return this.each(function(){
+	            var el = this;
 	            if (val && !el.hasAttribute(name) || !el.getAttribute(name)) {
 	                el.setAttribute(name, val);
 	            } else {
 	                el.removeAttribute(name);
 	            }
 	        });
-	        return this;
+	    }
+	});
+	
+	m4q.extend({
+	    meta: function(name){
+	        return not(name) ? m4q("meta") : $("meta[name='$name']".replace("$name", name));
 	    }
 	});
 
@@ -2037,8 +2066,9 @@
 	        if (typeof elements === "string") {
 	            elements = m4q.parseHTML(elements);
 	        }
-	        return this.each(function(el, elIndex){
-	            m4q.each(elements, function(child){
+	        return this.each(function(elIndex, el){
+	            m4q.each(elements, function(){
+	                var child = this;
 	                el.append(elIndex === 0 ? child : child.cloneNode(true));
 	            });
 	        })
@@ -2048,8 +2078,9 @@
 	        if (typeof elements === "string") {
 	            elements = m4q.parseHTML(elements);
 	        }
-	        return this.each(function(el){
-	            m4q.each(elements, function(parent, parIndex){
+	        return this.each(function(){
+	            var el = this;
+	            m4q.each(elements, function(parIndex, parent){
 	                parent.append(parIndex === 0 ? el : el.cloneNode(true));
 	            });
 	        })
@@ -2059,8 +2090,9 @@
 	        if (typeof elements === "string") {
 	            elements = m4q.parseHTML(elements);
 	        }
-	        return this.each(function (el, elIndex) {
-	            m4q.each(elements, function(child){
+	        return this.each(function (elIndex, el) {
+	            m4q.each(elements, function(){
+	                var child = this;
 	                el.prepend(elIndex === 0 ? child : child.cloneNode(true))
 	            });
 	        })
@@ -2070,8 +2102,9 @@
 	        if (typeof elements === "string") {
 	            elements = m4q.parseHTML(elements);
 	        }
-	        return this.each(function(el){
-	            m4q.each(elements, function(parent, parIndex){
+	        return this.each(function(){
+	            var el = this;
+	            m4q.each(elements, function(parIndex, parent){
 	                $(parent).prepend(parIndex === 0 ? el : el.cloneNode(true));
 	            })
 	        })
@@ -2081,8 +2114,9 @@
 	        if (typeof elements === "string") {
 	            elements = m4q.parseHTML(elements);
 	        }
-	        return this.each(function(el){
-	            m4q.each(elements, function(element, elIndex){
+	        return this.each(function(){
+	            var el = this;
+	            m4q.each(elements, function(elIndex, element){
 	                element.parentNode.insertBefore(elIndex === 0 ? el : el.cloneNode(true), element);
 	            });
 	        })
@@ -2092,15 +2126,17 @@
 	        if (typeof elements === "string") {
 	            elements = m4q.parseHTML(elements);
 	        }
-	        return this.each(function(el){
-	            m4q.each(elements, function(element, elIndex){
+	        return this.each(function(){
+	            var el = this;
+	            m4q.each(elements, function(elIndex, element){
 	                element.parentNode.insertBefore(elIndex === 0 ? el : el.cloneNode(true), element.nextSibling);
 	            });
 	        });
 	    },
 	
 	    after: function(html){
-	        return this.each(function(el){
+	        return this.each(function(){
+	            var el = this;
 	            if (typeof html === "string") {
 	                el.insertAdjacentHTML('afterend', html);
 	            } else {
@@ -2110,7 +2146,8 @@
 	    },
 	
 	    before: function(html){
-	        return this.each(function(el){
+	        return this.each(function(){
+	            var el = this;
 	            if (typeof html === "string") {
 	                el.insertAdjacentHTML('beforebegin', html);
 	            } else {
@@ -2121,8 +2158,8 @@
 	
 	    clone: function(){
 	        var res = [], out = m4q();
-	        this.each(function(el){
-	            res.push(el.cloneNode(true));
+	        this.each(function(){
+	            res.push(this.cloneNode(true));
 	        });
 	        return m4q.merge(out, res);
 	    },
@@ -2259,14 +2296,14 @@
 	
 	m4q.fn.extend({
 	    animate: function (draw, dur, timing, cb) {
-	        return this.each(function(el){
-	            return m4q.animate(el, draw, dur, timing, cb);
+	        return this.each(function(){
+	            return m4q.animate(this, draw, dur, timing, cb);
 	        })
 	    },
 	
 	    stop: function(done){
-	        return this.each(function(el){
-	            return m4q.stop(el, done);
+	        return this.each(function(){
+	            return m4q.stop(this, done);
 	        })
 	    }
 	});
@@ -2463,50 +2500,50 @@
 	
 	m4q.fn.extend({
 	    hide: function(cb){
-	        return this.each(function(el){
-	            m4q.hide(el, cb);
+	        return this.each(function(){
+	            m4q.hide(this, cb);
 	        });
 	    },
 	
 	    show: function(cb){
-	        return this.each(function(el){
-	            m4q.show(el, cb);
+	        return this.each(function(){
+	            m4q.show(this, cb);
 	        });
 	    },
 	
 	    visible: function(mode, cb){
-	        return this.each(function(el){
-	            m4q.visible(el, mode, cb);
+	        return this.each(function(){
+	            m4q.visible(this, mode, cb);
 	        });
 	    },
 	
 	    toggle: function(cb){
-	        return this.each(function(el){
-	            m4q.toggle(el, cb);
+	        return this.each(function(){
+	            m4q.toggle(this, cb);
 	        })
 	    },
 	
 	    fadeIn: function(dur, easing, cb){
-	        return this.each(function(el){
-	            m4q.fadeIn(el, dur, easing, cb);
+	        return this.each(function(){
+	            m4q.fadeIn(this, dur, easing, cb);
 	        })
 	    },
 	
 	    fadeOut: function(dur, easing, cb){
-	        return this.each(function(el){
-	            m4q.fadeOut(el, dur, easing, cb);
+	        return this.each(function(){
+	            m4q.fadeOut(this, dur, easing, cb);
 	        })
 	    },
 	
 	    slideUp: function(dur, easing, cb){
-	        return this.each(function(el){
-	            m4q.slideUp(el, dur, easing, cb);
+	        return this.each(function(){
+	            m4q.slideUp(this, dur, easing, cb);
 	        })
 	    },
 	
 	    slideDown: function(dur, easing, cb){
-	        return this.each(function(el){
-	            m4q.slideDown(el, dur, easing, cb);
+	        return this.each(function(){
+	            m4q.slideDown(this, dur, easing, cb);
 	        })
 	    }
 	});
@@ -2568,8 +2605,8 @@
 	    }
 	
 	    if (ctx !== undefined && (ctx instanceof m4q || ctx instanceof HTMLElement)) {
-	        this.each(function(el){
-	            $(ctx).append($(el))
+	        this.each(function(){
+	            $(ctx).append($(this))
 	        });
 	    }
 	

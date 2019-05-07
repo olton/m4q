@@ -13,7 +13,8 @@ m4q.fn.extend({
             return this;
         }
 
-        this.each(function (el) {
+        this.each(function () {
+            var el = this;
             if (typeof el.querySelectorAll !== "undefined") res = [].slice.call(el.querySelectorAll(s));
         });
         return m4q.merge(out, res);
@@ -24,7 +25,8 @@ m4q.fn.extend({
 
         if (s instanceof m4q) return s;
 
-        this.each(function(el){
+        this.each(function(){
+            var el = this;
             for(i = 0; i < el.children.length; i++) {
                 if (el.children[i].nodeType === 1)
                     res.push(el.children[i]);
@@ -44,9 +46,9 @@ m4q.fn.extend({
 
         if (s instanceof m4q) return s;
 
-        this.each(function(el){
-            if (el.parentNode) {
-                res.push(el.parentNode);
+        this.each(function(){
+            if (this.parentNode) {
+                res.push(this.parentNode);
             }
         });
         res = s ? res.filter(function(el){
@@ -64,8 +66,8 @@ m4q.fn.extend({
 
         if (s instanceof m4q) return s;
 
-        this.each(function(el){
-            var par = el.parentNode;
+        this.each(function(){
+            var par = this.parentNode;
             while (par) {
                 if (par.nodeType === 1) {
 
@@ -95,8 +97,8 @@ m4q.fn.extend({
 
         if (s instanceof m4q) return s;
 
-        this.each(function(el){
-            var elems = [].filter.call(el.parentNode.children, function(child){
+        this.each(function(){
+            var el = this, elems = [].filter.call(el.parentNode.children, function(child){
                 return child !== el && (s ? matches.call(child, s) : true);
             });
 
@@ -117,7 +119,8 @@ m4q.fn.extend({
 
         if (s instanceof m4q) return s;
 
-        this.each(function(el){
+        this.each(function(){
+            var el = this;
             while (el) {
                 el = el[dir];
                 if (!el) break;
@@ -145,8 +148,8 @@ m4q.fn.extend({
 
         out = m4q();
 
-        this.each(function(el){
-            var sib = el[dir];
+        this.each(function(){
+            var sib = this[dir];
             if (sib && sib.nodeType === 1) {
                 if (not(s)) {
                     m4q.merge(out, m4q(sib));
@@ -190,7 +193,8 @@ m4q.fn.extend({
             return this.parent(s);
         }
 
-        this.each(function(el){
+        this.each(function(){
+            var el = this;
             while (el) {
                 el = el.parentElement;
                 if (!el) break;
@@ -211,11 +215,11 @@ m4q.fn.extend({
             return ;
         }
 
-        this.each(function(el){
-            var $el = m4q(el);
-            var child = $el.children(selector);
+        this.each(function(){
+            var el = m4q(this);
+            var child = el.children(selector);
             if (child.length > 0) {
-                m4q.merge(out, $el);
+                m4q.merge(out, el);
             }
         });
 

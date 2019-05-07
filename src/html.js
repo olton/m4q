@@ -17,11 +17,9 @@ m4q.fn.extend({
     },
 
     empty: function(){
-        if (this.length > 0) this.each(function(el){
-            el.innerHTML = "";
+        return this.each(function(){
+            this.innerHTML = "";
         });
-
-        return this;
     }
 });
 

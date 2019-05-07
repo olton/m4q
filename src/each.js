@@ -3,12 +3,12 @@ m4q.each = function(ctx, cb){
     var index = 0;
     if (isArrayLike(ctx)) {
         [].forEach.call(ctx, function(el) {
-            cb.apply(el, arguments);
+            cb.apply(el, [arguments[1], arguments[0]]);
         });
     } else {
         for(var key in ctx) {
             if (ctx.hasOwnProperty(key))
-                cb.apply(ctx[key], [ctx[key], key,  index++]);
+                cb.apply(ctx[key], [key, ctx[key],  index++]);
         }
     }
 
@@ -17,10 +17,6 @@ m4q.each = function(ctx, cb){
 
 m4q.fn.extend({
     each: function(cb){
-        [].forEach.call(this, function(el) {
-            cb.apply(el, arguments);
-        });
-
-        return this;
+        return m4q.each(this, cb);
     }
 });

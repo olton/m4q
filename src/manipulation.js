@@ -53,8 +53,9 @@ m4q.fn.extend({
         if (typeof elements === "string") {
             elements = m4q.parseHTML(elements);
         }
-        return this.each(function(el, elIndex){
-            m4q.each(elements, function(child){
+        return this.each(function(elIndex, el){
+            m4q.each(elements, function(){
+                var child = this;
                 el.append(elIndex === 0 ? child : child.cloneNode(true));
             });
         })
@@ -64,8 +65,9 @@ m4q.fn.extend({
         if (typeof elements === "string") {
             elements = m4q.parseHTML(elements);
         }
-        return this.each(function(el){
-            m4q.each(elements, function(parent, parIndex){
+        return this.each(function(){
+            var el = this;
+            m4q.each(elements, function(parIndex, parent){
                 parent.append(parIndex === 0 ? el : el.cloneNode(true));
             });
         })
@@ -75,8 +77,9 @@ m4q.fn.extend({
         if (typeof elements === "string") {
             elements = m4q.parseHTML(elements);
         }
-        return this.each(function (el, elIndex) {
-            m4q.each(elements, function(child){
+        return this.each(function (elIndex, el) {
+            m4q.each(elements, function(){
+                var child = this;
                 el.prepend(elIndex === 0 ? child : child.cloneNode(true))
             });
         })
@@ -86,8 +89,9 @@ m4q.fn.extend({
         if (typeof elements === "string") {
             elements = m4q.parseHTML(elements);
         }
-        return this.each(function(el){
-            m4q.each(elements, function(parent, parIndex){
+        return this.each(function(){
+            var el = this;
+            m4q.each(elements, function(parIndex, parent){
                 $(parent).prepend(parIndex === 0 ? el : el.cloneNode(true));
             })
         })
@@ -97,8 +101,9 @@ m4q.fn.extend({
         if (typeof elements === "string") {
             elements = m4q.parseHTML(elements);
         }
-        return this.each(function(el){
-            m4q.each(elements, function(element, elIndex){
+        return this.each(function(){
+            var el = this;
+            m4q.each(elements, function(elIndex, element){
                 element.parentNode.insertBefore(elIndex === 0 ? el : el.cloneNode(true), element);
             });
         })
@@ -108,15 +113,17 @@ m4q.fn.extend({
         if (typeof elements === "string") {
             elements = m4q.parseHTML(elements);
         }
-        return this.each(function(el){
-            m4q.each(elements, function(element, elIndex){
+        return this.each(function(){
+            var el = this;
+            m4q.each(elements, function(elIndex, element){
                 element.parentNode.insertBefore(elIndex === 0 ? el : el.cloneNode(true), element.nextSibling);
             });
         });
     },
 
     after: function(html){
-        return this.each(function(el){
+        return this.each(function(){
+            var el = this;
             if (typeof html === "string") {
                 el.insertAdjacentHTML('afterend', html);
             } else {
@@ -126,7 +133,8 @@ m4q.fn.extend({
     },
 
     before: function(html){
-        return this.each(function(el){
+        return this.each(function(){
+            var el = this;
             if (typeof html === "string") {
                 el.insertAdjacentHTML('beforebegin', html);
             } else {
@@ -137,8 +145,8 @@ m4q.fn.extend({
 
     clone: function(){
         var res = [], out = m4q();
-        this.each(function(el){
-            res.push(el.cloneNode(true));
+        this.each(function(){
+            res.push(this.cloneNode(true));
         });
         return m4q.merge(out, res);
     },

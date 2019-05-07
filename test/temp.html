@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="test" content="value"/>
     <title>Title</title>
     <style>
         body {
@@ -11,108 +12,30 @@
         }
     </style>
 </head>
-<body>
-    <form onsubmit="submitFormLong(this); return false;">
-        <input type="text" value="123" name="inp1">
-        <input type="text" value="test" name="inp2">
-        <button>Send</button>
-    </form>
+<body class="h-vh-100">
 
-    <hr>
-    <form id="f" action="http://localhost/post.php" method="post" onsubmit="submitForm(this); return false;">
-        <input type="text" value="123" name="inp1">
-        <input type="text" value="test" name="inp2">
-        <button>Send</button>
-    </form>
-
-    <hr>
-    <div>
-        <input type="file" value="test" name="fileInp" id="fileInp">
-        <button onclick="testPostFileInput()">Send file</button>
-    </div>
-
-
+<a href="#"><span class="tally alert ">bla bla bla ONE </span></a>
+<a href="#"><span class="tally alert ">bla bla bla TWO</span></a>
 
     <script src="../build/m4q.js"></script>
     <script>
+        var body = $("body");
 
-        console.log($.version);
-        console.log($.fn.version);
+        body.on("click", ".tally", function(e){
+            console.log($(this).style("display"));
+            $(this).fadeOut();
+        });
 
-        console.log($("hr"),$($("hr")));
-
-        var div = $("<div>", {
-            id: "elementID",
-            class: "element_class"
-        }).html("inserted div with attributes").appendTo($("body"));
-
-        function submitFormLong(){
-            $.get(
-                "shigakukan.zip",
-                null, {
-                    onprogress: function(e, x){
-                        console.log(e.loaded + " bytes transferred\n");
-                        if (e.loaded > 104267776) {
-                                x.abort();
-                                console.log("Aborted");
-                        }
-                    },
-                    onstate: function(e, x){
-                        console.log(x.readyState);
-                    }
-                }
-            ).then(function(response){
-                console.log("Long response executed", response);
-            }, function(xhr){
-                console.log("Error", xhr);
+        body.on("dblclick", ".tally", function(e){
+            $(".tally").fadeIn(function(){
+                console.log($(this).style("display"));
             });
-        }
+        });
 
-        function submitForm(form){
-            $.post(
-                "http://localhost/post.php",
-                form
-            ).then(function(response){
-                console.log("File input", response);
-            }, function(xhr){
-                console.log("Error", xhr);
-            });
-        }
+        console.log($.meta());
+        console.log($.meta("test"));
+        console.log($.meta("test").attr("content", "new_value").attr("content"));
 
-        function testPostFileInput(){
-            var data = document.getElementById("fileInp");
-            $.post(
-                "http://localhost/post.php",
-                data, null, {returnValue: 'xhr'}
-            ).then(function(response){
-                console.log("File input", response);
-            }, function(xhr){
-                console.log("Error", xhr);
-            });
-        }
-
-        // var data = {
-        //     agreement: "on",
-        //     password: "123123",
-        //     username: "chongzia"
-        // };
-        // $.post(
-        //     "http://localhost/post.php",
-        //     data
-        // ).then(function(response){
-        //     console.log("Object", response);
-        // }, function(xhr){
-        //     console.log("Error", xhr);
-        // });
-        //
-        // $.post(
-        //     "http://localhost/post.php",
-        //     document.getElementById("f")
-        // ).then(function(response){
-        //     console.log("Form", response);
-        // }, function(xhr){
-        //     console.log("Error", xhr);
-        // });
-    </script>
+</script>
 </body>
 </html>

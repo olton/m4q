@@ -12,8 +12,8 @@ m4q.fn.extend({
                 left: rect.left + pageXOffset
             }
         }
-        return this.each(function(el){ //?
-            $(el).css({
+        return this.each(function(){ //?
+            $(this).css({
                 top: val.top,
                 left: val.left
             })

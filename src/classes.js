@@ -11,8 +11,8 @@ m4q.fn.extend({
     hasClass: function(cls){
         var result = false;
 
-        this.each(function(el){
-            if (el.classList.contains(cls)) {
+        this.each(function(){
+            if (this.classList.contains(cls)) {
                 result = true;
             }
         });
@@ -30,11 +30,12 @@ m4q.fn.extend({
 ['add', 'remove', 'toggle'].forEach(function (method) {
     m4q.fn[method + "Class"] = function(cls){
         if (!cls || (""+cls).trim() === "") return this;
-        return this.each(function(el){
+        return this.each(function(){
+            var el = this;
             m4q.each(cls.split(" ").filter(function(v){
                 return (""+v).trim() !== "";
-            }), function(name){
-                el.classList[method](name);
+            }), function(){
+                el.classList[method](this);
             });
         });
     }

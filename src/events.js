@@ -76,8 +76,8 @@ m4q.extend({
     },
 
     off: function(){
-        m4q.each(this.events, function(e){
-            e.element.removeEventListener(e.eventName, e.handler);
+        m4q.each(this.events, function(){
+            this.element.removeEventListener(this.eventName, this.handler);
         });
         this.events = [];
         return this;
@@ -113,9 +113,10 @@ m4q.fn.extend({
             once: options.once && options.once === true
         };
 
-        return this.each(function(el){
-            m4q.each(str2arr(eventsList), function(ev){
-                var h,
+        return this.each(function(){
+            var el = this;
+            m4q.each(str2arr(eventsList), function(){
+                var h, ev = this,
                     event = ev.split("."),
                     name = event[0],
                     ns = event[1],
@@ -154,8 +155,10 @@ m4q.fn.extend({
         }
 
         if (eventsList.toLowerCase() === 'all') {
-            return this.each(function(el){
-                m4q.each(m4q.events, function(e){
+            return this.each(function(){
+                var el = this;
+                m4q.each(m4q.events, function(){
+                    var e = this;
                     if (e.element === el) {
                         el.removeEventListener(e.eventName, e.handler);
                         e.handler = null;
@@ -165,9 +168,10 @@ m4q.fn.extend({
             });
         }
 
-        return this.each(function(el){
-            m4q.each(str2arr(eventsList), function(event){
-                var evMap = event.split("."),
+        return this.each(function(){
+            var el = this;
+            m4q.each(str2arr(eventsList), function(){
+                var evMap = this.split("."),
                     name = evMap[0],
                     ns = evMap[1],
                     originEvent, index;
@@ -186,7 +190,6 @@ m4q.fn.extend({
     },
 
     trigger: function(name, data){
-        var e;
         if (this.length === 0) {
             return ;
         }
@@ -196,11 +199,30 @@ m4q.fn.extend({
             return this;
         }
 
-        e = new CustomEvent(name, data || {});
-        this.each(function(el){
-            el.dispatchEvent(e);
+        var e = new CustomEvent(name, data || {});
+
+        return this.each(function(){
+            this.dispatchEvent(e);
         });
-        return this;
+    },
+
+    fire: function(name, data){
+        if (this.length === 0) {
+            return ;
+        }
+
+        if (['focus', 'blur'].indexOf(name) > -1) {
+            this[0][name]();
+            return this;
+        }
+
+        var e = document.createEvent('Events');
+        e.detail = data;
+        e.initEvent(name, true, false);
+
+        return this.each(function(){
+            this.dispatchEvent(e);
+        });
     }
 });
 

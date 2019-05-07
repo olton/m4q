@@ -189,50 +189,50 @@ m4q.extend({
 
 m4q.fn.extend({
     hide: function(cb){
-        return this.each(function(el){
-            m4q.hide(el, cb);
+        return this.each(function(){
+            m4q.hide(this, cb);
         });
     },
 
     show: function(cb){
-        return this.each(function(el){
-            m4q.show(el, cb);
+        return this.each(function(){
+            m4q.show(this, cb);
         });
     },
 
     visible: function(mode, cb){
-        return this.each(function(el){
-            m4q.visible(el, mode, cb);
+        return this.each(function(){
+            m4q.visible(this, mode, cb);
         });
     },
 
     toggle: function(cb){
-        return this.each(function(el){
-            m4q.toggle(el, cb);
+        return this.each(function(){
+            m4q.toggle(this, cb);
         })
     },
 
     fadeIn: function(dur, easing, cb){
-        return this.each(function(el){
-            m4q.fadeIn(el, dur, easing, cb);
+        return this.each(function(){
+            m4q.fadeIn(this, dur, easing, cb);
         })
     },
 
     fadeOut: function(dur, easing, cb){
-        return this.each(function(el){
-            m4q.fadeOut(el, dur, easing, cb);
+        return this.each(function(){
+            m4q.fadeOut(this, dur, easing, cb);
         })
     },
 
     slideUp: function(dur, easing, cb){
-        return this.each(function(el){
-            m4q.slideUp(el, dur, easing, cb);
+        return this.each(function(){
+            m4q.slideUp(this, dur, easing, cb);
         })
     },
 
     slideDown: function(dur, easing, cb){
-        return this.each(function(el){
-            m4q.slideDown(el, dur, easing, cb);
+        return this.each(function(){
+            m4q.slideDown(this, dur, easing, cb);
         })
     }
 });
