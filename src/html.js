@@ -1,6 +1,9 @@
 
 m4q.fn.extend({
     html: function(value){
+        if (value instanceof m4q) {
+            value = value.outerHTML();
+        }
         return arguments.length === 0 ? this._prop('innerHTML') : this._prop('innerHTML', typeof value === "undefined" ? "" : value);
     },
 
