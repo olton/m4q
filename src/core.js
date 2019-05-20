@@ -1,5 +1,5 @@
 
-var m4qVersion = "v@@VERSION build @@BUILD @@STATUS @@TIME";
+var m4qVersion = "v@@VERSION. Built at @@TIME";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -118,12 +118,24 @@ m4q.fn = m4q.prototype = {
     is: function(s){
         var result = false;
 
-        if (typeof  s === "string") {
+        if (this.length === 0) {
+            return ;
+        }
+
+        if (typeof  s === "string" && [':selected'].indexOf(s) === -1) {
             this.each(function(){
                 if (matches.call(this, s)) {
                     result = true;
                 }
             });
+        } else
+
+        if (s === ":selected") {
+            return this[0].selected;
+        } else
+
+        if (s === ":checked") {
+            return this[0].checked;
         } else
 
         if (isArrayLike(s)) {

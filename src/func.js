@@ -28,8 +28,8 @@ function isEmptyObject( obj ) {
     return true;
 }
 
-function isArrayLike (target){
-    return target instanceof Object && 'length' in target;
+function isArrayLike (o){
+    return o instanceof Object && 'length' in o;
 }
 
 function str2arr (str, sep) {

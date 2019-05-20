@@ -41,7 +41,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         copyright: '/*\n' +
-            ' * m4q v<%= pkg.version %> build <%= pkg.build %> (<%= pkg.repository.url %>)\n' +
+            ' * m4q v<%= pkg.version %>, (<%= pkg.repository.url %>)\n' +
             ' * Copyright 2018 - <%= grunt.template.today("yyyy") %> by <%= pkg.author.name %>\n' +
             ' * <%= pkg.description %>\n' +
             ' * Licensed under <%= pkg.license %>\n' +
@@ -62,7 +62,9 @@ module.exports = function(grunt) {
             "\t} else {\n" +
             "\t\tfactory( global );\n" +
             "\t}\n" +
-            "} )( typeof window !== \"undefined\" ? window : this, function( window ) {",
+            "} )( typeof window !== \"undefined\" ? window : this, function( window ) {\n"+
+            "\t\n"+
+            "\t'use strict';",
 
         clean: {
             build: ['build']
@@ -74,6 +76,7 @@ module.exports = function(grunt) {
                     banner: '<%= copyright %>' + "\n" + "<%= banner %>\n",
                     footer: "\n\treturn m4q; \n});\n",
                     stripBanners: true,
+                    separator: "\n\n",
                     process: function(src) {
                         return src.replace(/\n/g, '\n\t');
                     }

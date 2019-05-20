@@ -2,8 +2,8 @@
 m4q.each = function(ctx, cb){
     var index = 0;
     if (isArrayLike(ctx)) {
-        [].forEach.call(ctx, function(el) {
-            cb.apply(el, [arguments[1], arguments[0]]);
+        [].forEach.call(ctx, function(val, key) {
+            cb.apply(val, [key, val]);
         });
     } else {
         for(var key in ctx) {

@@ -189,14 +189,30 @@ m4q.extend({
 
 m4q.fn.extend({
     hide: function(cb){
+        var callback = undefined;
+
+        m4q.each(arguments, function(){
+            if (typeof this === 'function') {
+                callback = this;
+            }
+        });
+
         return this.each(function(){
-            m4q.hide(this, cb);
+            m4q.hide(this, callback);
         });
     },
 
     show: function(cb){
+        var callback = undefined;
+
+        m4q.each(arguments, function(){
+            if (typeof this === 'function') {
+                callback = this;
+            }
+        });
+
         return this.each(function(){
-            m4q.show(this, cb);
+            m4q.show(this, callback);
         });
     },
 
@@ -207,6 +223,9 @@ m4q.fn.extend({
     },
 
     toggle: function(cb){
+        if (typeof cb !== 'function') {
+            cb = null;
+        }
         return this.each(function(){
             m4q.toggle(this, cb);
         })

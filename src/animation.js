@@ -48,16 +48,18 @@ m4q.extend({
         if (isPlainObject(draw)) {
             // TODO add prop value as array [from, to]
             for (key in draw) {
-                if (!Array.isArray(draw[key])) {
-                    from = parseUnit($el.style(key));
-                    to = parseUnit(draw[key]);
-                } else {
-                    from = parseUnit(draw[key][0]);
-                    to = parseUnit(draw[key][1]);
+                if (draw.hasOwnProperty(key)) {
+                    if (!Array.isArray(draw[key])) {
+                        from = parseUnit($el.style(key));
+                        to = parseUnit(draw[key]);
+                    } else {
+                        from = parseUnit(draw[key][0]);
+                        to = parseUnit(draw[key][1]);
+                    }
+                    unit = to[1] === '' ? 'px' : to[1];
+                    delta = to[0] - from[0];
+                    mapProps[key] = [from[0], to[0], delta, unit];
                 }
-                unit = to[1] === '' ? 'px' : to[1];
-                delta = to[0] - from[0];
-                mapProps[key] = [from[0], to[0], delta, unit] ;
             }
         }
 
@@ -85,7 +87,8 @@ m4q.extend({
                 (function(p){
 
                     for (key in mapProps) {
-                        $el.css(key, mapProps[key][0] + (mapProps[key][2] * p) + mapProps[key][3]);
+                        if (mapProps.hasOwnProperty(key))
+                            $el.css(key, mapProps[key][0] + (mapProps[key][2] * p) + mapProps[key][3]);
                     }
 
                 })(p);

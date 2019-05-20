@@ -23,6 +23,8 @@ m4q.extend({
     isEmptyObject: function(obj){return isEmptyObject(obj);},
     isArrayLike: function(obj){return isArrayLike(obj);},
     acceptData: function(owner){return acceptData(owner);},
+    not: function(val){return not(val)},
+    parseUnit: function(str, out){return parseUnit(str, out)},
 
     dataSet: function(ns){
         if (['INTERNAL', 'M4Q'].indexOf(ns.toUpperCase()) > -1) {

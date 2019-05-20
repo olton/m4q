@@ -4,7 +4,7 @@ m4q.fn.extend({
         var attributes = {};
 
         if (this.length === 0) {
-            return this;
+            return ;
         }
 
         if (arguments.length === 0) {
@@ -18,7 +18,7 @@ m4q.fn.extend({
             return name;
         }
 
-        if (name && !isPlainObject(name) && val === undefined) {
+        if (typeof name === 'string' && val === undefined) {
             return this[0].nodeType === 1 && this[0].hasAttribute(name) ? this[0].getAttribute(name) : undefined;
         }
 
@@ -45,13 +45,18 @@ m4q.fn.extend({
     },
 
     toggleAttr: function(name, val){
+
+        if (not(name)) return ;
+
         return this.each(function(){
             var el = this;
-            if (val && !el.hasAttribute(name) || !el.getAttribute(name)) {
-                el.setAttribute(name, val);
-            } else {
+
+            if (not(val)) {
                 el.removeAttribute(name);
+            } else {
+                el.setAttribute(name, val);
             }
+
         });
     }
 });

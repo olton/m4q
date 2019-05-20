@@ -148,7 +148,7 @@ m4q.fn.extend({
 
         elem = this[0];
 
-        if ( key === undefined ) {
+        if ( arguments.length === 0 ) {
             if ( this.length ) {
                 data = dataSet.get( elem );
 
@@ -170,7 +170,7 @@ m4q.fn.extend({
             return data;
         }
 
-        if (val === undefined) {
+        if ( arguments.length === 1 ) {
             res = dataSet.get(elem, key);
             if (res === undefined) {
                 if ( elem.nodeType === 1) {

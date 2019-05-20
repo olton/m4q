@@ -1,5 +1,5 @@
 /*
- * m4q v0.1.0 build 17 (https://github.com/olton/m4q.git)
+ * m4q v1.0.0, (https://github.com/olton/m4q.git)
  * Copyright 2018 - 2019 by Sergey Pimenov
  * Helper for DOM manipulation
  * Licensed under MIT
@@ -20,8 +20,10 @@
 		factory( global );
 	}
 } )( typeof window !== "undefined" ? window : this, function( window ) {
-
+	
 	'use strict';
+'use strict';
+
 
 	function not(value){
 	    return value === undefined || value === null;
@@ -52,8 +54,8 @@
 	    return true;
 	}
 	
-	function isArrayLike (target){
-	    return target instanceof Object && 'length' in target;
+	function isArrayLike (o){
+	    return o instanceof Object && 'length' in o;
 	}
 	
 	function str2arr (str, sep) {
@@ -73,6 +75,7 @@
 	    return out;
 	}
 	
+
 (function (global, undefined) {
 	
 	    if (global.setImmediate) {
@@ -237,6 +240,7 @@
 	    attachTo.clearImmediate = clearImmediate;
 	
 	}(window));
+
 (function (global, undefined) {
 	
 	    if (global.Promise) {
@@ -538,7 +542,8 @@
 	    }
 	}(window));
 
-	var m4qVersion = "v0.1.0 build @@BUILD alpha 07/05/2019 12:31:23";
+
+	var m4qVersion = "v1.0.0. Built at 20/05/2019 22:18:11";
 	var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 	
 	var matches = Element.prototype.matches
@@ -657,12 +662,24 @@
 	    is: function(s){
 	        var result = false;
 	
-	        if (typeof  s === "string") {
+	        if (this.length === 0) {
+	            return ;
+	        }
+	
+	        if (typeof  s === "string" && [':selected'].indexOf(s) === -1) {
 	            this.each(function(){
 	                if (matches.call(this, s)) {
 	                    result = true;
 	                }
 	            });
+	        } else
+	
+	        if (s === ":selected") {
+	            return this[0].selected;
+	        } else
+	
+	        if (s === ":checked") {
+	            return this[0].checked;
 	        } else
 	
 	        if (isArrayLike(s)) {
@@ -797,11 +814,12 @@
 	};
 	
 
+
 	m4q.each = function(ctx, cb){
 	    var index = 0;
 	    if (isArrayLike(ctx)) {
-	        [].forEach.call(ctx, function(el) {
-	            cb.apply(el, [arguments[1], arguments[0]]);
+	        [].forEach.call(ctx, function(val, key) {
+	            cb.apply(val, [key, val]);
 	        });
 	    } else {
 	        for(var key in ctx) {
@@ -819,6 +837,7 @@
 	    }
 	});
 	
+
 
 	function acceptData(owner){
 	    return owner.nodeType === 1 || owner.nodeType === 9 || !( +owner.nodeType );
@@ -969,7 +988,7 @@
 	
 	        elem = this[0];
 	
-	        if ( key === undefined ) {
+	        if ( arguments.length === 0 ) {
 	            if ( this.length ) {
 	                data = dataSet.get( elem );
 	
@@ -991,7 +1010,7 @@
 	            return data;
 	        }
 	
-	        if (val === undefined) {
+	        if ( arguments.length === 1 ) {
 	            res = dataSet.get(elem, key);
 	            if (res === undefined) {
 	                if ( elem.nodeType === 1) {
@@ -1014,6 +1033,7 @@
 	        } );
 	    }
 	});
+
 
 	m4q.extend({
 	    merge: function( first, second ) {
@@ -1039,6 +1059,8 @@
 	    isEmptyObject: function(obj){return isEmptyObject(obj);},
 	    isArrayLike: function(obj){return isArrayLike(obj);},
 	    acceptData: function(owner){return acceptData(owner);},
+	    not: function(val){return not(val)},
+	    parseUnit: function(str, out){return parseUnit(str, out)},
 	
 	    dataSet: function(ns){
 	        if (['INTERNAL', 'M4Q'].indexOf(ns.toUpperCase()) > -1) {
@@ -1049,6 +1071,7 @@
 	});
 	
 	
+
 
 	(function () {
 	    if ( typeof window.CustomEvent === "function" ) return false;
@@ -1299,6 +1322,7 @@
 	};
 	
 
+
 	m4q.fn.extend({
 	    html: function(value){
 	        return arguments.length === 0 ? this._prop('innerHTML') : this._prop('innerHTML', typeof value === "undefined" ? "" : value);
@@ -1324,6 +1348,7 @@
 	});
 	
 	
+
 
 	m4q.ajax = function(p){
 	    return new Promise(function(resolve, reject){
@@ -1442,6 +1467,7 @@
 	});
 	
 
+
 	
 	//var nonDigit = /[^0-9.\-]/;
 	var numProps = ['opacity'];
@@ -1513,6 +1539,7 @@
 	
 	
 
+
 	m4q.fn.extend({
 	    addClass: function(){},
 	    removeClass: function(){},
@@ -1556,6 +1583,7 @@
 	});
 	
 
+
 	// TODO add scripts support
 	m4q.parseHTML = function(data, context){
 	    var base, singleTag, result = [], ctx, _context;
@@ -1596,6 +1624,7 @@
 	    return result;
 	};
 	
+
 
 	m4q.fn.extend({
 	    _size: function(prop, val){
@@ -1666,6 +1695,7 @@
 	    }
 	});
 
+
 	m4q.fn.extend({
 	    offset: function(val){
 	        var rect;
@@ -1707,6 +1737,7 @@
 	        }
 	    }
 	});
+
 
 	m4q.fn.extend({
 	    filter: function(fn){
@@ -1936,12 +1967,13 @@
 	    }
 	});
 
+
 	m4q.fn.extend({
 	    attr: function(name, val){
 	        var attributes = {};
 	
 	        if (this.length === 0) {
-	            return this;
+	            return ;
 	        }
 	
 	        if (arguments.length === 0) {
@@ -1955,7 +1987,7 @@
 	            return name;
 	        }
 	
-	        if (name && !isPlainObject(name) && val === undefined) {
+	        if (typeof name === 'string' && val === undefined) {
 	            return this[0].nodeType === 1 && this[0].hasAttribute(name) ? this[0].getAttribute(name) : undefined;
 	        }
 	
@@ -1982,13 +2014,18 @@
 	    },
 	
 	    toggleAttr: function(name, val){
+	
+	        if (not(name)) return ;
+	
 	        return this.each(function(){
 	            var el = this;
-	            if (val && !el.hasAttribute(name) || !el.getAttribute(name)) {
-	                el.setAttribute(name, val);
-	            } else {
+	
+	            if (not(val)) {
 	                el.removeAttribute(name);
+	            } else {
+	                el.setAttribute(name, val);
 	            }
+	
 	        });
 	    }
 	});
@@ -1998,6 +2035,7 @@
 	        return not(name) ? m4q("meta") : $("meta[name='$name']".replace("$name", name));
 	    }
 	});
+
 
 	m4q.extend({
 	    proxy: function(fn, context){
@@ -2011,6 +2049,7 @@
 	    }
 	});
 	
+
 
 	// Polyfills for IE11
 	(function (arr) {
@@ -2183,6 +2222,7 @@
 	    }
 	});
 
+
 	var cancelAnimationFrame = window.cancelAnimationFrame || window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame;
 	
 	m4q.extend({
@@ -2232,16 +2272,18 @@
 	        if (isPlainObject(draw)) {
 	            // TODO add prop value as array [from, to]
 	            for (key in draw) {
-	                if (!Array.isArray(draw[key])) {
-	                    from = parseUnit($el.style(key));
-	                    to = parseUnit(draw[key]);
-	                } else {
-	                    from = parseUnit(draw[key][0]);
-	                    to = parseUnit(draw[key][1]);
+	                if (draw.hasOwnProperty(key)) {
+	                    if (!Array.isArray(draw[key])) {
+	                        from = parseUnit($el.style(key));
+	                        to = parseUnit(draw[key]);
+	                    } else {
+	                        from = parseUnit(draw[key][0]);
+	                        to = parseUnit(draw[key][1]);
+	                    }
+	                    unit = to[1] === '' ? 'px' : to[1];
+	                    delta = to[0] - from[0];
+	                    mapProps[key] = [from[0], to[0], delta, unit];
 	                }
-	                unit = to[1] === '' ? 'px' : to[1];
-	                delta = to[0] - from[0];
-	                mapProps[key] = [from[0], to[0], delta, unit] ;
 	            }
 	        }
 	
@@ -2269,7 +2311,8 @@
 	                (function(p){
 	
 	                    for (key in mapProps) {
-	                        $el.css(key, mapProps[key][0] + (mapProps[key][2] * p) + mapProps[key][3]);
+	                        if (mapProps.hasOwnProperty(key))
+	                            $el.css(key, mapProps[key][0] + (mapProps[key][2] * p) + mapProps[key][3]);
 	                    }
 	
 	                })(p);
@@ -2309,6 +2352,7 @@
 	});
 	
 	
+
 
 	m4q.extend({
 	    hide: function(el, cb){
@@ -2500,14 +2544,30 @@
 	
 	m4q.fn.extend({
 	    hide: function(cb){
+	        var callback = undefined;
+	
+	        m4q.each(arguments, function(){
+	            if (typeof this === 'function') {
+	                callback = this;
+	            }
+	        });
+	
 	        return this.each(function(){
-	            m4q.hide(this, cb);
+	            m4q.hide(this, callback);
 	        });
 	    },
 	
 	    show: function(cb){
+	        var callback = undefined;
+	
+	        m4q.each(arguments, function(){
+	            if (typeof this === 'function') {
+	                callback = this;
+	            }
+	        });
+	
 	        return this.each(function(){
-	            m4q.show(this, cb);
+	            m4q.show(this, callback);
 	        });
 	    },
 	
@@ -2518,6 +2578,9 @@
 	    },
 	
 	    toggle: function(cb){
+	        if (typeof cb !== 'function') {
+	            cb = null;
+	        }
 	        return this.each(function(){
 	            m4q.toggle(this, cb);
 	        })
@@ -2549,6 +2612,7 @@
 	});
 	
 	
+
 
 	m4q.init = function(sel, ctx){
 	    var parsed;
@@ -2617,6 +2681,7 @@
 	
 	m4q.init.prototype = m4q.fn;
 	
+
 var _$ = window.$,
 	    _m4q = window.m4q,
 	    _$M = window.$M;
