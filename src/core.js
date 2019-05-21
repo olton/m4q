@@ -138,6 +138,10 @@ m4q.fn = m4q.prototype = {
             return this[0].checked;
         } else
 
+        if (s === ":hidden") {
+            return this[0].hidden;
+        } else
+
         if (isArrayLike(s)) {
             this.each(function(){
                 var el = this;
