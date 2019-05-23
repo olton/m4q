@@ -114,3 +114,14 @@ m4q.ajax = function(p){
         return m4q.ajax(m4q.extend({}, _options, options));
     }
 });
+
+m4q.fn.extend({
+    load: function(url, data, options){
+        var that = this;
+        m4q.get(url, data, options).then(function(data){
+            that.each(function(){
+                this.innerHTML = data;
+            });
+        });
+    }
+});

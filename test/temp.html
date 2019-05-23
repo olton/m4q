@@ -14,19 +14,11 @@
 </head>
 <body class="h-vh-100">
 
-<input type="checkbox" data-role="checkbox" data-caption="Indeterminate" data-indeterminate="true" id="indeterminate-checkbox" title="">
-<div class="mt-2">
-    <button class="button" onclick="toggleAttr('true');">Set state</button>
-    <button class="button" onclick="toggleAttr('false')">Remove state</button>
-</div>
+<div>Div</div>
 
-    <script src="../build/m4q.js"></script>
-    <script>
-        function toggleAttr(mode){
-            var check = $('#indeterminate-checkbox');
-            check.toggleAttr('data-indeterminate', mode);
-            console.log(check.attr('data-indeterminate'));
-        }
-    </script>
+<script src="../build/m4q.js"></script>
+<script>
+    $("div").load("block.html")
+</script>
 </body>
 </html>
