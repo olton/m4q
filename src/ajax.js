@@ -64,40 +64,42 @@ m4q.ajax = function(p){
             if (xhr.readyState === 4 && xhr.status < 300) {
                 var _return = p.returnValue && p.returnValue === 'xhr' ? xhr : p.parseJson ? JSON.parse(xhr.response) : xhr.response;
                 exec(resolve, [_return]);
+                if (p['onSuccess'] !== undefined) exec(p['onSuccess'], [e, xhr]);
             } else {
                 exec(reject, [xhr]);
+                if (p['onFail'] !== undefined) exec(p['onFail'], [e, xhr]);
             }
-            exec(p.onload, [e, xhr]);
+            if (p['onLoad'] !== undefined) exec(p['onLoad'], [e, xhr]);
         });
 
         xhr.addEventListener("readystatechange", function(e){
-            exec(p.onstate, [e, xhr]);
+            if (p['onStateChange'] !== undefined) exec(p['onStateChange'], [e, xhr]);
         });
 
-        xhr.addEventListener("error", function(){
+        xhr.addEventListener("error", function(e){
             exec(reject, [xhr]);
-            exec(p.onerror, [e, xhr]);
+            if (p['onError'] !== undefined) exec(p['onError'], [e, xhr]);
         });
 
         xhr.addEventListener("timeout", function(e){
             exec(reject, [xhr]);
-            exec(p.ontimeout, [e, xhr]);
+            if (p['onTimeout'] !== undefined) exec(p['onTimeout'], [e, xhr]);
         });
 
         xhr.addEventListener("progress", function(e){
-            exec(p.onprogress, [e, xhr]);
+            if (p['onProgress'] !== undefined) exec(p['onProgress'], [e, xhr]);
         });
 
         xhr.addEventListener("loadstart", function(e){
-            exec(p.onloadstart, [e, xhr]);
+            if (p['onLoadStart'] !== undefined) exec(p['onLoadStart'], [e, xhr]);
         });
 
         xhr.addEventListener("loadend", function(e){
-            exec(p.onloadend, [e, xhr]);
+            if (p['onLoadEnd'] !== undefined) exec(p['onLoadEnd'], [e, xhr]);
         });
 
         xhr.addEventListener("abort", function(e){
-            exec(p.onabort, [e, xhr]);
+            if (p['onAbort'] !== undefined) exec(p['onAbort'], [e, xhr]);
         });
     });
 };

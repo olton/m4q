@@ -2,6 +2,8 @@
 m4q.init = function(sel, ctx){
     var parsed;
 
+    this.uid = m4q.uniqueId();
+
     if (!sel) {
         return this;
     }
@@ -22,14 +24,18 @@ m4q.init = function(sel, ctx){
         sel = document.body;
     }
 
-    if (sel.nodeType || sel === window) {
+    if (sel.nodeType || sel.self === window) {
         this[0] = sel;
         this.length = 1;
         return this;
     }
 
     if (sel instanceof m4q) {
-        return sel;
+        var r = m4q();
+        m4q.each(sel, function(){
+            r.push(this);
+        });
+        return r;
     }
 
     if (typeof sel === "object") {
@@ -58,8 +64,6 @@ m4q.init = function(sel, ctx){
             $(ctx).append($(this))
         });
     }
-
-    this.uid = m4q.uniqueId();
 
     return this;
 };
