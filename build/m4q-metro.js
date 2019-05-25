@@ -526,7 +526,7 @@ function parseUnit(str, out) {
 }(window));
 
 
-var m4qVersion = "v1.0.0. Built at 25/05/2019 12:18:00";
+var m4qVersion = "v1.0.0. Built at 25/05/2019 12:36:51";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
