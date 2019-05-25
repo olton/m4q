@@ -1,5 +1,4 @@
-
-m4q.extend({
+$.extend({
     merge: function( first, second ) {
         var len = +second.length,
             j = 0,

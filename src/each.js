@@ -1,5 +1,4 @@
-
-m4q.each = function(ctx, cb){
+$.each = function(ctx, cb){
     var index = 0;
     if (isArrayLike(ctx)) {
         [].forEach.call(ctx, function(val, key) {
@@ -15,8 +14,8 @@ m4q.each = function(ctx, cb){
     return ctx;
 };
 
-m4q.fn.extend({
+$.fn.extend({
     each: function(cb){
-        return m4q.each(this, cb);
+        return $.each(this, cb);
     }
 });

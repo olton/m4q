@@ -1,4 +1,4 @@
-m4q.fn.extend({
+$.fn.extend({
     attr: function(name, val){
         var attributes = {};
 
@@ -7,7 +7,7 @@ m4q.fn.extend({
         }
 
         if (arguments.length === 0) {
-            m4q.each(this[0].attributes, function(){
+            $.each(this[0].attributes, function(){
                 attributes[this.nodeName] = this.nodeValue;
             });
             return attributes;
@@ -60,8 +60,8 @@ m4q.fn.extend({
     }
 });
 
-m4q.extend({
+$.extend({
     meta: function(name){
-        return not(name) ? m4q("meta") : $("meta[name='$name']".replace("$name", name));
+        return not(name) ? $("meta") : $("meta[name='$name']".replace("$name", name));
     }
 });

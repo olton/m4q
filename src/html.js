@@ -1,7 +1,6 @@
-
-m4q.fn.extend({
+$.fn.extend({
     html: function(value){
-        if (value instanceof m4q) {
+        if (value instanceof $) {
             value = value.outerHTML();
         }
         return arguments.length === 0 ? this._prop('innerHTML') : this._prop('innerHTML', typeof value === "undefined" ? "" : value);

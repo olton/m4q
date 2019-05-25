@@ -1,13 +1,12 @@
-
-m4q.fn.extend({
+$.fn.extend({
     filter: function(fn){
         return [].filter.call(this, fn);
     },
 
     find: function(s){
-        var res = [], out = m4q();
+        var res = [], out = $();
 
-        if (s instanceof m4q) return s;
+        if (s instanceof $) return s;
 
         if (this.length === 0) {
             return this;
@@ -17,13 +16,13 @@ m4q.fn.extend({
             var el = this;
             if (typeof el.querySelectorAll !== "undefined") res = [].slice.call(el.querySelectorAll(s));
         });
-        return m4q.merge(out, res);
+        return $.merge(out, res);
     },
 
     children: function(s){
-        var i, res = [], out = m4q();
+        var i, res = [], out = $();
 
-        if (s instanceof m4q) return s;
+        if (s instanceof $) return s;
 
         this.each(function(){
             var el = this;
@@ -35,16 +34,16 @@ m4q.fn.extend({
         res = s ? res.filter(function(el){
             return matches.call(el, s);
         }) : res;
-        return m4q.merge(out, res);
+        return $.merge(out, res);
     },
 
     parent: function(s){
-        var res = [], out = m4q();
+        var res = [], out = $();
         if (this.length === 0) {
             return ;
         }
 
-        if (s instanceof m4q) return s;
+        if (s instanceof $) return s;
 
         this.each(function(){
             if (this.parentNode) {
@@ -54,17 +53,17 @@ m4q.fn.extend({
         res = s ? res.filter(function(el){
             return matches.call(el, s);
         }) : res;
-        return m4q.merge(out, res);
+        return $.merge(out, res);
     },
 
     parents: function(s){
-        var res = [], out = m4q();
+        var res = [], out = $();
 
         if (this.length === 0) {
             return ;
         }
 
-        if (s instanceof m4q) return s;
+        if (s instanceof $) return s;
 
         this.each(function(){
             var par = this.parentNode;
@@ -85,17 +84,17 @@ m4q.fn.extend({
             }
         });
 
-        return m4q.merge(out, res);
+        return $.merge(out, res);
     },
 
     siblings: function(s){
-        var res = [], out = m4q();
+        var res = [], out = $();
 
         if (this.length === 0) {
             return ;
         }
 
-        if (s instanceof m4q) return s;
+        if (s instanceof $) return s;
 
         this.each(function(){
             var el = this, elems = [].filter.call(el.parentNode.children, function(child){
@@ -107,17 +106,17 @@ m4q.fn.extend({
             })
         });
 
-        return m4q.merge(out, res);
+        return $.merge(out, res);
     },
 
     _siblingAll: function(dir, s){
-        var out = m4q();
+        var out = $();
 
         if (this.length === 0) {
             return ;
         }
 
-        if (s instanceof m4q) return s;
+        if (s instanceof $) return s;
 
         this.each(function(){
             var el = this;
@@ -125,10 +124,10 @@ m4q.fn.extend({
                 el = el[dir];
                 if (!el) break;
                 if (!s) {
-                    m4q.merge(out, m4q(el));
+                    $.merge(out, $(el));
                 } else {
                     if (matches.call(el, s)) {
-                        m4q.merge(out, m4q(el));
+                        $.merge(out, $(el));
                     }
                 }
             }
@@ -138,24 +137,24 @@ m4q.fn.extend({
     },
 
     _sibling: function(dir, s){
-        var out = m4q();
+        var out = $();
 
         if (this.length === 0) {
             return ;
         }
 
-        if (s instanceof m4q) return s;
+        if (s instanceof $) return s;
 
-        out = m4q();
+        out = $();
 
         this.each(function(){
             var sib = this[dir];
             if (sib && sib.nodeType === 1) {
                 if (not(s)) {
-                    m4q.merge(out, m4q(sib));
+                    $.merge(out, $(sib));
                 } else {
                     if (matches.call(sib, s)) {
-                        m4q.merge(out, m4q(sib));
+                        $.merge(out, $(sib));
                     }
                 }
             }
@@ -181,13 +180,13 @@ m4q.fn.extend({
     },
 
     closest: function(s){
-        var out = m4q();
+        var out = $();
 
         if (this.length === 0) {
             return ;
         }
 
-        if (s instanceof m4q) return s;
+        if (s instanceof $) return s;
 
         if (!s) {
             return this.parent(s);
@@ -199,7 +198,7 @@ m4q.fn.extend({
                 el = el.parentElement;
                 if (!el) break;
                 if (matches.call(el, s)) {
-                    m4q.merge(out, m4q(el));
+                    $.merge(out, $(el));
                     return ;
                 }
             }
@@ -209,17 +208,17 @@ m4q.fn.extend({
     },
 
     has: function(selector){
-        var out = m4q();
+        var out = $();
 
         if (this.length === 0) {
             return ;
         }
 
         this.each(function(){
-            var el = m4q(this);
+            var el = $(this);
             var child = el.children(selector);
             if (child.length > 0) {
-                m4q.merge(out, el);
+                $.merge(out, el);
             }
         });
 

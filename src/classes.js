@@ -1,4 +1,4 @@
-m4q.fn.extend({
+$.fn.extend({
     addClass: function(){},
     removeClass: function(){},
     toggleClass: function(){},
@@ -27,11 +27,11 @@ m4q.fn.extend({
 });
 
 ['add', 'remove', 'toggle'].forEach(function (method) {
-    m4q.fn[method + "Class"] = function(cls){
+    $.fn[method + "Class"] = function(cls){
         if (!cls || (""+cls).trim() === "") return this;
         return this.each(function(){
             var el = this;
-            m4q.each(cls.split(" ").filter(function(v){
+            $.each(cls.split(" ").filter(function(v){
                 return (""+v).trim() !== "";
             }), function(){
                 el.classList[method](this);

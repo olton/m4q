@@ -24,7 +24,6 @@
 
 'use strict';
 
-
 function not(value){
     return value === undefined || value === null;
 }
@@ -542,8 +541,7 @@ function parseUnit(str, out) {
     }
 }(window));
 
-
-var m4qVersion = "v1.0.0. Built at 25/05/2019 12:18:00";
+var m4qVersion = "v1.0.0. Built at 25/05/2019 12:35:58";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -553,11 +551,11 @@ var matches = Element.prototype.matches
     || Element.prototype.msMatchesSelector
     || Element.prototype.oMatchesSelector;
 
-var m4q = function(selector, context){
-    return new m4q.init(selector, context);
+var $ = function(selector, context){
+    return new $.init(selector, context);
 };
 
-m4q.uniqueId = function () {
+$.uniqueId = function () {
     var d = new Date().getTime();
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         var r = (d + Math.random() * 16) % 16 | 0;
@@ -566,7 +564,7 @@ m4q.uniqueId = function () {
     });
 };
 
-m4q.toArray = function(n){
+$.toArray = function(n){
     var i, out = [];
 
     for (i = 0 ; i < n.length; i++ ) {
@@ -576,24 +574,24 @@ m4q.toArray = function(n){
     return out;
 };
 
-m4q.import = function(ctx){
-    var res = [], out = m4q();
+$.import = function(ctx){
+    var res = [], out = $();
     this.each(ctx, function(){
         res.push(this);
     });
     return this.merge(out, res);
 };
 
-m4q.version = m4qVersion;
+$.version = m4qVersion;
 
-m4q.fn = m4q.prototype = {
+$.fn = $.prototype = {
     version: m4qVersion,
-    constructor: m4q,
+    constructor: $,
     length: 0,
     uid: "",
 
     items: function(){
-        return m4q.toArray(this);
+        return $.toArray(this);
     },
 
     // TODO add element as argument
@@ -604,7 +602,7 @@ m4q.fn = m4q.prototype = {
             return -1;
         }
 
-        m4q.each(this[0].parentNode.children, function(){
+        $.each(this[0].parentNode.children, function(){
             var el = this;
             if (selector) {
                 if (matches.call(el, selector)) res.push(el);
@@ -624,15 +622,15 @@ m4q.fn = m4q.prototype = {
     },
 
     eq: function(i){
-        return m4q(this.get(i >= 0 ? i : this.length + i));
+        return $(this.get(i >= 0 ? i : this.length + i));
     },
 
     clone: function(){
-        var res = [], out = m4q();
+        var res = [], out = $();
         this.each(function(){
             res.push(this.cloneNode(true));
         });
-        return m4q.merge(out, res);
+        return $.merge(out, res);
     },
 
     origin: function(name, value, def){
@@ -642,11 +640,11 @@ m4q.fn = m4q.prototype = {
         }
 
         if (not(name) && not(value)) {
-            return m4q.data(this[0]);
+            return $.data(this[0]);
         }
 
         if (not(value)) {
-            var res = m4q.data(this[0], "origin-"+name);
+            var res = $.data(this[0], "origin-"+name);
             return !not(res) ? res : def;
         }
 
@@ -689,7 +687,7 @@ m4q.fn = m4q.prototype = {
         if (isArrayLike(s)) {
             this.each(function(){
                 var el = this;
-                m4q.each(s, function(){
+                $.each(s, function(){
                     var sel = this;
                     if (el === sel) {
                         result = true;
@@ -718,20 +716,20 @@ m4q.fn = m4q.prototype = {
     },
 
     ind: function(i){
-        if (this.length === 0) return m4q();
+        if (this.length === 0) return $();
         if (not(i)) return ;
         if (i  > this.length) i = this.length - 1;
-        return i < 0 ?  m4q(this[i + this.length]) : m4q(this[i]);
+        return i < 0 ?  $(this[i + this.length]) : $(this[i]);
     },
 
     odd: function(){
-        return m4q.merge(m4q(), this.filter(function(el, i){
+        return $.merge($(), this.filter(function(el, i){
             return i % 2 === 0;
         }));
     },
 
     even: function(){
-        return m4q.merge(m4q(), this.filter(function(el, i){
+        return $.merge($(), this.filter(function(el, i){
             return i % 2 !== 0;
         }));
     },
@@ -755,7 +753,7 @@ m4q.fn = m4q.prototype = {
             el[prop] = value;
 
             if (prop === "innerHTML") {
-                m4q.each(m4q(el).find("script"), function(){
+                $.each($(el).find("script"), function(){
                     var script = this;
                     var s = document.createElement('script');
                     s.type = 'text/javascript';
@@ -794,7 +792,7 @@ m4q.fn = m4q.prototype = {
     indexOf: [].indexOf
 };
 
-m4q.extend = m4q.fn.extend = function(){
+$.extend = $.fn.extend = function(){
     var options, name,
         target = arguments[ 0 ] || {},
         i = 1,
@@ -821,8 +819,7 @@ m4q.extend = m4q.fn.extend = function(){
 };
 
 
-
-m4q.each = function(ctx, cb){
+$.each = function(ctx, cb){
     var index = 0;
     if (isArrayLike(ctx)) {
         [].forEach.call(ctx, function(val, key) {
@@ -838,12 +835,11 @@ m4q.each = function(ctx, cb){
     return ctx;
 };
 
-m4q.fn.extend({
+$.fn.extend({
     each: function(cb){
-        return m4q.each(this, cb);
+        return $.each(this, cb);
     }
 });
-
 
 
 function acceptData(owner){
@@ -969,7 +965,7 @@ Data.prototype = {
 
 var dataSet = new Data('Internal');
 
-m4q.extend({
+$.extend({
     Data: new Data('m4q'),
 
     hasData: function(elem){
@@ -985,7 +981,7 @@ m4q.extend({
     }
 });
 
-m4q.fn.extend({
+$.fn.extend({
     data: function(key, val){
         var res, elem, data, attrs, name, i;
 
@@ -1041,8 +1037,7 @@ m4q.fn.extend({
     }
 });
 
-
-m4q.extend({
+$.extend({
     merge: function( first, second ) {
         var len = +second.length,
             j = 0,
@@ -1079,7 +1074,6 @@ m4q.extend({
 
 
 
-
 (function () {
     if ( typeof window.CustomEvent === "function" ) return false;
 
@@ -1111,7 +1105,7 @@ Event.prototype.stop = function(immediate){
     return immediate ? this.stopImmediatePropagation() : this.stopPropagation();
 };
 
-m4q.extend({
+$.extend({
     events: [],
     eventHook: {},
 
@@ -1157,7 +1151,7 @@ m4q.extend({
     },
 
     off: function(){
-        m4q.each(this.events, function(){
+        $.each(this.events, function(){
             this.element.removeEventListener(this.eventName, this.handler);
         });
         this.events = [];
@@ -1174,7 +1168,7 @@ m4q.extend({
     clearEventHooks: function(){}
 });
 
-m4q.fn.extend({
+$.fn.extend({
     on: function(eventsList, sel, handler, options){
         var eventOptions;
 
@@ -1196,7 +1190,7 @@ m4q.fn.extend({
 
         return this.each(function(){
             var el = this;
-            m4q.each(str2arr(eventsList), function(){
+            $.each(str2arr(eventsList), function(){
                 var h, ev = this,
                     event = ev.split("."),
                     name = event[0],
@@ -1217,11 +1211,11 @@ m4q.fn.extend({
                     }
                 };
 
-                m4q.eventUID++;
+                $.eventUID++;
                 originEvent = name+(sel ? ":"+sel:"")+(ns ? ":"+ns:"");
                 el.addEventListener(name, h, eventOptions);
-                index = m4q.setEventHandler(el, name, h, sel, ns, m4q.eventUID);
-                m4q(el).origin('event-'+originEvent, index);
+                index = $.setEventHandler(el, name, h, sel, ns, $.eventUID);
+                $(el).origin('event-'+originEvent, index);
             });
         });
     },
@@ -1238,12 +1232,12 @@ m4q.fn.extend({
         if (eventsList.toLowerCase() === 'all') {
             return this.each(function(){
                 var el = this;
-                m4q.each(m4q.events, function(){
+                $.each($.events, function(){
                     var e = this;
                     if (e.element === el) {
                         el.removeEventListener(e.eventName, e.handler);
                         e.handler = null;
-                        m4q(el).origin("event-"+name+(e.selector ? ":"+e.selector:"")+(e.ns ? ":"+e.ns:""), null);
+                        $(el).origin("event-"+name+(e.selector ? ":"+e.selector:"")+(e.ns ? ":"+e.ns:""), null);
                     }
                 })
             });
@@ -1251,21 +1245,21 @@ m4q.fn.extend({
 
         return this.each(function(){
             var el = this;
-            m4q.each(str2arr(eventsList), function(){
+            $.each(str2arr(eventsList), function(){
                 var evMap = this.split("."),
                     name = evMap[0],
                     ns = evMap[1],
                     originEvent, index;
 
                 originEvent = "event-"+name+(sel ? ":"+sel:"")+(ns ? ":"+ns:"");
-                index = m4q(el).origin(originEvent);
+                index = $(el).origin(originEvent);
 
-                if (index && m4q.events[index].handler) {
-                    el.removeEventListener(name, m4q.events[index].handler);
-                    m4q.events[index].handler = null;
+                if (index && $.events[index].handler) {
+                    el.removeEventListener(name, $.events[index].handler);
+                    $.events[index].handler = null;
                 }
 
-                m4q(el).origin(originEvent, null);
+                $(el).origin(originEvent, null);
             });
         });
     },
@@ -1311,28 +1305,27 @@ m4q.fn.extend({
     .split( " " )
     .forEach(
     function( name ) {
-        m4q.fn[ name ] = function( sel, fn, opt ) {
+        $.fn[ name ] = function( sel, fn, opt ) {
             return arguments.length > 0 ?
                 this.on( name, sel, fn, opt ) :
                 this.trigger( name );
         };
 });
 
-m4q.fn.extend( {
+$.fn.extend( {
     hover: function( fnOver, fnOut ) {
         return this.mouseenter( fnOver ).mouseleave( fnOut || fnOver );
     }
 });
 
-m4q.ready = function(fn){
+$.ready = function(fn){
     document.addEventListener('DOMContentLoaded', fn);
 };
 
 
-
-m4q.fn.extend({
+$.fn.extend({
     html: function(value){
-        if (value instanceof m4q) {
+        if (value instanceof $) {
             value = value.outerHTML();
         }
         return arguments.length === 0 ? this._prop('innerHTML') : this._prop('innerHTML', typeof value === "undefined" ? "" : value);
@@ -1359,7 +1352,7 @@ m4q.fn.extend({
 
 
 
-m4q.ajax = function(p){
+$.ajax = function(p){
     return new Promise(function(resolve, reject){
         var xhr = new XMLHttpRequest(), data;
         var method = (p.method || 'GET').toUpperCase();
@@ -1390,7 +1383,7 @@ m4q.ajax = function(p){
         }
 
         if (p.headers) {
-            m4q.each(function(k, v){
+            $.each(function(k, v){
                 xhr.setRequestHeader(k, v);
                 headers.push(k);
             });
@@ -1406,7 +1399,7 @@ m4q.ajax = function(p){
             }
         } else if (isPlainObject(p.data)) {
             var _data = [];
-            m4q.each(p.data, function(k, v){
+            $.each(p.data, function(k, v){
                 _data.push(k+"="+v);
             });
             data = _data.join("&");
@@ -1465,7 +1458,7 @@ m4q.ajax = function(p){
 };
 
 ['get', 'post', 'put', 'patch', 'delete', 'json'].forEach(function(method){
-    m4q[method] = function(url, data, options){
+    $[method] = function(url, data, options){
         var _method = method.toUpperCase();
         var _options = {
             method: _method === 'JSON' ? 'GET' : _method,
@@ -1473,14 +1466,14 @@ m4q.ajax = function(p){
             data: data,
             parseJson: _method === 'JSON'
         };
-        return m4q.ajax(m4q.extend({}, _options, options));
+        return $.ajax($.extend({}, _options, options));
     }
 });
 
-m4q.fn.extend({
+$.fn.extend({
     load: function(url, data, options){
         var that = this;
-        m4q.get(url, data, options).then(function(data){
+        $.get(url, data, options).then(function(data){
             that.each(function(){
                 this.innerHTML = data;
             });
@@ -1488,12 +1481,10 @@ m4q.fn.extend({
     }
 });
 
-
-
 //var nonDigit = /[^0-9.\-]/;
 var numProps = ['opacity', 'zIndex'];
 
-m4q.fn.extend({
+$.fn.extend({
     style: function(name){
         if (this.length === 0) {
             return this;
@@ -1502,7 +1493,7 @@ m4q.fn.extend({
         if (arguments.length === 0 || name === undefined) {
             return el.style ? el.style : getComputedStyle(el, null);
         } else {
-            return ["scrollLeft", "scrollTop"].indexOf(name) > -1 ? m4q(el)[name]() : el.style[name] ? el.style[name] : getComputedStyle(el, null)[name];
+            return ["scrollLeft", "scrollTop"].indexOf(name) > -1 ? $(el)[name]() : el.style[name] ? el.style[name] : getComputedStyle(el, null)[name];
         }
     },
 
@@ -1523,7 +1514,7 @@ m4q.fn.extend({
                 for (var key in o) {
                     if (o.hasOwnProperty(key)) {
                         if (["scrollLeft", "scrollTop"].indexOf(key) > -1) {
-                            m4q(el)[name](parseInt(o[key]));
+                            $(el)[name](parseInt(o[key]));
                         } else {
                             el.style[camelCase(key)] = isNaN(o[key]) || numProps.indexOf(key) > -1 ? o[key] : o[key] + 'px';
                         }
@@ -1532,7 +1523,7 @@ m4q.fn.extend({
             } else if (typeof o === "string") {
                 o = camelCase(o);
                 if (["scrollLeft", "scrollTop"].indexOf(o) > -1) {
-                    m4q(el)[o](parseInt(v));
+                    $(el)[o](parseInt(v));
                 } else {
                     el.style[o] = isNaN(v) || numProps.indexOf(o) > -1 ? v : v + 'px';
                 }
@@ -1561,7 +1552,7 @@ m4q.fn.extend({
 
 
 
-m4q.fn.extend({
+$.fn.extend({
     addClass: function(){},
     removeClass: function(){},
     toggleClass: function(){},
@@ -1590,11 +1581,11 @@ m4q.fn.extend({
 });
 
 ['add', 'remove', 'toggle'].forEach(function (method) {
-    m4q.fn[method + "Class"] = function(cls){
+    $.fn[method + "Class"] = function(cls){
         if (!cls || (""+cls).trim() === "") return this;
         return this.each(function(){
             var el = this;
-            m4q.each(cls.split(" ").filter(function(v){
+            $.each(cls.split(" ").filter(function(v){
                 return (""+v).trim() !== "";
             }), function(){
                 el.classList[method](this);
@@ -1604,9 +1595,7 @@ m4q.fn.extend({
 });
 
 
-
-// TODO add scripts support
-m4q.parseHTML = function(data, context){
+$.parseHTML = function(data, context){
     var base, singleTag, result = [], ctx, _context;
 
     if (typeof data !== "string") {
@@ -1632,8 +1621,8 @@ m4q.parseHTML = function(data, context){
         }
     }
 
-    if (context && !(context instanceof m4q) && isPlainObject(context)) {
-        m4q.each(result,function(){
+    if (context && !(context instanceof $) && isPlainObject(context)) {
+        $.each(result,function(){
             var el = this;
             for(var name in context) {
                 if (context.hasOwnProperty(name))
@@ -1646,8 +1635,7 @@ m4q.parseHTML = function(data, context){
 };
 
 
-
-m4q.fn.extend({
+$.fn.extend({
     _size: function(prop, val){
         if (this.length === 0) {
             return ;
@@ -1716,8 +1704,7 @@ m4q.fn.extend({
     }
 });
 
-
-m4q.fn.extend({
+$.fn.extend({
     offset: function(val){
         var rect;
         if (this.length === 0) {
@@ -1759,16 +1746,15 @@ m4q.fn.extend({
     }
 });
 
-
-m4q.fn.extend({
+$.fn.extend({
     filter: function(fn){
         return [].filter.call(this, fn);
     },
 
     find: function(s){
-        var res = [], out = m4q();
+        var res = [], out = $();
 
-        if (s instanceof m4q) return s;
+        if (s instanceof $) return s;
 
         if (this.length === 0) {
             return this;
@@ -1778,13 +1764,13 @@ m4q.fn.extend({
             var el = this;
             if (typeof el.querySelectorAll !== "undefined") res = [].slice.call(el.querySelectorAll(s));
         });
-        return m4q.merge(out, res);
+        return $.merge(out, res);
     },
 
     children: function(s){
-        var i, res = [], out = m4q();
+        var i, res = [], out = $();
 
-        if (s instanceof m4q) return s;
+        if (s instanceof $) return s;
 
         this.each(function(){
             var el = this;
@@ -1796,16 +1782,16 @@ m4q.fn.extend({
         res = s ? res.filter(function(el){
             return matches.call(el, s);
         }) : res;
-        return m4q.merge(out, res);
+        return $.merge(out, res);
     },
 
     parent: function(s){
-        var res = [], out = m4q();
+        var res = [], out = $();
         if (this.length === 0) {
             return ;
         }
 
-        if (s instanceof m4q) return s;
+        if (s instanceof $) return s;
 
         this.each(function(){
             if (this.parentNode) {
@@ -1815,17 +1801,17 @@ m4q.fn.extend({
         res = s ? res.filter(function(el){
             return matches.call(el, s);
         }) : res;
-        return m4q.merge(out, res);
+        return $.merge(out, res);
     },
 
     parents: function(s){
-        var res = [], out = m4q();
+        var res = [], out = $();
 
         if (this.length === 0) {
             return ;
         }
 
-        if (s instanceof m4q) return s;
+        if (s instanceof $) return s;
 
         this.each(function(){
             var par = this.parentNode;
@@ -1846,17 +1832,17 @@ m4q.fn.extend({
             }
         });
 
-        return m4q.merge(out, res);
+        return $.merge(out, res);
     },
 
     siblings: function(s){
-        var res = [], out = m4q();
+        var res = [], out = $();
 
         if (this.length === 0) {
             return ;
         }
 
-        if (s instanceof m4q) return s;
+        if (s instanceof $) return s;
 
         this.each(function(){
             var el = this, elems = [].filter.call(el.parentNode.children, function(child){
@@ -1868,17 +1854,17 @@ m4q.fn.extend({
             })
         });
 
-        return m4q.merge(out, res);
+        return $.merge(out, res);
     },
 
     _siblingAll: function(dir, s){
-        var out = m4q();
+        var out = $();
 
         if (this.length === 0) {
             return ;
         }
 
-        if (s instanceof m4q) return s;
+        if (s instanceof $) return s;
 
         this.each(function(){
             var el = this;
@@ -1886,10 +1872,10 @@ m4q.fn.extend({
                 el = el[dir];
                 if (!el) break;
                 if (!s) {
-                    m4q.merge(out, m4q(el));
+                    $.merge(out, $(el));
                 } else {
                     if (matches.call(el, s)) {
-                        m4q.merge(out, m4q(el));
+                        $.merge(out, $(el));
                     }
                 }
             }
@@ -1899,24 +1885,24 @@ m4q.fn.extend({
     },
 
     _sibling: function(dir, s){
-        var out = m4q();
+        var out = $();
 
         if (this.length === 0) {
             return ;
         }
 
-        if (s instanceof m4q) return s;
+        if (s instanceof $) return s;
 
-        out = m4q();
+        out = $();
 
         this.each(function(){
             var sib = this[dir];
             if (sib && sib.nodeType === 1) {
                 if (not(s)) {
-                    m4q.merge(out, m4q(sib));
+                    $.merge(out, $(sib));
                 } else {
                     if (matches.call(sib, s)) {
-                        m4q.merge(out, m4q(sib));
+                        $.merge(out, $(sib));
                     }
                 }
             }
@@ -1942,13 +1928,13 @@ m4q.fn.extend({
     },
 
     closest: function(s){
-        var out = m4q();
+        var out = $();
 
         if (this.length === 0) {
             return ;
         }
 
-        if (s instanceof m4q) return s;
+        if (s instanceof $) return s;
 
         if (!s) {
             return this.parent(s);
@@ -1960,7 +1946,7 @@ m4q.fn.extend({
                 el = el.parentElement;
                 if (!el) break;
                 if (matches.call(el, s)) {
-                    m4q.merge(out, m4q(el));
+                    $.merge(out, $(el));
                     return ;
                 }
             }
@@ -1970,17 +1956,17 @@ m4q.fn.extend({
     },
 
     has: function(selector){
-        var out = m4q();
+        var out = $();
 
         if (this.length === 0) {
             return ;
         }
 
         this.each(function(){
-            var el = m4q(this);
+            var el = $(this);
             var child = el.children(selector);
             if (child.length > 0) {
-                m4q.merge(out, el);
+                $.merge(out, el);
             }
         });
 
@@ -1988,7 +1974,7 @@ m4q.fn.extend({
     }
 });
 
-m4q.fn.extend({
+$.fn.extend({
     attr: function(name, val){
         var attributes = {};
 
@@ -1997,7 +1983,7 @@ m4q.fn.extend({
         }
 
         if (arguments.length === 0) {
-            m4q.each(this[0].attributes, function(){
+            $.each(this[0].attributes, function(){
                 attributes[this.nodeName] = this.nodeValue;
             });
             return attributes;
@@ -2050,14 +2036,13 @@ m4q.fn.extend({
     }
 });
 
-m4q.extend({
+$.extend({
     meta: function(name){
-        return not(name) ? m4q("meta") : $("meta[name='$name']".replace("$name", name));
+        return not(name) ? $("meta") : $("meta[name='$name']".replace("$name", name));
     }
 });
 
-
-m4q.extend({
+$.extend({
     proxy: function(fn, context){
         if (typeof fn !== "function") {
             return ;
@@ -2070,8 +2055,6 @@ m4q.extend({
 });
 
 
-
-// Polyfills for IE11
 (function (arr) {
     arr.forEach(function (item) {
         if (item.hasOwnProperty('append')) {
@@ -2120,13 +2103,13 @@ m4q.extend({
     });
 })([Element.prototype, Document.prototype, DocumentFragment.prototype]);
 
-m4q.fn.extend({
+$.fn.extend({
     append: function(elements){
         if (typeof elements === "string") {
-            elements = m4q.parseHTML(elements);
+            elements = $.parseHTML(elements);
         }
         return this.each(function(elIndex, el){
-            m4q.each(elements, function(){
+            $.each(elements, function(){
                 var child = this;
                 el.append(elIndex === 0 ? child : child.cloneNode(true));
             });
@@ -2135,11 +2118,11 @@ m4q.fn.extend({
 
     appendTo: function(elements){
         if (typeof elements === "string") {
-            elements = m4q.parseHTML(elements);
+            elements = $.parseHTML(elements);
         }
         return this.each(function(){
             var el = this;
-            m4q.each(elements, function(parIndex, parent){
+            $.each(elements, function(parIndex, parent){
                 parent.append(parIndex === 0 ? el : el.cloneNode(true));
             });
         })
@@ -2147,10 +2130,10 @@ m4q.fn.extend({
 
     prepend: function(elements){
         if (typeof elements === "string") {
-            elements = m4q.parseHTML(elements);
+            elements = $.parseHTML(elements);
         }
         return this.each(function (elIndex, el) {
-            m4q.each(elements, function(){
+            $.each(elements, function(){
                 var child = this;
                 el.prepend(elIndex === 0 ? child : child.cloneNode(true))
             });
@@ -2159,11 +2142,11 @@ m4q.fn.extend({
 
     prependTo: function(elements){
         if (typeof elements === "string") {
-            elements = m4q.parseHTML(elements);
+            elements = $.parseHTML(elements);
         }
         return this.each(function(){
             var el = this;
-            m4q.each(elements, function(parIndex, parent){
+            $.each(elements, function(parIndex, parent){
                 $(parent).prepend(parIndex === 0 ? el : el.cloneNode(true));
             })
         })
@@ -2171,11 +2154,11 @@ m4q.fn.extend({
 
     insertBefore: function(elements){
         if (typeof elements === "string") {
-            elements = m4q.parseHTML(elements);
+            elements = $.parseHTML(elements);
         }
         return this.each(function(){
             var el = this;
-            m4q.each(elements, function(elIndex, element){
+            $.each(elements, function(elIndex, element){
                 element.parentNode.insertBefore(elIndex === 0 ? el : el.cloneNode(true), element);
             });
         })
@@ -2183,11 +2166,11 @@ m4q.fn.extend({
 
     insertAfter: function(elements){
         if (typeof elements === "string") {
-            elements = m4q.parseHTML(elements);
+            elements = $.parseHTML(elements);
         }
         return this.each(function(){
             var el = this;
-            m4q.each(elements, function(elIndex, element){
+            $.each(elements, function(elIndex, element){
                 element.parentNode.insertBefore(elIndex === 0 ? el : el.cloneNode(true), element.nextSibling);
             });
         });
@@ -2199,7 +2182,7 @@ m4q.fn.extend({
             if (typeof html === "string") {
                 el.insertAdjacentHTML('afterend', html);
             } else {
-                m4q(html).insertAfter($(el));
+                $(html).insertAfter($(el));
             }
         })
     },
@@ -2210,17 +2193,17 @@ m4q.fn.extend({
             if (typeof html === "string") {
                 el.insertAdjacentHTML('beforebegin', html);
             } else {
-                m4q(html).insertBefore($(el));
+                $(html).insertBefore($(el));
             }
         });
     },
 
     clone: function(){
-        var res = [], out = m4q();
+        var res = [], out = $();
         this.each(function(){
             res.push(this.cloneNode(true));
         });
-        return m4q.merge(out, res);
+        return $.merge(out, res);
     },
 
     remove: function(selector){
@@ -2397,19 +2380,19 @@ var Easing = {
     }
 };
 
-m4q.easing = {};
+$.easing = {};
 
-m4q.extend(m4q.easing, Easing);
+$.extend($.easing, Easing);
 
-m4q.extend({
+$.extend({
     animate: function(el, draw, dur, timing, cb){
-        var $el = m4q(el), start = performance.now();
+        var $el = $(el), start = performance.now();
         var key, from, to, delta, unit, mapProps = {};
 
         dur = dur || 300;
         timing = timing || this.easing.def;
 
-        m4q(el).origin("animation-stop", 0);
+        $(el).origin("animation-stop", 0);
 
         if (isPlainObject(draw)) {
             // TODO add prop value as array [from, to]
@@ -2431,24 +2414,24 @@ m4q.extend({
 
         $el.origin("animation", requestAnimationFrame(function animate(time) {
             var p, t;
-            var stop = m4q(el).origin("animation-stop");
+            var stop = $(el).origin("animation-stop");
 
             if ( stop > 0) {
-                if (stop === 2) m4q.proxy(draw, $el[0])(1);
-                cancelAnimationFrame(m4q(el).origin("animation"));
+                if (stop === 2) $.proxy(draw, $el[0])(1);
+                cancelAnimationFrame($(el).origin("animation"));
                 return;
             }
 
             t = (time - start) / dur;
             if (t > 1) t = 1;
 
-            var fn = typeof timing === "string" ? m4q.easing[timing] ? m4q.easing[timing] : m4q.easing[m4q.easing.def] : timing;
+            var fn = typeof timing === "string" ? $.easing[timing] ? $.easing[timing] : $.easing[$.easing.def] : timing;
 
             p = fn(t, dur * t, 0, 1, dur);
 
             if (typeof draw === "function") {
 
-                m4q.proxy(draw, $el[0])(p);
+                $.proxy(draw, $el[0])(p);
 
             } else if (isPlainObject(draw)) {
 
@@ -2466,7 +2449,7 @@ m4q.extend({
             }
 
             if (p === 1 && typeof cb === "function") {
-                m4q.proxy(cb, el);
+                $.proxy(cb, el);
                 cb.call(el, arguments);
             }
             if (p < 1) {
@@ -2477,49 +2460,48 @@ m4q.extend({
     },
 
     stop: function(el, done){
-        m4q(el).origin("animation-stop", done === true ? 2 : 1);
+        $(el).origin("animation-stop", done === true ? 2 : 1);
     }
 });
 
-m4q.fn.extend({
+$.fn.extend({
     animate: function (draw, dur, timing, cb) {
         return this.each(function(){
-            return m4q.animate(this, draw, dur, timing, cb);
+            return $.animate(this, draw, dur, timing, cb);
         })
     },
 
     stop: function(done){
         return this.each(function(){
-            return m4q.stop(this, done);
+            return $.stop(this, done);
         })
     }
 });
 
 
 
-
-m4q.extend({
+$.extend({
     hide: function(el, cb){
-        var $el = m4q(el);
+        var $el = $(el);
         if (!!el.style.display) {
             $el.origin('display', (el.style.display ? el.style.display : getComputedStyle(el, null)['display']));
         }
         el.style.display = 'none';
         if (typeof cb === "function") {
-            m4q.proxy(cb, el);
+            $.proxy(cb, el);
             cb.call(el, arguments);
         }
         return this;
     },
 
     show: function(el, cb){
-        var display = m4q(el).origin('display', undefined, "block");
+        var display = $(el).origin('display', undefined, "block");
         el.style.display = display ? display === 'none' ? 'block' : display : '';
         if (parseInt(el.style.opacity) === 0) {
             el.style.opacity = "1";
         }
         if (typeof cb === "function") {
-            m4q.proxy(cb, el);
+            $.proxy(cb, el);
             cb.call(el, arguments);
         }
         return this;
@@ -2531,7 +2513,7 @@ m4q.extend({
         }
         el.style.visibility = mode ? 'visible' : 'hidden';
         if (typeof cb === "function") {
-            m4q.proxy(cb, el);
+            $.proxy(cb, el);
             cb.call(el, arguments);
         }
         return this;
@@ -2544,7 +2526,7 @@ m4q.extend({
         } else {
             func = 'show';
         }
-        return m4q[func](el, cb);
+        return $[func](el, cb);
     },
 
     fadeIn: function(el, dur, easing, cb){
@@ -2563,8 +2545,8 @@ m4q.extend({
             easing = "linear";
         }
 
-        var originDisplay = m4q(el).origin("display", undefined, 'block');
-        var originOpacity = m4q(el).origin("opacity", undefined, 1);
+        var originDisplay = $(el).origin("display", undefined, 'block');
+        var originOpacity = $(el).origin("opacity", undefined, 1);
 
         el.style.opacity = 0;
         el.style.display = originDisplay;
@@ -2578,7 +2560,7 @@ m4q.extend({
     },
 
     fadeOut: function(el, dur, easing, cb){
-        var $el = m4q(el), opacity;
+        var $el = $(el), opacity;
 
         if (not(dur) && not(easing) && not(cb)) {
             cb = null;
@@ -2593,9 +2575,9 @@ m4q.extend({
             easing = "linear";
         }
 
-        opacity = m4q(el).style('opacity');
+        opacity = $(el).style('opacity');
 
-        $el.origin("display", m4q(el).style('display'));
+        $el.origin("display", $(el).style('display'));
         $el.origin("opacity", opacity);
 
         return this.animate(el, function(p){
@@ -2607,7 +2589,7 @@ m4q.extend({
     },
 
     slideDown: function(el, dur, easing, cb) {
-        var $el = m4q(el);
+        var $el = $(el);
         var targetHeight, originDisplay;
 
         if (not(dur) && not(easing) && not(cb)) {
@@ -2625,7 +2607,7 @@ m4q.extend({
 
         $el.show().visible(false);
         targetHeight = $el.origin("height", undefined, $el.height());
-        originDisplay = $el.origin("display", m4q(el).style('display'), "block");
+        originDisplay = $el.origin("display", $(el).style('display'), "block");
         $el.height(0).visible(true);
 
         $el.css({
@@ -2646,7 +2628,7 @@ m4q.extend({
     },
 
     slideUp: function(el, dur, easing, cb) {
-        var $el = m4q(el);
+        var $el = $(el);
         var currHeight;
 
         if ($el.height() === 0) {
@@ -2668,7 +2650,7 @@ m4q.extend({
 
         currHeight = $el.height();
         $el.origin("height", currHeight);
-        $el.origin("display", m4q(el).style('display'));
+        $el.origin("display", $(el).style('display'));
 
         $el.css({
             overflow: "hidden"
@@ -2686,38 +2668,38 @@ m4q.extend({
     }
 });
 
-m4q.fn.extend({
+$.fn.extend({
     hide: function(cb){
         var callback = undefined;
 
-        m4q.each(arguments, function(){
+        $.each(arguments, function(){
             if (typeof this === 'function') {
                 callback = this;
             }
         });
 
         return this.each(function(){
-            m4q.hide(this, callback);
+            $.hide(this, callback);
         });
     },
 
     show: function(cb){
         var callback = undefined;
 
-        m4q.each(arguments, function(){
+        $.each(arguments, function(){
             if (typeof this === 'function') {
                 callback = this;
             }
         });
 
         return this.each(function(){
-            m4q.show(this, callback);
+            $.show(this, callback);
         });
     },
 
     visible: function(mode, cb){
         return this.each(function(){
-            m4q.visible(this, mode, cb);
+            $.visible(this, mode, cb);
         });
     },
 
@@ -2726,53 +2708,52 @@ m4q.fn.extend({
             cb = null;
         }
         return this.each(function(){
-            m4q.toggle(this, cb);
+            $.toggle(this, cb);
         })
     },
 
     fadeIn: function(dur, easing, cb){
         return this.each(function(){
-            m4q.fadeIn(this, dur, easing, cb);
+            $.fadeIn(this, dur, easing, cb);
         })
     },
 
     fadeOut: function(dur, easing, cb){
         return this.each(function(){
-            m4q.fadeOut(this, dur, easing, cb);
+            $.fadeOut(this, dur, easing, cb);
         })
     },
 
     slideUp: function(dur, easing, cb){
         return this.each(function(){
-            m4q.slideUp(this, dur, easing, cb);
+            $.slideUp(this, dur, easing, cb);
         })
     },
 
     slideDown: function(dur, easing, cb){
         return this.each(function(){
-            m4q.slideDown(this, dur, easing, cb);
+            $.slideDown(this, dur, easing, cb);
         })
     }
 });
 
 
 
-
-m4q.init = function(sel, ctx){
+$.init = function(sel, ctx){
     var parsed;
 
-    this.uid = m4q.uniqueId();
+    this.uid = $.uniqueId();
 
     if (!sel) {
         return this;
     }
 
     if (typeof sel === "function") {
-        return m4q.ready(sel);
+        return $.ready(sel);
     }
 
     if (typeof sel === "object" && typeof jQuery !== "undefined" && sel instanceof jQuery) {
-        return m4q.import(sel);
+        return $.import(sel);
     }
 
     if (sel === "document") {
@@ -2789,9 +2770,9 @@ m4q.init = function(sel, ctx){
         return this;
     }
 
-    if (sel instanceof m4q) {
-        var r = m4q();
-        m4q.each(sel, function(){
+    if (sel instanceof $) {
+        var r = $();
+        $.each(sel, function(){
             r.push(this);
         });
         return r;
@@ -2809,16 +2790,16 @@ m4q.init = function(sel, ctx){
             throw new Error("sel can't be # or .") ;
         }
 
-        parsed = m4q.parseHTML(sel, ctx);
+        parsed = $.parseHTML(sel, ctx);
 
         if (parsed.length === 1 && parsed[0].nodeType === 3) { // Must be a text node -> css sel
             [].push.apply(this, document.querySelectorAll(sel));
         } else {
-            m4q.merge(this, parsed);
+            $.merge(this, parsed);
         }
     }
 
-    if (ctx !== undefined && (ctx instanceof m4q || ctx instanceof HTMLElement)) {
+    if (ctx !== undefined && (ctx instanceof $ || ctx instanceof HTMLElement)) {
         this.each(function(){
             $(ctx).append($(this))
         });
@@ -2827,40 +2808,36 @@ m4q.init = function(sel, ctx){
     return this;
 };
 
-m4q.init.prototype = m4q.fn;
+$.init.prototype = $.fn;
 
 
 var _$ = window.$,
     _m4q = window.m4q;
 
-m4q.Promise = Promise;
+$.Promise = Promise;
 
-window.m4q = m4q;
+window.m4q = $;
 
 if (typeof window.$ === "undefined") {
-    window.$ = m4q;
-}
-
-if (typeof window.$M === "undefined") {
-    window.$M = m4q;
+    window.$ = $;
 }
 
 m4q.global = function(){
     _$ = window.$;
     _m4q = window.m4q;
-    window.$ = m4q;
+    window.$ = $;
 };
 
 m4q.noConflict = function(deep) {
-    if ( window.$ === m4q ) {
+    if ( window.$ === $ ) {
         window.$ = _$;
     }
 
-    if (deep && window.m4q === m4q) {
+    if (deep && window.m4q === $) {
         window.m4q = _m4q;
     }
 
-    return m4q;
+    return $;
 };
 
 	return m4q; 

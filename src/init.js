@@ -1,19 +1,18 @@
-
-m4q.init = function(sel, ctx){
+$.init = function(sel, ctx){
     var parsed;
 
-    this.uid = m4q.uniqueId();
+    this.uid = $.uniqueId();
 
     if (!sel) {
         return this;
     }
 
     if (typeof sel === "function") {
-        return m4q.ready(sel);
+        return $.ready(sel);
     }
 
     if (typeof sel === "object" && typeof jQuery !== "undefined" && sel instanceof jQuery) {
-        return m4q.import(sel);
+        return $.import(sel);
     }
 
     if (sel === "document") {
@@ -30,9 +29,9 @@ m4q.init = function(sel, ctx){
         return this;
     }
 
-    if (sel instanceof m4q) {
-        var r = m4q();
-        m4q.each(sel, function(){
+    if (sel instanceof $) {
+        var r = $();
+        $.each(sel, function(){
             r.push(this);
         });
         return r;
@@ -50,16 +49,16 @@ m4q.init = function(sel, ctx){
             throw new Error("sel can't be # or .") ;
         }
 
-        parsed = m4q.parseHTML(sel, ctx);
+        parsed = $.parseHTML(sel, ctx);
 
         if (parsed.length === 1 && parsed[0].nodeType === 3) { // Must be a text node -> css sel
             [].push.apply(this, document.querySelectorAll(sel));
         } else {
-            m4q.merge(this, parsed);
+            $.merge(this, parsed);
         }
     }
 
-    if (ctx !== undefined && (ctx instanceof m4q || ctx instanceof HTMLElement)) {
+    if (ctx !== undefined && (ctx instanceof $ || ctx instanceof HTMLElement)) {
         this.each(function(){
             $(ctx).append($(this))
         });
@@ -68,4 +67,4 @@ m4q.init = function(sel, ctx){
     return this;
 };
 
-m4q.init.prototype = m4q.fn;
+$.init.prototype = $.fn;

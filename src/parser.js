@@ -1,6 +1,4 @@
-
-// TODO add scripts support
-m4q.parseHTML = function(data, context){
+$.parseHTML = function(data, context){
     var base, singleTag, result = [], ctx, _context;
 
     if (typeof data !== "string") {
@@ -26,8 +24,8 @@ m4q.parseHTML = function(data, context){
         }
     }
 
-    if (context && !(context instanceof m4q) && isPlainObject(context)) {
-        m4q.each(result,function(){
+    if (context && !(context instanceof $) && isPlainObject(context)) {
+        $.each(result,function(){
             var el = this;
             for(var name in context) {
                 if (context.hasOwnProperty(name))

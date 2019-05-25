@@ -1,4 +1,3 @@
-
 var m4qVersion = "v@@VERSION. Built at @@TIME";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
@@ -9,11 +8,11 @@ var matches = Element.prototype.matches
     || Element.prototype.msMatchesSelector
     || Element.prototype.oMatchesSelector;
 
-var m4q = function(selector, context){
-    return new m4q.init(selector, context);
+var $ = function(selector, context){
+    return new $.init(selector, context);
 };
 
-m4q.uniqueId = function () {
+$.uniqueId = function () {
     var d = new Date().getTime();
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         var r = (d + Math.random() * 16) % 16 | 0;
@@ -22,7 +21,7 @@ m4q.uniqueId = function () {
     });
 };
 
-m4q.toArray = function(n){
+$.toArray = function(n){
     var i, out = [];
 
     for (i = 0 ; i < n.length; i++ ) {
@@ -32,24 +31,24 @@ m4q.toArray = function(n){
     return out;
 };
 
-m4q.import = function(ctx){
-    var res = [], out = m4q();
+$.import = function(ctx){
+    var res = [], out = $();
     this.each(ctx, function(){
         res.push(this);
     });
     return this.merge(out, res);
 };
 
-m4q.version = m4qVersion;
+$.version = m4qVersion;
 
-m4q.fn = m4q.prototype = {
+$.fn = $.prototype = {
     version: m4qVersion,
-    constructor: m4q,
+    constructor: $,
     length: 0,
     uid: "",
 
     items: function(){
-        return m4q.toArray(this);
+        return $.toArray(this);
     },
 
     // TODO add element as argument
@@ -60,7 +59,7 @@ m4q.fn = m4q.prototype = {
             return -1;
         }
 
-        m4q.each(this[0].parentNode.children, function(){
+        $.each(this[0].parentNode.children, function(){
             var el = this;
             if (selector) {
                 if (matches.call(el, selector)) res.push(el);
@@ -80,15 +79,15 @@ m4q.fn = m4q.prototype = {
     },
 
     eq: function(i){
-        return m4q(this.get(i >= 0 ? i : this.length + i));
+        return $(this.get(i >= 0 ? i : this.length + i));
     },
 
     clone: function(){
-        var res = [], out = m4q();
+        var res = [], out = $();
         this.each(function(){
             res.push(this.cloneNode(true));
         });
-        return m4q.merge(out, res);
+        return $.merge(out, res);
     },
 
     origin: function(name, value, def){
@@ -98,11 +97,11 @@ m4q.fn = m4q.prototype = {
         }
 
         if (not(name) && not(value)) {
-            return m4q.data(this[0]);
+            return $.data(this[0]);
         }
 
         if (not(value)) {
-            var res = m4q.data(this[0], "origin-"+name);
+            var res = $.data(this[0], "origin-"+name);
             return !not(res) ? res : def;
         }
 
@@ -145,7 +144,7 @@ m4q.fn = m4q.prototype = {
         if (isArrayLike(s)) {
             this.each(function(){
                 var el = this;
-                m4q.each(s, function(){
+                $.each(s, function(){
                     var sel = this;
                     if (el === sel) {
                         result = true;
@@ -174,20 +173,20 @@ m4q.fn = m4q.prototype = {
     },
 
     ind: function(i){
-        if (this.length === 0) return m4q();
+        if (this.length === 0) return $();
         if (not(i)) return ;
         if (i  > this.length) i = this.length - 1;
-        return i < 0 ?  m4q(this[i + this.length]) : m4q(this[i]);
+        return i < 0 ?  $(this[i + this.length]) : $(this[i]);
     },
 
     odd: function(){
-        return m4q.merge(m4q(), this.filter(function(el, i){
+        return $.merge($(), this.filter(function(el, i){
             return i % 2 === 0;
         }));
     },
 
     even: function(){
-        return m4q.merge(m4q(), this.filter(function(el, i){
+        return $.merge($(), this.filter(function(el, i){
             return i % 2 !== 0;
         }));
     },
@@ -211,7 +210,7 @@ m4q.fn = m4q.prototype = {
             el[prop] = value;
 
             if (prop === "innerHTML") {
-                m4q.each(m4q(el).find("script"), function(){
+                $.each($(el).find("script"), function(){
                     var script = this;
                     var s = document.createElement('script');
                     s.type = 'text/javascript';
@@ -250,7 +249,7 @@ m4q.fn = m4q.prototype = {
     indexOf: [].indexOf
 };
 
-m4q.extend = m4q.fn.extend = function(){
+$.extend = $.fn.extend = function(){
     var options, name,
         target = arguments[ 0 ] || {},
         i = 1,

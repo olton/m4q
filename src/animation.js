@@ -153,19 +153,19 @@ var Easing = {
     }
 };
 
-m4q.easing = {};
+$.easing = {};
 
-m4q.extend(m4q.easing, Easing);
+$.extend($.easing, Easing);
 
-m4q.extend({
+$.extend({
     animate: function(el, draw, dur, timing, cb){
-        var $el = m4q(el), start = performance.now();
+        var $el = $(el), start = performance.now();
         var key, from, to, delta, unit, mapProps = {};
 
         dur = dur || 300;
         timing = timing || this.easing.def;
 
-        m4q(el).origin("animation-stop", 0);
+        $(el).origin("animation-stop", 0);
 
         if (isPlainObject(draw)) {
             // TODO add prop value as array [from, to]
@@ -187,24 +187,24 @@ m4q.extend({
 
         $el.origin("animation", requestAnimationFrame(function animate(time) {
             var p, t;
-            var stop = m4q(el).origin("animation-stop");
+            var stop = $(el).origin("animation-stop");
 
             if ( stop > 0) {
-                if (stop === 2) m4q.proxy(draw, $el[0])(1);
-                cancelAnimationFrame(m4q(el).origin("animation"));
+                if (stop === 2) $.proxy(draw, $el[0])(1);
+                cancelAnimationFrame($(el).origin("animation"));
                 return;
             }
 
             t = (time - start) / dur;
             if (t > 1) t = 1;
 
-            var fn = typeof timing === "string" ? m4q.easing[timing] ? m4q.easing[timing] : m4q.easing[m4q.easing.def] : timing;
+            var fn = typeof timing === "string" ? $.easing[timing] ? $.easing[timing] : $.easing[$.easing.def] : timing;
 
             p = fn(t, dur * t, 0, 1, dur);
 
             if (typeof draw === "function") {
 
-                m4q.proxy(draw, $el[0])(p);
+                $.proxy(draw, $el[0])(p);
 
             } else if (isPlainObject(draw)) {
 
@@ -222,7 +222,7 @@ m4q.extend({
             }
 
             if (p === 1 && typeof cb === "function") {
-                m4q.proxy(cb, el);
+                $.proxy(cb, el);
                 cb.call(el, arguments);
             }
             if (p < 1) {
@@ -233,20 +233,20 @@ m4q.extend({
     },
 
     stop: function(el, done){
-        m4q(el).origin("animation-stop", done === true ? 2 : 1);
+        $(el).origin("animation-stop", done === true ? 2 : 1);
     }
 });
 
-m4q.fn.extend({
+$.fn.extend({
     animate: function (draw, dur, timing, cb) {
         return this.each(function(){
-            return m4q.animate(this, draw, dur, timing, cb);
+            return $.animate(this, draw, dur, timing, cb);
         })
     },
 
     stop: function(done){
         return this.each(function(){
-            return m4q.stop(this, done);
+            return $.stop(this, done);
         })
     }
 });
