@@ -72,15 +72,15 @@ m4q.fn = m4q.prototype = {
         return res.indexOf(this[0]);
     },
 
-    get: function(index){
-        if (index === undefined) {
+    get: function(i){
+        if (i === undefined) {
             return this.items();
         }
-        return index < 0 ? this[ index + this.length ] : this[ index ];
+        return i < 0 ? this[ i + this.length ] : this[ i ];
     },
 
-    eq: function(index){
-        return m4q(this.get(index >= 0 ? index : this.length + index));
+    eq: function(i){
+        return m4q(this.get(i >= 0 ? i : this.length + i));
     },
 
     clone: function(){
@@ -174,7 +174,10 @@ m4q.fn = m4q.prototype = {
     },
 
     ind: function(i){
-        return this.length === 0 ? m4q() : m4q(this[i]);
+        if (this.length === 0) return m4q();
+        if (not(i)) return ;
+        if (i  > this.length) i = this.length - 1;
+        return i < 0 ?  m4q(this[i + this.length]) : m4q(this[i]);
     },
 
     odd: function(){

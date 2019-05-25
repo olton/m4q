@@ -63,8 +63,7 @@ module.exports = function(grunt) {
             "\t\tfactory( global );\n" +
             "\t}\n" +
             "} )( typeof window !== \"undefined\" ? window : this, function( window ) {\n"+
-            "\t\n"+
-            "\t'use strict';",
+            "\t\n",
 
         clean: {
             build: ['build']
@@ -78,7 +77,7 @@ module.exports = function(grunt) {
                     stripBanners: true,
                     separator: "\n\n",
                     process: function(src) {
-                        return src.replace(/\n/g, '\n\t');
+                        return src.replace(/\n/g, '\n');
                     }
                 },
                 src: source_files,
@@ -89,8 +88,9 @@ module.exports = function(grunt) {
                     banner: '<%= copyright %>' + "\n",
                     footer: "\n",
                     stripBanners: true,
+                    separator: "\n\n",
                     process: function(src) {
-                        return src.replace(/\n/g, '\n\t');
+                        return src.replace(/\n/g, '\n');
                     }
                 },
                 src: source_files,
