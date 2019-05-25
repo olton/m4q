@@ -1,4 +1,3 @@
-
 m4q.fn.extend({
     addClass: function(){},
     removeClass: function(){},

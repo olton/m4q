@@ -526,7 +526,7 @@ function parseUnit(str, out) {
 }(window));
 
 
-var m4qVersion = "v1.0.0. Built at 25/05/2019 10:45:40";
+var m4qVersion = "v1.0.0. Built at 25/05/2019 12:18:00";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1342,7 +1342,6 @@ m4q.fn.extend({
 
 
 
-
 m4q.ajax = function(p){
     return new Promise(function(resolve, reject){
         var xhr = new XMLHttpRequest(), data;
@@ -1542,7 +1541,6 @@ m4q.fn.extend({
         })
     }
 });
-
 
 
 
@@ -1973,7 +1971,6 @@ m4q.fn.extend({
     }
 });
 
-
 m4q.fn.extend({
     attr: function(name, val){
         var attributes = {};
@@ -2227,7 +2224,6 @@ m4q.fn.extend({
         }) : out;
     }
 });
-
 
 var cancelAnimationFrame = window.cancelAnimationFrame || window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame;
 

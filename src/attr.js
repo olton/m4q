@@ -1,4 +1,3 @@
-
 m4q.fn.extend({
     attr: function(name, val){
         var attributes = {};

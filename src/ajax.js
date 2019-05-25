@@ -1,4 +1,3 @@
-
 m4q.ajax = function(p){
     return new Promise(function(resolve, reject){
         var xhr = new XMLHttpRequest(), data;

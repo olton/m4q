@@ -1,4 +1,3 @@
-
 var cancelAnimationFrame = window.cancelAnimationFrame || window.webkitCancelAnimationFrame || window.mozCancelAnimationFrame;
 
 var Easing = {
