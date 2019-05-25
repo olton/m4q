@@ -1,9 +1,7 @@
-
-
 //var nonDigit = /[^0-9.\-]/;
 var numProps = ['opacity', 'zIndex'];
 
-m4q.fn.extend({
+$.fn.extend({
     style: function(name){
         if (this.length === 0) {
             return this;
@@ -12,7 +10,7 @@ m4q.fn.extend({
         if (arguments.length === 0 || name === undefined) {
             return el.style ? el.style : getComputedStyle(el, null);
         } else {
-            return ["scrollLeft", "scrollTop"].indexOf(name) > -1 ? m4q(el)[name]() : el.style[name] ? el.style[name] : getComputedStyle(el, null)[name];
+            return ["scrollLeft", "scrollTop"].indexOf(name) > -1 ? $(el)[name]() : el.style[name] ? el.style[name] : getComputedStyle(el, null)[name];
         }
     },
 
@@ -33,7 +31,7 @@ m4q.fn.extend({
                 for (var key in o) {
                     if (o.hasOwnProperty(key)) {
                         if (["scrollLeft", "scrollTop"].indexOf(key) > -1) {
-                            m4q(el)[name](parseInt(o[key]));
+                            $(el)[name](parseInt(o[key]));
                         } else {
                             el.style[camelCase(key)] = isNaN(o[key]) || numProps.indexOf(key) > -1 ? o[key] : o[key] + 'px';
                         }
@@ -42,7 +40,7 @@ m4q.fn.extend({
             } else if (typeof o === "string") {
                 o = camelCase(o);
                 if (["scrollLeft", "scrollTop"].indexOf(o) > -1) {
-                    m4q(el)[o](parseInt(v));
+                    $(el)[o](parseInt(v));
                 } else {
                     el.style[o] = isNaN(v) || numProps.indexOf(o) > -1 ? v : v + 'px';
                 }

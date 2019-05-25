@@ -1,5 +1,4 @@
-
-m4q.fn.extend({
+$.fn.extend({
     offset: function(val){
         var rect;
         if (this.length === 0) {

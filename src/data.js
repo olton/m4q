@@ -1,4 +1,3 @@
-
 function acceptData(owner){
     return owner.nodeType === 1 || owner.nodeType === 9 || !( +owner.nodeType );
 }
@@ -122,7 +121,7 @@ Data.prototype = {
 
 var dataSet = new Data('Internal');
 
-m4q.extend({
+$.extend({
     Data: new Data('m4q'),
 
     hasData: function(elem){
@@ -138,7 +137,7 @@ m4q.extend({
     }
 });
 
-m4q.fn.extend({
+$.fn.extend({
     data: function(key, val){
         var res, elem, data, attrs, name, i;
 

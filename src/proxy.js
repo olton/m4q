@@ -1,5 +1,4 @@
-
-m4q.extend({
+$.extend({
     proxy: function(fn, context){
         if (typeof fn !== "function") {
             return ;

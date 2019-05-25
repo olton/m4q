@@ -82,19 +82,6 @@ module.exports = function(grunt) {
                 },
                 src: source_files,
                 dest: 'build/m4q.js'
-            },
-            metro: {
-                options: {
-                    banner: '<%= copyright %>' + "\n",
-                    footer: "\n",
-                    stripBanners: true,
-                    separator: "\n\n",
-                    process: function(src) {
-                        return src.replace(/\n/g, '\n');
-                    }
-                },
-                src: source_files,
-                dest: 'build/m4q-metro.js'
             }
         },
 

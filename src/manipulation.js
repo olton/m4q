@@ -1,5 +1,3 @@
-
-// Polyfills for IE11
 (function (arr) {
     arr.forEach(function (item) {
         if (item.hasOwnProperty('append')) {
@@ -48,13 +46,13 @@
     });
 })([Element.prototype, Document.prototype, DocumentFragment.prototype]);
 
-m4q.fn.extend({
+$.fn.extend({
     append: function(elements){
         if (typeof elements === "string") {
-            elements = m4q.parseHTML(elements);
+            elements = $.parseHTML(elements);
         }
         return this.each(function(elIndex, el){
-            m4q.each(elements, function(){
+            $.each(elements, function(){
                 var child = this;
                 el.append(elIndex === 0 ? child : child.cloneNode(true));
             });
@@ -63,11 +61,11 @@ m4q.fn.extend({
 
     appendTo: function(elements){
         if (typeof elements === "string") {
-            elements = m4q.parseHTML(elements);
+            elements = $.parseHTML(elements);
         }
         return this.each(function(){
             var el = this;
-            m4q.each(elements, function(parIndex, parent){
+            $.each(elements, function(parIndex, parent){
                 parent.append(parIndex === 0 ? el : el.cloneNode(true));
             });
         })
@@ -75,10 +73,10 @@ m4q.fn.extend({
 
     prepend: function(elements){
         if (typeof elements === "string") {
-            elements = m4q.parseHTML(elements);
+            elements = $.parseHTML(elements);
         }
         return this.each(function (elIndex, el) {
-            m4q.each(elements, function(){
+            $.each(elements, function(){
                 var child = this;
                 el.prepend(elIndex === 0 ? child : child.cloneNode(true))
             });
@@ -87,11 +85,11 @@ m4q.fn.extend({
 
     prependTo: function(elements){
         if (typeof elements === "string") {
-            elements = m4q.parseHTML(elements);
+            elements = $.parseHTML(elements);
         }
         return this.each(function(){
             var el = this;
-            m4q.each(elements, function(parIndex, parent){
+            $.each(elements, function(parIndex, parent){
                 $(parent).prepend(parIndex === 0 ? el : el.cloneNode(true));
             })
         })
@@ -99,11 +97,11 @@ m4q.fn.extend({
 
     insertBefore: function(elements){
         if (typeof elements === "string") {
-            elements = m4q.parseHTML(elements);
+            elements = $.parseHTML(elements);
         }
         return this.each(function(){
             var el = this;
-            m4q.each(elements, function(elIndex, element){
+            $.each(elements, function(elIndex, element){
                 element.parentNode.insertBefore(elIndex === 0 ? el : el.cloneNode(true), element);
             });
         })
@@ -111,11 +109,11 @@ m4q.fn.extend({
 
     insertAfter: function(elements){
         if (typeof elements === "string") {
-            elements = m4q.parseHTML(elements);
+            elements = $.parseHTML(elements);
         }
         return this.each(function(){
             var el = this;
-            m4q.each(elements, function(elIndex, element){
+            $.each(elements, function(elIndex, element){
                 element.parentNode.insertBefore(elIndex === 0 ? el : el.cloneNode(true), element.nextSibling);
             });
         });
@@ -127,7 +125,7 @@ m4q.fn.extend({
             if (typeof html === "string") {
                 el.insertAdjacentHTML('afterend', html);
             } else {
-                m4q(html).insertAfter($(el));
+                $(html).insertAfter($(el));
             }
         })
     },
@@ -138,17 +136,17 @@ m4q.fn.extend({
             if (typeof html === "string") {
                 el.insertAdjacentHTML('beforebegin', html);
             } else {
-                m4q(html).insertBefore($(el));
+                $(html).insertBefore($(el));
             }
         });
     },
 
     clone: function(){
-        var res = [], out = m4q();
+        var res = [], out = $();
         this.each(function(){
             res.push(this.cloneNode(true));
         });
-        return m4q.merge(out, res);
+        return $.merge(out, res);
     },
 
     remove: function(selector){

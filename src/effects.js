@@ -1,26 +1,25 @@
-
-m4q.extend({
+$.extend({
     hide: function(el, cb){
-        var $el = m4q(el);
+        var $el = $(el);
         if (!!el.style.display) {
             $el.origin('display', (el.style.display ? el.style.display : getComputedStyle(el, null)['display']));
         }
         el.style.display = 'none';
         if (typeof cb === "function") {
-            m4q.proxy(cb, el);
+            $.proxy(cb, el);
             cb.call(el, arguments);
         }
         return this;
     },
 
     show: function(el, cb){
-        var display = m4q(el).origin('display', undefined, "block");
+        var display = $(el).origin('display', undefined, "block");
         el.style.display = display ? display === 'none' ? 'block' : display : '';
         if (parseInt(el.style.opacity) === 0) {
             el.style.opacity = "1";
         }
         if (typeof cb === "function") {
-            m4q.proxy(cb, el);
+            $.proxy(cb, el);
             cb.call(el, arguments);
         }
         return this;
@@ -32,7 +31,7 @@ m4q.extend({
         }
         el.style.visibility = mode ? 'visible' : 'hidden';
         if (typeof cb === "function") {
-            m4q.proxy(cb, el);
+            $.proxy(cb, el);
             cb.call(el, arguments);
         }
         return this;
@@ -45,7 +44,7 @@ m4q.extend({
         } else {
             func = 'show';
         }
-        return m4q[func](el, cb);
+        return $[func](el, cb);
     },
 
     fadeIn: function(el, dur, easing, cb){
@@ -64,8 +63,8 @@ m4q.extend({
             easing = "linear";
         }
 
-        var originDisplay = m4q(el).origin("display", undefined, 'block');
-        var originOpacity = m4q(el).origin("opacity", undefined, 1);
+        var originDisplay = $(el).origin("display", undefined, 'block');
+        var originOpacity = $(el).origin("opacity", undefined, 1);
 
         el.style.opacity = 0;
         el.style.display = originDisplay;
@@ -79,7 +78,7 @@ m4q.extend({
     },
 
     fadeOut: function(el, dur, easing, cb){
-        var $el = m4q(el), opacity;
+        var $el = $(el), opacity;
 
         if (not(dur) && not(easing) && not(cb)) {
             cb = null;
@@ -94,9 +93,9 @@ m4q.extend({
             easing = "linear";
         }
 
-        opacity = m4q(el).style('opacity');
+        opacity = $(el).style('opacity');
 
-        $el.origin("display", m4q(el).style('display'));
+        $el.origin("display", $(el).style('display'));
         $el.origin("opacity", opacity);
 
         return this.animate(el, function(p){
@@ -108,7 +107,7 @@ m4q.extend({
     },
 
     slideDown: function(el, dur, easing, cb) {
-        var $el = m4q(el);
+        var $el = $(el);
         var targetHeight, originDisplay;
 
         if (not(dur) && not(easing) && not(cb)) {
@@ -126,7 +125,7 @@ m4q.extend({
 
         $el.show().visible(false);
         targetHeight = $el.origin("height", undefined, $el.height());
-        originDisplay = $el.origin("display", m4q(el).style('display'), "block");
+        originDisplay = $el.origin("display", $(el).style('display'), "block");
         $el.height(0).visible(true);
 
         $el.css({
@@ -147,7 +146,7 @@ m4q.extend({
     },
 
     slideUp: function(el, dur, easing, cb) {
-        var $el = m4q(el);
+        var $el = $(el);
         var currHeight;
 
         if ($el.height() === 0) {
@@ -169,7 +168,7 @@ m4q.extend({
 
         currHeight = $el.height();
         $el.origin("height", currHeight);
-        $el.origin("display", m4q(el).style('display'));
+        $el.origin("display", $(el).style('display'));
 
         $el.css({
             overflow: "hidden"
@@ -187,38 +186,38 @@ m4q.extend({
     }
 });
 
-m4q.fn.extend({
+$.fn.extend({
     hide: function(cb){
         var callback = undefined;
 
-        m4q.each(arguments, function(){
+        $.each(arguments, function(){
             if (typeof this === 'function') {
                 callback = this;
             }
         });
 
         return this.each(function(){
-            m4q.hide(this, callback);
+            $.hide(this, callback);
         });
     },
 
     show: function(cb){
         var callback = undefined;
 
-        m4q.each(arguments, function(){
+        $.each(arguments, function(){
             if (typeof this === 'function') {
                 callback = this;
             }
         });
 
         return this.each(function(){
-            m4q.show(this, callback);
+            $.show(this, callback);
         });
     },
 
     visible: function(mode, cb){
         return this.each(function(){
-            m4q.visible(this, mode, cb);
+            $.visible(this, mode, cb);
         });
     },
 
@@ -227,31 +226,31 @@ m4q.fn.extend({
             cb = null;
         }
         return this.each(function(){
-            m4q.toggle(this, cb);
+            $.toggle(this, cb);
         })
     },
 
     fadeIn: function(dur, easing, cb){
         return this.each(function(){
-            m4q.fadeIn(this, dur, easing, cb);
+            $.fadeIn(this, dur, easing, cb);
         })
     },
 
     fadeOut: function(dur, easing, cb){
         return this.each(function(){
-            m4q.fadeOut(this, dur, easing, cb);
+            $.fadeOut(this, dur, easing, cb);
         })
     },
 
     slideUp: function(dur, easing, cb){
         return this.each(function(){
-            m4q.slideUp(this, dur, easing, cb);
+            $.slideUp(this, dur, easing, cb);
         })
     },
 
     slideDown: function(dur, easing, cb){
         return this.each(function(){
-            m4q.slideDown(this, dur, easing, cb);
+            $.slideDown(this, dur, easing, cb);
         })
     }
 });

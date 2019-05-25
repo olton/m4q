@@ -1,5 +1,4 @@
-
-m4q.fn.extend({
+$.fn.extend({
     _size: function(prop, val){
         if (this.length === 0) {
             return ;

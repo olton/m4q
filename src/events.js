@@ -1,4 +1,3 @@
-
 (function () {
     if ( typeof window.CustomEvent === "function" ) return false;
 
@@ -30,7 +29,7 @@ Event.prototype.stop = function(immediate){
     return immediate ? this.stopImmediatePropagation() : this.stopPropagation();
 };
 
-m4q.extend({
+$.extend({
     events: [],
     eventHook: {},
 
@@ -76,7 +75,7 @@ m4q.extend({
     },
 
     off: function(){
-        m4q.each(this.events, function(){
+        $.each(this.events, function(){
             this.element.removeEventListener(this.eventName, this.handler);
         });
         this.events = [];
@@ -93,7 +92,7 @@ m4q.extend({
     clearEventHooks: function(){}
 });
 
-m4q.fn.extend({
+$.fn.extend({
     on: function(eventsList, sel, handler, options){
         var eventOptions;
 
@@ -115,7 +114,7 @@ m4q.fn.extend({
 
         return this.each(function(){
             var el = this;
-            m4q.each(str2arr(eventsList), function(){
+            $.each(str2arr(eventsList), function(){
                 var h, ev = this,
                     event = ev.split("."),
                     name = event[0],
@@ -136,11 +135,11 @@ m4q.fn.extend({
                     }
                 };
 
-                m4q.eventUID++;
+                $.eventUID++;
                 originEvent = name+(sel ? ":"+sel:"")+(ns ? ":"+ns:"");
                 el.addEventListener(name, h, eventOptions);
-                index = m4q.setEventHandler(el, name, h, sel, ns, m4q.eventUID);
-                m4q(el).origin('event-'+originEvent, index);
+                index = $.setEventHandler(el, name, h, sel, ns, $.eventUID);
+                $(el).origin('event-'+originEvent, index);
             });
         });
     },
@@ -157,12 +156,12 @@ m4q.fn.extend({
         if (eventsList.toLowerCase() === 'all') {
             return this.each(function(){
                 var el = this;
-                m4q.each(m4q.events, function(){
+                $.each($.events, function(){
                     var e = this;
                     if (e.element === el) {
                         el.removeEventListener(e.eventName, e.handler);
                         e.handler = null;
-                        m4q(el).origin("event-"+name+(e.selector ? ":"+e.selector:"")+(e.ns ? ":"+e.ns:""), null);
+                        $(el).origin("event-"+name+(e.selector ? ":"+e.selector:"")+(e.ns ? ":"+e.ns:""), null);
                     }
                 })
             });
@@ -170,21 +169,21 @@ m4q.fn.extend({
 
         return this.each(function(){
             var el = this;
-            m4q.each(str2arr(eventsList), function(){
+            $.each(str2arr(eventsList), function(){
                 var evMap = this.split("."),
                     name = evMap[0],
                     ns = evMap[1],
                     originEvent, index;
 
                 originEvent = "event-"+name+(sel ? ":"+sel:"")+(ns ? ":"+ns:"");
-                index = m4q(el).origin(originEvent);
+                index = $(el).origin(originEvent);
 
-                if (index && m4q.events[index].handler) {
-                    el.removeEventListener(name, m4q.events[index].handler);
-                    m4q.events[index].handler = null;
+                if (index && $.events[index].handler) {
+                    el.removeEventListener(name, $.events[index].handler);
+                    $.events[index].handler = null;
                 }
 
-                m4q(el).origin(originEvent, null);
+                $(el).origin(originEvent, null);
             });
         });
     },
@@ -230,19 +229,19 @@ m4q.fn.extend({
     .split( " " )
     .forEach(
     function( name ) {
-        m4q.fn[ name ] = function( sel, fn, opt ) {
+        $.fn[ name ] = function( sel, fn, opt ) {
             return arguments.length > 0 ?
                 this.on( name, sel, fn, opt ) :
                 this.trigger( name );
         };
 });
 
-m4q.fn.extend( {
+$.fn.extend( {
     hover: function( fnOver, fnOut ) {
         return this.mouseenter( fnOver ).mouseleave( fnOut || fnOver );
     }
 });
 
-m4q.ready = function(fn){
+$.ready = function(fn){
     document.addEventListener('DOMContentLoaded', fn);
 };

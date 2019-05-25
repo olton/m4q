@@ -1,4 +1,4 @@
-m4q.ajax = function(p){
+$.ajax = function(p){
     return new Promise(function(resolve, reject){
         var xhr = new XMLHttpRequest(), data;
         var method = (p.method || 'GET').toUpperCase();
@@ -29,7 +29,7 @@ m4q.ajax = function(p){
         }
 
         if (p.headers) {
-            m4q.each(function(k, v){
+            $.each(function(k, v){
                 xhr.setRequestHeader(k, v);
                 headers.push(k);
             });
@@ -45,7 +45,7 @@ m4q.ajax = function(p){
             }
         } else if (isPlainObject(p.data)) {
             var _data = [];
-            m4q.each(p.data, function(k, v){
+            $.each(p.data, function(k, v){
                 _data.push(k+"="+v);
             });
             data = _data.join("&");
@@ -104,7 +104,7 @@ m4q.ajax = function(p){
 };
 
 ['get', 'post', 'put', 'patch', 'delete', 'json'].forEach(function(method){
-    m4q[method] = function(url, data, options){
+    $[method] = function(url, data, options){
         var _method = method.toUpperCase();
         var _options = {
             method: _method === 'JSON' ? 'GET' : _method,
@@ -112,14 +112,14 @@ m4q.ajax = function(p){
             data: data,
             parseJson: _method === 'JSON'
         };
-        return m4q.ajax(m4q.extend({}, _options, options));
+        return $.ajax($.extend({}, _options, options));
     }
 });
 
-m4q.fn.extend({
+$.fn.extend({
     load: function(url, data, options){
         var that = this;
-        m4q.get(url, data, options).then(function(data){
+        $.get(url, data, options).then(function(data){
             that.each(function(){
                 this.innerHTML = data;
             });
