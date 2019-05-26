@@ -1,4 +1,10 @@
 $.extend({
+
+    fx: {
+        off: false,
+        hideOnFadeOut: true
+    },
+
     hide: function(el, cb){
         var $el = $(el);
         if (!!el.style.display) {
@@ -71,7 +77,7 @@ $.extend({
 
         return this.animate(el, function(p){
             el.style.opacity = originOpacity * p;
-            if (p === 1) {
+            if (p === 1 && el.style.display === 'none') {
                 el.style.display = originDisplay;
             }
         }, dur, easing, cb);
@@ -100,7 +106,7 @@ $.extend({
 
         return this.animate(el, function(p){
             el.style.opacity = (1 - p) * opacity;
-            if (p === 1) {
+            if (p === 1 && $.fx.hideOnFadeOut) {
                 el.style.display = 'none';
             }
         }, dur, easing, cb);

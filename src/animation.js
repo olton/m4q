@@ -162,6 +162,10 @@ $.extend({
         var $el = $(el), start = performance.now();
         var key, from, to, delta, unit, mapProps = {};
 
+        if (dur === 0 || $.fx.off) {
+            dur = 1;
+        }
+
         dur = dur || 300;
         timing = timing || this.easing.def;
 

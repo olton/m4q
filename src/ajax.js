@@ -65,42 +65,19 @@ $.ajax = function(p){
             if (xhr.readyState === 4 && xhr.status < 300) {
                 var _return = p.returnValue && p.returnValue === 'xhr' ? xhr : p.parseJson ? JSON.parse(xhr.response) : xhr.response;
                 exec(resolve, [_return]);
-                if (p['onSuccess'] !== undefined) exec(p['onSuccess'], [e, xhr]);
+                exec(p['onSuccess'], [e, xhr]);
             } else {
                 exec(reject, [xhr]);
-                if (p['onFail'] !== undefined) exec(p['onFail'], [e, xhr]);
+                exec(p['onFail'], [e, xhr]);
             }
-            if (p['onLoad'] !== undefined) exec(p['onLoad'], [e, xhr]);
+            exec(p['onLoad'], [e, xhr]);
         });
 
-        xhr.addEventListener("readystatechange", function(e){
-            if (p['onStateChange'] !== undefined) exec(p['onStateChange'], [e, xhr]);
-        });
-
-        xhr.addEventListener("error", function(e){
-            exec(reject, [xhr]);
-            if (p['onError'] !== undefined) exec(p['onError'], [e, xhr]);
-        });
-
-        xhr.addEventListener("timeout", function(e){
-            exec(reject, [xhr]);
-            if (p['onTimeout'] !== undefined) exec(p['onTimeout'], [e, xhr]);
-        });
-
-        xhr.addEventListener("progress", function(e){
-            if (p['onProgress'] !== undefined) exec(p['onProgress'], [e, xhr]);
-        });
-
-        xhr.addEventListener("loadstart", function(e){
-            if (p['onLoadStart'] !== undefined) exec(p['onLoadStart'], [e, xhr]);
-        });
-
-        xhr.addEventListener("loadend", function(e){
-            if (p['onLoadEnd'] !== undefined) exec(p['onLoadEnd'], [e, xhr]);
-        });
-
-        xhr.addEventListener("abort", function(e){
-            if (p['onAbort'] !== undefined) exec(p['onAbort'], [e, xhr]);
+        $.each(["readystatechange", "error", "timeout", "progress", "loadstart", "loadend", "abort"], function(){
+            var ev = camelCase("on-"+(this === 'readystatechange' ? 'state' : this));
+            xhr.addEventListener(ev, function(e){
+                exec(p[ev], [e, xhr]);
+            });
         });
     });
 };
