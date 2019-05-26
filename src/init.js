@@ -27,6 +27,10 @@ $.init = function(sel, ctx){
         sel = document.documentElement;
     }
 
+    if (typeof sel === 'string' && sel === "doctype") {
+        sel = document.doctype;
+    }
+
     if (sel.nodeType || sel.self === window) {
         this[0] = sel;
         this.length = 1;

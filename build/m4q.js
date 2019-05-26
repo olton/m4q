@@ -541,7 +541,7 @@ function parseUnit(str, out) {
     }
 }(window));
 
-var m4qVersion = "v1.0.0. Built at 26/05/2019 19:02:11";
+var m4qVersion = "v1.0.0. Built at 26/05/2019 19:04:32";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -2783,6 +2783,10 @@ $.init = function(sel, ctx){
 
     if (typeof sel === 'string' && sel === "html") {
         sel = document.documentElement;
+    }
+
+    if (typeof sel === 'string' && sel === "doctype") {
+        sel = document.doctype;
     }
 
     if (sel.nodeType || sel.self === window) {
