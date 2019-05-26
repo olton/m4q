@@ -52,6 +52,8 @@ $.ajax = function(p){
             if (headers.indexOf("Content-type") === -1) {
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             }
+        } else if (p.data instanceof FormData) {
+            data = p.data;
         } else {
             data = new FormData();
             data.append("_data", JSON.stringify(p.data));
@@ -119,7 +121,7 @@ $.ajax = function(p){
 $.fn.extend({
     load: function(url, data, options){
         var that = this;
-        $.get(url, data, options).then(function(data){
+        return $.get(url, data, options).then(function(data){
             that.each(function(){
                 this.innerHTML = data;
             });

@@ -14,13 +14,14 @@
 </head>
 <body class="h-vh-100">
 
-<div>Div</div>
+<div class="d1">Div</div>
+<div class="d2">Div</div>
 
 <script src="../build/m4q.js"></script>
 <script>
-    var divs = $("div");
-    console.log(divs);
-    console.log($(divs));
+    var div1 = $("div");
+    var div2 = $(".d1, .d3");
+    console.log(div1.same(div2));
 </script>
 </body>
 </html>

@@ -541,7 +541,7 @@ function parseUnit(str, out) {
     }
 }(window));
 
-var m4qVersion = "v1.0.0. Built at 25/05/2019 12:37:40";
+var m4qVersion = "v1.0.0. Built at 26/05/2019 18:37:55";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -704,6 +704,17 @@ $.fn = $.prototype = {
             })
         }
 
+        return result;
+    },
+
+    same: function(o){
+        var result = true;
+        if (!o instanceof $ || this.length !== o.length) return false;
+        this.each(function(){
+            if (o.items().indexOf(this) === -1) {
+                result = false;
+            }
+        });
         return result;
     },
 
@@ -1406,6 +1417,8 @@ $.ajax = function(p){
             if (headers.indexOf("Content-type") === -1) {
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             }
+        } else if (p.data instanceof FormData) {
+            data = p.data;
         } else {
             data = new FormData();
             data.append("_data", JSON.stringify(p.data));
@@ -1473,7 +1486,7 @@ $.ajax = function(p){
 $.fn.extend({
     load: function(url, data, options){
         var that = this;
-        $.get(url, data, options).then(function(data){
+        return $.get(url, data, options).then(function(data){
             that.each(function(){
                 this.innerHTML = data;
             });

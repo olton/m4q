@@ -164,6 +164,17 @@ $.fn = $.prototype = {
         return result;
     },
 
+    same: function(o){
+        var result = true;
+        if (!o instanceof $ || this.length !== o.length) return false;
+        this.each(function(){
+            if (o.items().indexOf(this) === -1) {
+                result = false;
+            }
+        });
+        return result;
+    },
+
     last: function(){
         return this.ind(this.length - 1);
     },
