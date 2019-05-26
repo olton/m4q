@@ -541,7 +541,7 @@ function parseUnit(str, out) {
     }
 }(window));
 
-var m4qVersion = "v1.0.0. Built at 26/05/2019 18:37:55";
+var m4qVersion = "v1.0.0. Built at 26/05/2019 18:40:22";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -662,6 +662,10 @@ $.fn = $.prototype = {
 
         if (this.length === 0) {
             return ;
+        }
+
+        if (s instanceof $) {
+            return this.same(s);
         }
 
         if (typeof  s === "string" && [':selected'].indexOf(s) === -1) {

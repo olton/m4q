@@ -121,6 +121,10 @@ $.fn = $.prototype = {
             return ;
         }
 
+        if (s instanceof $) {
+            return this.same(s);
+        }
+
         if (typeof  s === "string" && [':selected'].indexOf(s) === -1) {
             this.each(function(){
                 if (matches.call(this, s)) {
