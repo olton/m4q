@@ -15,12 +15,16 @@ $.init = function(sel, ctx){
         return $.import(sel);
     }
 
-    if (sel === "document") {
+    if (typeof sel === 'string' && sel === "document") {
         sel = document;
     }
 
-    if (sel === "body") {
+    if (typeof sel === 'string' && sel === "body") {
         sel = document.body;
+    }
+
+    if (typeof sel === 'string' && sel === "html") {
+        sel = document.documentElement;
     }
 
     if (sel.nodeType || sel.self === window) {
