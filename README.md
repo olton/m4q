@@ -4,7 +4,7 @@ The m4q is a small library for DOM manipulation.
 This helper designed for [Metro 4](https://metroui.org.ua) project to replace jQuery.
 m4q is not a complete jQuery equivalent and there are differences.
  
-## Version 0.1.0 - alpha 
+## Version 1.0.0 - alpha3 
 
 #### Status
 [![develop Status](https://img.shields.io/badge/status-in&nbsp;develop-lightgrey.svg)](https://david-dm.org/olton/m4q)
@@ -20,4 +20,8 @@ m4q is not a complete jQuery equivalent and there are differences.
 -->
 
 ## Documentation
-Read about `m4q` usage in the [wiki](https://github.com/olton/m4q/wiki)
+Read about `m4q` usage in the [Metro 4 docs](https://metroui.org.ua/m4q-about.html)
+
+
+### Credits
+- Easing functions by [Andy Ray](https://github.com/AndrewRayCode/easing-utils) 
