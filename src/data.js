@@ -134,6 +134,13 @@ $.extend({
 
     removeData: function(elem, name){
         return dataSet.remove(elem, name);
+    },
+
+    dataSet: function(ns){
+        if (['INTERNAL', 'M4Q'].indexOf(ns.toUpperCase()) > -1) {
+            throw Error("You can not use reserved name for your dataset");
+        }
+        return new Data(ns);
     }
 });
 
@@ -190,5 +197,25 @@ $.fn.extend({
         return this.each( function() {
             dataSet.remove( this, key );
         } );
+    },
+
+    origin: function(name, value, def){
+
+        if (this.length === 0) {
+            return ;
+        }
+
+        if (not(name) && not(value)) {
+            return $.data(this[0]);
+        }
+
+        if (not(value)) {
+            var res = $.data(this[0], "origin-"+name);
+            return !not(res) ? res : def;
+        }
+
+        this.data("origin-"+name, value);
+
+        return this;
     }
 });

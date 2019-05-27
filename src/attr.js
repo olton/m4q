@@ -57,6 +57,10 @@ $.fn.extend({
             }
 
         });
+    },
+
+    id: function(val){
+        return $(this[0]).attr("id", val);
     }
 });
 

@@ -10,23 +10,16 @@
             margin: 0;
             padding: 0;
         }
-
-        .cube {
-            width: 100px;
-            height: 100px;
-            background: green;
-        }
     </style>
 </head>
 <body class="h-vh-100">
 
-<div class="cube">Div</div>
-<button onclick="$.fx.hideOnFadeOut = !$.fx.hideOnFadeOut">Toggle fx for fade</button>
-<button onclick="$('.cube').fadeIn(0)">FadeIn</button>
-<button onclick="$('.cube').fadeOut()">FadeOut</button>
-
+<input type="text" value="123">
+<button onclick="$('input').val('321')">Button</button>
+<button onclick="$('input').id('inp1'); console.log($('input').id())">Button</button>
 <script src="../build/m4q.js"></script>
 <script>
+
 </script>
 </body>
 </html>

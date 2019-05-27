@@ -23,13 +23,6 @@ $.extend({
     isArrayLike: function(obj){return isArrayLike(obj);},
     acceptData: function(owner){return acceptData(owner);},
     not: function(val){return not(val)},
-    parseUnit: function(str, out){return parseUnit(str, out)},
-
-    dataSet: function(ns){
-        if (['INTERNAL', 'M4Q'].indexOf(ns.toUpperCase()) > -1) {
-            throw Error("You can not use reserved name for your dataset");
-        }
-        return new Data(ns);
-    }
+    parseUnit: function(str, out){return parseUnit(str, out)}
 });
 
