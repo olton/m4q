@@ -67,5 +67,13 @@ $.fn.extend({
 $.extend({
     meta: function(name){
         return not(name) ? $("meta") : $("meta[name='$name']".replace("$name", name));
+    },
+
+    doctype: function(){
+        return $("doctype");
+    },
+
+    html: function(){
+        return $("html");
     }
 });

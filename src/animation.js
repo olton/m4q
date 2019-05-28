@@ -270,6 +270,17 @@ $.extend({
         dur = dur || 300;
         timing = timing || this.easing.def;
 
+        if (typeof dur === "function") {
+            cb = dur;
+            dur = 300;
+            timing = "linear";
+        }
+
+        if (typeof timing === "function") {
+            cb = timing;
+            timing = this.easing.def
+        }
+
         $(el).origin("animation-stop", 0);
 
         if (isPlainObject(draw)) {

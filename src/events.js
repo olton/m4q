@@ -225,7 +225,7 @@ $.fn.extend({
     }
 });
 
-( "blur focus resize scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select submit keydown keypress keyup contextmenu load touchstart touchend touchmove touchcancel" )
+( "blur focus resize scroll click dblclick mousedown mouseup mousemove mouseover mouseout mouseenter mouseleave change select submit keydown keypress keyup contextmenu touchstart touchend touchmove touchcancel" )
     .split( " " )
     .forEach(
     function( name ) {
