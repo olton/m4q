@@ -541,7 +541,7 @@ function parseUnit(str, out) {
     }
 }(window));
 
-var m4qVersion = "v1.0.0. Built at 29/05/2019 19:19:18";
+var m4qVersion = "v1.0.0. Built at 29/05/2019 21:54:31";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1758,6 +1758,10 @@ $.fn.extend({
         if (not(val)) {
             return this.position(margin).left;
         }
+        if (typeof val === "boolean") {
+            margin = val;
+            return this.position(margin).left;
+        }
         return this.each(function(){
             $(this).css({
                 left: val
@@ -1768,6 +1772,10 @@ $.fn.extend({
     top: function(val, margin){
         if (this.length === 0) return ;
         if (not(val)) {
+            return this.position(margin).top;
+        }
+        if (typeof val === "boolean") {
+            margin = val;
             return this.position(margin).top;
         }
         return this.each(function(){

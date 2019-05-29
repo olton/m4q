@@ -49,6 +49,10 @@ $.fn.extend({
         if (not(val)) {
             return this.position(margin).left;
         }
+        if (typeof val === "boolean") {
+            margin = val;
+            return this.position(margin).left;
+        }
         return this.each(function(){
             $(this).css({
                 left: val
@@ -59,6 +63,10 @@ $.fn.extend({
     top: function(val, margin){
         if (this.length === 0) return ;
         if (not(val)) {
+            return this.position(margin).top;
+        }
+        if (typeof val === "boolean") {
+            margin = val;
             return this.position(margin).top;
         }
         return this.each(function(){
