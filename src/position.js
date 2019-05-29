@@ -22,7 +22,12 @@ $.fn.extend({
     position: function(margin){
         var ml = 0, mt = 0;
 
-        margin = !!margin;
+        // margin = !!margin;
+        if (not(margin)) {
+            margin = false;
+        } else {
+            margin = !!margin;
+        }
 
         if (this.length === 0) {
             return ;
@@ -37,5 +42,29 @@ $.fn.extend({
             left: this[0].offsetLeft - ml,
             top: this[0].offsetTop - mt
         }
+    },
+
+    left: function(val, margin){
+        if (this.length === 0) return ;
+        if (not(val)) {
+            return this.position(margin).left;
+        }
+        return this.each(function(){
+            $(this).css({
+                left: val
+            })
+        });
+    },
+
+    top: function(val, margin){
+        if (this.length === 0) return ;
+        if (not(val)) {
+            return this.position(margin).top;
+        }
+        return this.each(function(){
+            $(this).css({
+                top: val
+            })
+        });
     }
 });

@@ -10,18 +10,45 @@
             margin: 0;
             padding: 0;
         }
+        .animate-demo-cube {
+            width: 30px;
+            height: 30px;
+            background: red;
+            position: relative;
+        }
+        .example {
+            display: block;
+            position: relative;
+            border: 1px dotted blue;
+        }
     </style>
 </head>
 <body class="h-vh-100">
 
-<input type="text" value="123">
-<button onclick="$('input').val('321')">Button</button>
-<button onclick="$('input').id('inp1'); console.log($('input').id())">Button</button>
+<div class="example">
+    <div class="text-center m-2">
+        <button class="button" onclick="goCube(this)">Go</button>
+    </div>
+    <div>
+        <div>Left: <span id="el-left">0</span></div>
+        <div>Top: <span id="el-top">0</span></div>
+    </div>
+    <div class="animate-demo-cube bg-red" id="demo-cube-1"></div>
+</div>
+
 <script src="../build/m4q.js"></script>
 <script>
-console.log($(window));
-console.log($.doctype());
-console.log($.html());
+    function goCube(btn){
+        var el = $("#demo-cube-1");
+        var maxLeft = el.left() === 0 ? el.parent().width() - el.width() : 0;
+        btn.disabled = true;
+
+        $.animate(el[0], {
+            left: maxLeft
+        }, 3000, "linear", function(){
+            btn.disabled = false;
+        });
+    }
 </script>
 </body>
 </html>

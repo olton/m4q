@@ -541,7 +541,7 @@ function parseUnit(str, out) {
     }
 }(window));
 
-var m4qVersion = "v1.0.0. Built at 28/05/2019 22:38:11";
+var m4qVersion = "v1.0.0. Built at 29/05/2019 19:19:18";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1731,7 +1731,12 @@ $.fn.extend({
     position: function(margin){
         var ml = 0, mt = 0;
 
-        margin = !!margin;
+        // margin = !!margin;
+        if (not(margin)) {
+            margin = false;
+        } else {
+            margin = !!margin;
+        }
 
         if (this.length === 0) {
             return ;
@@ -1746,6 +1751,30 @@ $.fn.extend({
             left: this[0].offsetLeft - ml,
             top: this[0].offsetTop - mt
         }
+    },
+
+    left: function(val, margin){
+        if (this.length === 0) return ;
+        if (not(val)) {
+            return this.position(margin).left;
+        }
+        return this.each(function(){
+            $(this).css({
+                left: val
+            })
+        });
+    },
+
+    top: function(val, margin){
+        if (this.length === 0) return ;
+        if (not(val)) {
+            return this.position(margin).top;
+        }
+        return this.each(function(){
+            $(this).css({
+                top: val
+            })
+        });
     }
 });
 
