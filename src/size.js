@@ -1,18 +1,16 @@
 $.fn.extend({
     _size: function(prop, val){
-        if (this.length === 0) {
-            return ;
-        }
+        if (this.length === 0) return ;
 
-        if (val === undefined) {
+        if (not(val)) {
 
             var el = this[0];
 
             if (prop === 'height') {
-                return el === window ? window.innerHeight : el === document ? el.body.clientHeight : el.clientHeight;
+                return el === window ? window.innerHeight : el === document ? el.body.clientHeight : parseInt($(el).style("height"));
             }
             if (prop === 'width') {
-                return el === window ? window.innerWidth : el === document ? el.body.clientWidth : el.clientWidth;
+                return el === window ? window.innerWidth : el === document ? el.body.clientWidth : parseInt($(el).style("width"));
             }
         }
 

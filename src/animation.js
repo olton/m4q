@@ -281,7 +281,7 @@ $.extend({
             timing = this.easing.def
         }
 
-        $(el).origin("animation-stop", 0);
+        $el.origin("animation-stop", 0);
 
         if (isPlainObject(draw)) {
             // TODO add prop value as array [from, to]
@@ -303,7 +303,7 @@ $.extend({
 
         $el.origin("animation", requestAnimationFrame(function animate(time) {
             var p, t;
-            var stop = $(el).origin("animation-stop");
+            var stop = $el.origin("animation-stop");
 
             if ( stop > 0) {
                 if (stop === 2) $.proxy(draw, $el[0])(1);
@@ -340,8 +340,8 @@ $.extend({
             }
 
             if (t === 1 && typeof cb === "function") {
-                $.proxy(cb, el);
-                cb.call(el, arguments);
+                $.proxy(cb, $el[0]);
+                cb.call($el[0], arguments);
             }
             if (t < 1) {
                 $el.origin("animation", requestAnimationFrame(animate));

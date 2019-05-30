@@ -74,5 +74,17 @@ $.fn.extend({
                 top: val
             })
         });
+    },
+
+    coord: function(){
+        return this.length === 0 ? undefined : this[0].getBoundingClientRect();
+    },
+
+    pos: function(){
+        if (this.length === 0) return ;
+        return {
+            top: parseInt($(this[0]).style("top")),
+            left: parseInt($(this[0]).style("left"))
+        }
     }
 });

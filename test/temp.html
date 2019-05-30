@@ -20,6 +20,8 @@
             display: block;
             position: relative;
             border: 1px dotted blue;
+            padding: 16px;
+            margin: 16px;
         }
     </style>
 </head>
@@ -40,7 +42,8 @@
 <script>
     function goCube(btn){
         var el = $("#demo-cube-1");
-        var maxLeft = el.left() === 0 ? el.parent().width() - el.width() : 0;
+        var maxLeft = el.pos().left === 0 ? el.parent().width() - el.width() : 0;
+
         btn.disabled = true;
 
         $.animate(el[0], {

@@ -541,7 +541,7 @@ function parseUnit(str, out) {
     }
 }(window));
 
-var m4qVersion = "v1.0.0. Built at 29/05/2019 21:54:31";
+var m4qVersion = "v1.0.0. Built at 30/05/2019 09:04:04";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1640,19 +1640,17 @@ $.parseHTML = function(data, context){
 
 $.fn.extend({
     _size: function(prop, val){
-        if (this.length === 0) {
-            return ;
-        }
+        if (this.length === 0) return ;
 
-        if (val === undefined) {
+        if (not(val)) {
 
             var el = this[0];
 
             if (prop === 'height') {
-                return el === window ? window.innerHeight : el === document ? el.body.clientHeight : el.clientHeight;
+                return el === window ? window.innerHeight : el === document ? el.body.clientHeight : parseInt($(el).style("height"));
             }
             if (prop === 'width') {
-                return el === window ? window.innerWidth : el === document ? el.body.clientWidth : el.clientWidth;
+                return el === window ? window.innerWidth : el === document ? el.body.clientWidth : parseInt($(el).style("width"));
             }
         }
 
@@ -1783,6 +1781,18 @@ $.fn.extend({
                 top: val
             })
         });
+    },
+
+    coord: function(){
+        return this.length === 0 ? undefined : this[0].getBoundingClientRect();
+    },
+
+    pos: function(){
+        if (this.length === 0) return ;
+        return {
+            top: parseInt($(this[0]).style("top")),
+            left: parseInt($(this[0]).style("left"))
+        }
     }
 });
 
@@ -2560,7 +2570,7 @@ $.extend({
             timing = this.easing.def
         }
 
-        $(el).origin("animation-stop", 0);
+        $el.origin("animation-stop", 0);
 
         if (isPlainObject(draw)) {
             // TODO add prop value as array [from, to]
@@ -2582,7 +2592,7 @@ $.extend({
 
         $el.origin("animation", requestAnimationFrame(function animate(time) {
             var p, t;
-            var stop = $(el).origin("animation-stop");
+            var stop = $el.origin("animation-stop");
 
             if ( stop > 0) {
                 if (stop === 2) $.proxy(draw, $el[0])(1);
@@ -2619,8 +2629,8 @@ $.extend({
             }
 
             if (t === 1 && typeof cb === "function") {
-                $.proxy(cb, el);
-                cb.call(el, arguments);
+                $.proxy(cb, $el[0]);
+                cb.call($el[0], arguments);
             }
             if (t < 1) {
                 $el.origin("animation", requestAnimationFrame(animate));
