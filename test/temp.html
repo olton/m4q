@@ -21,15 +21,16 @@
             position: relative;
             border: 1px dotted blue;
             padding: 16px;
-            margin: 16px;
+            margin: 2rem;
         }
     </style>
 </head>
 <body class="h-vh-100">
-
+<div id="c2" class="animate-demo-cube"></div>
 <div class="example">
     <div class="text-center m-2">
         <button class="button" onclick="goCube(this)">Go</button>
+        <button class="button" onclick="$('#c2').css({width: '100%'}); console.log($('.example').margin());">Go</button>
     </div>
     <div>
         <div>Left: <span id="el-left">0</span></div>

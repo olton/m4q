@@ -7,10 +7,10 @@ $.fn.extend({
             var el = this[0];
 
             if (prop === 'height') {
-                return el === window ? window.innerHeight : el === document ? el.body.clientHeight : parseInt($(el).style("height"));
+                return el === window ? window.innerHeight : el === document ? el.body.clientHeight : parseInt(getComputedStyle(el)["height"]);
             }
             if (prop === 'width') {
-                return el === window ? window.innerWidth : el === document ? el.body.clientWidth : parseInt($(el).style("width"));
+                return el === window ? window.innerWidth : el === document ? el.body.clientWidth : parseInt(getComputedStyle(el)["width"]);
             }
         }
 
@@ -62,5 +62,23 @@ $.fn.extend({
 
     outerHeight: function(val){
         return this._sizeOut.call(this, 'height', val);
+    },
+
+    padding: function(){
+        return this.length === 0 ? undefined : {
+            top: parseInt(getComputedStyle(this[0])["padding-top"]),
+            right: parseInt(getComputedStyle(this[0])["padding-right"]),
+            bottom: parseInt(getComputedStyle(this[0])["padding-bottom"]),
+            left: parseInt(getComputedStyle(this[0])["padding-left"])
+        }
+    },
+
+    margin: function(){
+        return this.length === 0 ? undefined : {
+            top: parseInt(getComputedStyle(this[0])["margin-top"]),
+            right: parseInt(getComputedStyle(this[0])["margin-right"]),
+            bottom: parseInt(getComputedStyle(this[0])["margin-bottom"]),
+            left: parseInt(getComputedStyle(this[0])["margin-left"])
+        }
     }
 });

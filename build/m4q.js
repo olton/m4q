@@ -541,7 +541,7 @@ function parseUnit(str, out) {
     }
 }(window));
 
-var m4qVersion = "v1.0.0. Built at 30/05/2019 09:04:04";
+var m4qVersion = "v1.0.0. Built at 30/05/2019 11:36:11";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1647,10 +1647,10 @@ $.fn.extend({
             var el = this[0];
 
             if (prop === 'height') {
-                return el === window ? window.innerHeight : el === document ? el.body.clientHeight : parseInt($(el).style("height"));
+                return el === window ? window.innerHeight : el === document ? el.body.clientHeight : parseInt(getComputedStyle(el)["height"]);
             }
             if (prop === 'width') {
-                return el === window ? window.innerWidth : el === document ? el.body.clientWidth : parseInt($(el).style("width"));
+                return el === window ? window.innerWidth : el === document ? el.body.clientWidth : parseInt(getComputedStyle(el)["width"]);
             }
         }
 
@@ -1702,6 +1702,24 @@ $.fn.extend({
 
     outerHeight: function(val){
         return this._sizeOut.call(this, 'height', val);
+    },
+
+    padding: function(){
+        return this.length === 0 ? undefined : {
+            top: parseInt(getComputedStyle(this[0])["padding-top"]),
+            right: parseInt(getComputedStyle(this[0])["padding-right"]),
+            bottom: parseInt(getComputedStyle(this[0])["padding-bottom"]),
+            left: parseInt(getComputedStyle(this[0])["padding-left"])
+        }
+    },
+
+    margin: function(){
+        return this.length === 0 ? undefined : {
+            top: parseInt(getComputedStyle(this[0])["margin-top"]),
+            right: parseInt(getComputedStyle(this[0])["margin-right"]),
+            bottom: parseInt(getComputedStyle(this[0])["margin-bottom"]),
+            left: parseInt(getComputedStyle(this[0])["margin-left"])
+        }
     }
 });
 
