@@ -54,6 +54,10 @@ $.extend({
     },
 
     fadeIn: function(el, dur, easing, cb){
+        var $el = $(el), opacity;
+
+        if ($el.origin("fadeout") === false || $el.origin("fadeout") === undefined) return ;
+
         if (not(dur) && not(easing) && not(cb)) {
             cb = null;
             dur = 1000;
@@ -75,16 +79,19 @@ $.extend({
         el.style.opacity = 0;
         el.style.display = originDisplay;
 
-        return this.animate(el, function(p){
+        return this.animate(el, function(t, p){
             el.style.opacity = originOpacity * p;
-            if (p === 1 && el.style.display === 'none') {
+            if (t === 1) {
                 el.style.display = originDisplay;
+                $el.origin("fadeout", false);
             }
         }, dur, easing, cb);
     },
 
     fadeOut: function(el, dur, easing, cb){
         var $el = $(el), opacity;
+
+        if ($el.origin("fadeout") === true) return ;
 
         if (not(dur) && not(easing) && not(cb)) {
             cb = null;
@@ -104,10 +111,11 @@ $.extend({
         $el.origin("display", $(el).style('display'));
         $el.origin("opacity", opacity);
 
-        return this.animate(el, function(p){
+        return this.animate(el, function(t, p){
             el.style.opacity = (1 - p) * opacity;
-            if (p === 1 && $.fx.hideOnFadeOut) {
-                el.style.display = 'none';
+            if (t === 1) {
+                if ($.fx.hideOnFadeOut) el.style.display = 'none';
+                $el.origin("fadeout", true);
             }
         }, dur, easing, cb);
     },
@@ -115,6 +123,8 @@ $.extend({
     slideDown: function(el, dur, easing, cb) {
         var $el = $(el);
         var targetHeight, originDisplay;
+
+        if ($el.origin("slidedown") === true) return ;
 
         if (not(dur) && not(easing) && not(cb)) {
             cb = null;
@@ -139,14 +149,15 @@ $.extend({
             display: originDisplay === "none" ? "block" : originDisplay
         });
 
-        return this.animate(el, function(p){
+        return this.animate(el, function(t, p){
             el.style.height = (targetHeight * p) + "px";
-            if (p === 1) {
+            if (t === 1) {
                 $el.css({
                     overflow: "",
                     height: "",
                     visibility: ""
-                })
+                });
+                $el.origin("slidedown", true);
             }
         }, dur, easing, cb);
     },
@@ -155,9 +166,7 @@ $.extend({
         var $el = $(el);
         var currHeight;
 
-        if ($el.height() === 0) {
-            return ;
-        }
+        if ($el.origin("slidedown") === false || $el.origin("slidedown") === undefined) return ;
 
         if (not(dur) && not(easing) && not(cb)) {
             cb = null;
@@ -180,13 +189,14 @@ $.extend({
             overflow: "hidden"
         });
 
-        return this.animate(el, function(p){
+        return this.animate(el, function(t, p){
             el.style.height = (1 - p) * currHeight + 'px';
-            if (p === 1) {
+            if (t === 1) {
                 $el.hide().css({
                     overflow: "",
                     height: ""
                 });
+                $el.origin("slidedown", false);
             }
         }, dur, easing, cb);
     }
