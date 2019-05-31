@@ -306,8 +306,27 @@ $.extend({
             var stop = $el.origin("animation-stop");
 
             if ( stop > 0) {
-                if (stop === 2) $.proxy(draw, $el[0])(1);
+
+                if (stop === 2) {
+                    if (typeof draw === "function") {
+                        $.proxy(draw, $el[0])(1, 1);
+                    } else if (isPlainObject(draw)) {
+                        (function(t, p){
+
+                            for (key in mapProps) {
+                                if (mapProps.hasOwnProperty(key))
+                                    $el.css(key, mapProps[key][0] + (mapProps[key][2] * p) + mapProps[key][3]);
+                            }
+
+                        })(1, 1);
+                    }
+                }
+
                 cancelAnimationFrame($(el).origin("animation"));
+                if (typeof cb === "function") {
+                    $.proxy(cb, $el[0]);
+                    cb.call($el[0], arguments);
+                }
                 return;
             }
 

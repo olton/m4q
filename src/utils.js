@@ -17,12 +17,18 @@ $.extend({
         return Object.prototype.toString.call(obj).replace(/^\[object (.+)]$/, '$1').toLowerCase();
     },
 
+    sleep: function(ms) {
+        ms += new Date().getTime();
+        while (new Date() < ms){}
+    },
+
     camelCase: function(string){return camelCase(string);},
     isPlainObject: function(obj){return isPlainObject(obj);},
     isEmptyObject: function(obj){return isEmptyObject(obj);},
     isArrayLike: function(obj){return isArrayLike(obj);},
     acceptData: function(owner){return acceptData(owner);},
     not: function(val){return not(val)},
-    parseUnit: function(str, out){return parseUnit(str, out)}
+    parseUnit: function(str, out){return parseUnit(str, out)},
+    unit: function(str, out){return parseUnit(str, out)}
 });
 
