@@ -96,11 +96,11 @@ $.fn.extend({
     },
 
     last: function(){
-        return this.ind(this.length - 1);
+        return this.eq(this.length - 1);
     },
 
     first: function(){
-        return this.ind(0);
+        return this.eq(0);
     },
 
     odd: function(){
