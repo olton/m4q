@@ -32,3 +32,12 @@ $.extend({
     unit: function(str, out){return parseUnit(str, out)}
 });
 
+$.fn.extend({
+    clone: function(){
+        var res = [], out = $();
+        this.each(function(){
+            res.push(this.cloneNode(true));
+        });
+        return $.merge(out, res);
+    }
+});

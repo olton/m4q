@@ -5,54 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="test" content="value"/>
     <title>Title</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-        .animate-demo-cube {
-            width: 30px;
-            height: 30px;
-            background: red;
-            position: relative;
-        }
-        .example {
-            display: block;
-            position: relative;
-            border: 1px dotted blue;
-            padding: 16px;
-            margin: 2rem;
-        }
-    </style>
 </head>
 <body class="h-vh-100">
-<div id="c2" class="animate-demo-cube"></div>
-<div class="example">
-    <div class="text-center m-2">
-        <button class="button" onclick="goCube(this)">Go</button>
-        <button class="button" onclick="$('#c2').css({width: '100%'}); console.log($('.example').margin());">Go</button>
-    </div>
-    <div>
-        <div>Left: <span id="el-left">0</span></div>
-        <div>Top: <span id="el-top">0</span></div>
-    </div>
-    <div class="animate-demo-cube bg-red" id="demo-cube-1"></div>
-</div>
+<ul>
+    <li id="foo">foo</li>
+    <li id="bar">bar</li>
+    <li id="baz">baz</li>
+</ul>
 
 <script src="../build/m4q.js"></script>
 <script>
-    function goCube(btn){
-        var el = $("#demo-cube-1");
-        var maxLeft = el.pos().left === 0 ? el.parent().width() - el.width() : 0;
+    var item = document.getElementById( "baz" );
+    var $item = $( "#foo" );
 
-        btn.disabled = true;
+    console.log( "item.index()");
+    console.log( "Index: " + $(item).index() );
+    console.log( "Index: " + $item.index() );
 
-        $.animate(el[0], {
-            left: maxLeft
-        }, 3000, "linear", function(){
-            btn.disabled = false;
-        });
-    }
+    console.log( "$(li).index(item)");
+    console.log( "Index: " + $( "li" ).index( item ) );
+    console.log( "Index: " + $( "li" ).index( $(item) ) );
+    console.log( "Index: " + $( "li" ).index( $item ) );
 </script>
 </body>
 </html>

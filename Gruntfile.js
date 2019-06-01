@@ -28,7 +28,6 @@ module.exports = function(grunt) {
         'src/parser.js',
         'src/size.js',
         'src/position.js',
-        'src/search.js',
         'src/attr.js',
         'src/proxy.js',
         'src/manipulation.js',
