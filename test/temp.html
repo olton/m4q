@@ -13,10 +13,21 @@
     <li id="baz"><span class="baz">baz</span></li>
 </ul>
 
+<input type="checkbox" id="check1" checked>
+<input type="checkbox" id="check2">
+
+<div style="opacity: 0">This is a hidden div</div>
+
+<select>
+    <option>Item 1</option>
+    <option selected>Item 2</option>
+    <option>Item 3</option>
+</select>
+
 <script src="../build/m4q.js"></script>
 <script>
-    console.log( $( "li" ).children(".bar") ); // [span, ...]
-    console.log( $( "ul" ).children("#bar") ) // [li#bar, ...];
+    console.log( $( "#bar" ).is( $("li#bar") ) ); // true
+    console.log( $( "#bar" ).is( $("div") ) ); // false
 </script>
 </body>
 </html>

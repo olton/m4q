@@ -41,14 +41,6 @@ $.fn.extend({
             return this.same(s);
         }
 
-        if (typeof  s === "string" && [':selected'].indexOf(s) === -1) {
-            this.each(function(){
-                if (matches.call(this, s)) {
-                    result = true;
-                }
-            });
-        } else
-
         if (s === ":selected") {
             return this[0].selected;
         } else
@@ -58,7 +50,16 @@ $.fn.extend({
         } else
 
         if (s === ":hidden") {
-            return this[0].hidden;
+            var styles = getComputedStyle(this[0]);
+            return this[0].hidden || styles['display'] === 'none' || styles['visibility'] === 'hidden' || parseInt(styles['opacity']) === 0;
+        } else
+
+        if (typeof  s === "string" && [':selected'].indexOf(s) === -1) {
+            this.each(function(){
+                if (matches.call(this, s)) {
+                    result = true;
+                }
+            });
         } else
 
         if (isArrayLike(s)) {
