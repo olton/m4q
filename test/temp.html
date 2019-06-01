@@ -8,20 +8,15 @@
 </head>
 <body class="h-vh-100">
 <ul>
-    <li id="foo">foo</li>
-    <li id="bar">bar</li>
-    <li id="baz">baz</li>
+    <li id="foo"><span class="foo">foo</span></li>
+    <li id="bar"><span class="bar">bar</span></li>
+    <li id="baz"><span class="baz">baz</span></li>
 </ul>
 
 <script src="../build/m4q.js"></script>
 <script>
-    console.log($("li"));
-    console.log($("li").even());
-    console.log($("li").odd());
-    console.log($("li").filter('#bar, #foo'));
-    console.log($("li").filter(function(el){
-        return $(el).id() === "foo"
-    }))
+    console.log( $( "li" ).children(".bar") ); // [span, ...]
+    console.log( $( "ul" ).children("#bar") ) // [li#bar, ...];
 </script>
 </body>
 </html>

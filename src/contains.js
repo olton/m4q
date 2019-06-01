@@ -103,13 +103,6 @@ $.fn.extend({
         return this.ind(0);
     },
 
-    ind: function(i){
-        if (this.length === 0) return $();
-        if (not(i)) return ;
-        if (i  > this.length) i = this.length - 1;
-        return i < 0 ?  $(this[i + this.length]) : $(this[i]);
-    },
-
     odd: function(){
         return this.filter(function(el, i){
             return i % 2 === 0;
@@ -122,7 +115,6 @@ $.fn.extend({
         });
     },
 
-    // ? maybe return a m4q object?
     filter: function(fn){
         if (typeof fn === "string") {
             var sel = fn;
@@ -144,7 +136,7 @@ $.fn.extend({
 
         this.each(function () {
             var el = this;
-            if (typeof el.querySelectorAll !== "undefined") res = [].slice.call(el.querySelectorAll(s));
+            if (typeof el.querySelectorAll !== "undefined") res = res.concat([].slice.call(el.querySelectorAll(s)));
         });
         return $.merge(out, res);
     },
