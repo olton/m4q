@@ -111,20 +111,26 @@ $.fn.extend({
     },
 
     odd: function(){
-        return $.merge($(), this.filter(function(el, i){
+        return this.filter(function(el, i){
             return i % 2 === 0;
-        }));
+        });
     },
 
     even: function(){
-        return $.merge($(), this.filter(function(el, i){
+        return this.filter(function(el, i){
             return i % 2 !== 0;
-        }));
+        });
     },
 
     // ? maybe return a m4q object?
     filter: function(fn){
-        return [].filter.call(this, fn);
+        if (typeof fn === "string") {
+            var sel = fn;
+            fn = function(el){
+                return matches.call(el, sel);
+            };
+        }
+        return $.merge($(), [].filter.call(this, fn));
     },
 
     find: function(s){
