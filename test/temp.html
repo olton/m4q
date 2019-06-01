@@ -18,7 +18,10 @@
     console.log($("li"));
     console.log($("li").even());
     console.log($("li").odd());
-    console.log($("li").filter('#bar, #foo'))
+    console.log($("li").filter('#bar, #foo'));
+    console.log($("li").filter(function(el){
+        return $(el).id() === "foo"
+    }))
 </script>
 </body>
 </html>
