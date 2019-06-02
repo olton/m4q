@@ -93,5 +93,13 @@ $.extend({
 
     html: function(){
         return $("html");
+    },
+
+    charset: function(val){
+        var meta = $("meta[charset]");
+        if (val) {
+            meta.attr("charset", val)
+        }
+        return meta.attr("charset");
     }
 });
