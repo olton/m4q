@@ -541,7 +541,7 @@ function parseUnit(str, out) {
     }
 }(window));
 
-var m4qVersion = "v1.0.0. Built at 02/06/2019 20:44:29";
+var m4qVersion = "v1.0.0. Built at 02/06/2019 20:46:42";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -2088,8 +2088,8 @@ $.fn.extend({
         if (not(name)) {
             return this.each(function(){
                 var el = this;
-                $.each($(el).attr(), function(){
-                    el.removeAttribute(this);
+                $.each($(el).attr(), function(key){
+                    el.removeAttribute(key);
                 })
             });
         }

@@ -43,8 +43,8 @@ $.fn.extend({
         if (not(name)) {
             return this.each(function(){
                 var el = this;
-                $.each($(el).attr(), function(){
-                    el.removeAttribute(this);
+                $.each($(el).attr(), function(key){
+                    el.removeAttribute(key);
                 })
             });
         }
