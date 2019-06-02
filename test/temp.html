@@ -7,27 +7,21 @@
     <title>Title</title>
 </head>
 <body class="h-vh-100">
-<ul>
-    <li id="foo"><span class="foo">foo</span></li>
-    <li id="bar"><span class="bar">bar</span></li>
-    <li id="baz"><span class="baz">baz</span></li>
-</ul>
-
-<input type="checkbox" id="check1" checked>
-<input type="checkbox" id="check2">
-
-<div style="opacity: 0">This is a hidden div</div>
-
-<select>
-    <option>Item 1</option>
-    <option selected>Item 2</option>
-    <option>Item 3</option>
-</select>
-
+<div>
+    <div>
+        <span><b>My parents are: </b></span>
+        <div>I'am div</div>
+        <p>123</p>
+    </div>
+</div>
 <script src="../build/m4q.js"></script>
 <script>
-    console.log( $( "#bar" ).is( $("li#bar") ) ); // true
-    console.log( $( "#bar" ).is( $("div") ) ); // false
+    var parentEls = $( "b" ).parents().items().map(function(el){
+        return el.tagName;
+    }).join(", ");
+    $( "b" ).append( "<strong>" + parentEls + "</strong>" );
+
+    console.log($("span").siblings("p"));
 </script>
 </body>
 </html>

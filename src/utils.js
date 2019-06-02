@@ -33,6 +33,10 @@ $.extend({
 });
 
 $.fn.extend({
+    items: function(){
+        return $.toArray(this);
+    },
+
     clone: function(){
         var res = [], out = $();
         this.each(function(){

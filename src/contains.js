@@ -192,7 +192,6 @@ $.fn.extend({
             var par = this.parentNode;
             while (par) {
                 if (par.nodeType === 1) {
-
                     if (!not(s)) {
                         if (matches.call(par, s)) {
                             res.push(par);
@@ -200,8 +199,6 @@ $.fn.extend({
                     } else {
                         res.push(par);
                     }
-
-
                 }
                 par = par.parentNode;
             }
@@ -211,7 +208,7 @@ $.fn.extend({
     },
 
     siblings: function(s){
-        var res = [], out = $();
+        var res = [];
 
         if (this.length === 0) {
             return ;
@@ -220,16 +217,21 @@ $.fn.extend({
         if (s instanceof $) return s;
 
         this.each(function(){
-            var el = this, elems = [].filter.call(el.parentNode.children, function(child){
-                return child !== el && (s ? matches.call(child, s) : true);
-            });
-
-            elems.forEach(function(el){
-                res.push(el);
-            })
+            var el = this;
+            if (el.parentNode) {
+                $.each(el.parentNode.children, function(){
+                    if (el !== this) res.push(this)
+                });
+            }
         });
 
-        return $.merge(out, res);
+        if (s) {
+            res = res.filter(function(el){
+                return matches.call(el, s);
+            })
+        }
+
+        return $.merge($(), res);
     },
 
     _siblingAll: function(dir, s){
@@ -303,7 +305,7 @@ $.fn.extend({
     },
 
     closest: function(s){
-        var out = $();
+        var res = [];
 
         if (this.length === 0) {
             return ;
@@ -318,16 +320,16 @@ $.fn.extend({
         this.each(function(){
             var el = this;
             while (el) {
-                el = el.parentElement;
                 if (!el) break;
                 if (matches.call(el, s)) {
-                    $.merge(out, $(el));
+                    res.push(el);
                     return ;
                 }
+                el = el.parentElement;
             }
         });
 
-        return out;
+        return $.merge($(), res.reverse());
     },
 
     has: function(selector){

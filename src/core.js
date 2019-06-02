@@ -47,10 +47,6 @@ $.fn = $.prototype = {
     length: 0,
     uid: "",
 
-    items: function(){
-        return $.toArray(this);
-    },
-
     push: [].push,
     sort: [].sort,
     splice: [].splice,
