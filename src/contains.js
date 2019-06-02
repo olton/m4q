@@ -235,7 +235,7 @@ $.fn.extend({
     },
 
     _siblingAll: function(dir, s){
-        var out = $();
+        var res = [];
 
         if (this.length === 0) {
             return ;
@@ -248,21 +248,21 @@ $.fn.extend({
             while (el) {
                 el = el[dir];
                 if (!el) break;
-                if (!s) {
-                    $.merge(out, $(el));
-                } else {
-                    if (matches.call(el, s)) {
-                        $.merge(out, $(el));
-                    }
-                }
+                res.push(el);
             }
         });
 
-        return out;
+        if (s) {
+            res = res.filter(function(el){
+                return matches.call(el, s);
+            })
+        }
+
+        return $.merge($(), res);
     },
 
     _sibling: function(dir, s){
-        var out = $();
+        var res = [];
 
         if (this.length === 0) {
             return ;
@@ -270,22 +270,20 @@ $.fn.extend({
 
         if (s instanceof $) return s;
 
-        out = $();
-
         this.each(function(){
-            var sib = this[dir];
-            if (sib && sib.nodeType === 1) {
-                if (not(s)) {
-                    $.merge(out, $(sib));
-                } else {
-                    if (matches.call(sib, s)) {
-                        $.merge(out, $(sib));
-                    }
-                }
+            var el = this[dir];
+            if (el && el.nodeType === 1) {
+                res.push(el);
             }
         });
 
-        return out;
+        if (s) {
+            res = res.filter(function(el){
+                return matches.call(el, s);
+            })
+        }
+
+        return $.merge($(), res);
     },
 
     prev: function(s){
