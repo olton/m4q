@@ -38,8 +38,21 @@ $.fn.extend({
     },
 
     removeAttr: function(name){
+        var attributes;
+
+        if (not(name)) {
+            return this;
+        }
+
+        attributes = typeof name === "string" ? name.split(",").map(function(el){
+            return el.trim();
+        }) : name;
+
         return this.each(function(){
-            if (this.hasAttribute(name)) this.removeAttribute(name);
+            var el = this;
+            $.each(attributes, function(){
+                if (el.hasAttribute(this)) el.removeAttribute(this);
+            });
         });
     },
 

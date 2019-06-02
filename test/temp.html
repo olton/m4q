@@ -7,24 +7,18 @@
     <title>Title</title>
 </head>
 <body class="h-vh-100">
-<ul>
+<ul id="testID" class="my-class" style="display: none">
     <li>list item 1</li>
     <li>list item 2</li>
-    <li class="third-item">list item 3</li>
+    <li>list item 3</li>
     <li>list item 4</li>
     <li>list item 5</li>
-</ul>
-<ul>
-    <li>list item 1</li>
-    <li>list item 2</li>
-    <li class="third-item">list item 3</li>
-    <li>list item 4</li>
-    <li>list item 5</li>
+    <li>list item 6</li>
 </ul>
 
 <script src="../build/m4q.js"></script>
 <script>
-    $( "li.third-item" ).prevAll().css( "background-color", "red" );
+    $("ul").removeAttr(["style", "class", "id"])
 </script>
 </body>
 </html>
