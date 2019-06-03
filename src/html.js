@@ -33,7 +33,7 @@ $.fn.extend({
 
     empty: function(){
         return this.each(function(){
-            this.innerHTML = "";
+            if (typeof this.innerHTML !== "undefined") this.innerHTML = "";
         });
     }
 });
