@@ -7,10 +7,22 @@ $.fn.extend({
             return this;
         }
         var el = this[0];
-        if (arguments.length === 0 || name === undefined) {
+        if (not(name)) {
             return el.style ? el.style : getComputedStyle(el, null);
         } else {
-            return ["scrollLeft", "scrollTop"].indexOf(name) > -1 ? $(el)[name]() : el.style[name] ? el.style[name] : getComputedStyle(el, null)[name];
+            // Rewrite for array
+            // return ["scrollLeft", "scrollTop"].indexOf(name) > -1 ? $(el)[name]() : el.style[name] ? el.style[name] : getComputedStyle(el, null)[name];
+            var result = {}, names = name.split(", ").map(function(el){
+                return (""+el).trim();
+            });
+            if (names.length === 1)  {
+                return ["scrollLeft", "scrollTop"].indexOf(names[0]) > -1 ? $(el)[names[0]]() : el.style[names[0]] ? el.style[names[0]] : getComputedStyle(el, null)[names[0]];
+            } else {
+                $.each(names, function () {
+                    result[this] = ["scrollLeft", "scrollTop"].indexOf(this) > -1 ? $(el)[this]() : el.style[this] ? el.style[this] : getComputedStyle(el, null)[this];
+                });
+                return result;
+            }
         }
     },
 

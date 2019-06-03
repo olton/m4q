@@ -541,7 +541,7 @@ function parseUnit(str, out) {
     }
 }(window));
 
-var m4qVersion = "v1.0.0. Built at 03/06/2019 15:01:38";
+var m4qVersion = "v1.0.0. Built at 03/06/2019 18:27:42";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1735,10 +1735,22 @@ $.fn.extend({
             return this;
         }
         var el = this[0];
-        if (arguments.length === 0 || name === undefined) {
+        if (not(name)) {
             return el.style ? el.style : getComputedStyle(el, null);
         } else {
-            return ["scrollLeft", "scrollTop"].indexOf(name) > -1 ? $(el)[name]() : el.style[name] ? el.style[name] : getComputedStyle(el, null)[name];
+            // Rewrite for array
+            // return ["scrollLeft", "scrollTop"].indexOf(name) > -1 ? $(el)[name]() : el.style[name] ? el.style[name] : getComputedStyle(el, null)[name];
+            var result = {}, names = name.split(", ").map(function(el){
+                return (""+el).trim();
+            });
+            if (names.length === 1)  {
+                return ["scrollLeft", "scrollTop"].indexOf(names[0]) > -1 ? $(el)[names[0]]() : el.style[names[0]] ? el.style[names[0]] : getComputedStyle(el, null)[names[0]];
+            } else {
+                $.each(names, function () {
+                    result[this] = ["scrollLeft", "scrollTop"].indexOf(this) > -1 ? $(el)[this]() : el.style[this] ? el.style[this] : getComputedStyle(el, null)[this];
+                });
+                return result;
+            }
         }
     },
 
