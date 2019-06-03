@@ -31,10 +31,8 @@ $.fn.extend({
             return this;
         }
 
-        var el = this[0];
-
-        if (typeof o === "string" && v === undefined) {
-            return  el.style[o] ? el.style[o] : getComputedStyle(el, null)[o];
+        if (not(o) || (typeof o === "string" && not(v))) {
+            return  this.style(o);
         }
 
         return this.each(function(){

@@ -32,8 +32,13 @@
 <script>
     var div = $("div");
 
-    console.log( $("div").style("width") );
-    console.log( $("div").style("left, width") );
+    console.log( $("div").css() );
+    console.log( $("div").css("color", "red") );
+    console.log( $("div").css("left, width") );
+    console.log( $("div").css({
+        color: "red",
+        background: "black"
+    }) );
 </script>
 </body>
 </html>
