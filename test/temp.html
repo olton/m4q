@@ -7,7 +7,19 @@
     <title>Title</title>
 </head>
 <body class="h-vh-100">
-<ul id="testID" class="my-class" style="display: none">
+
+<div>This is a div</div>
+
+<ul id="list">
+    <li>list item 1</li>
+    <li>list item 2</li>
+    <li>list item 3</li>
+    <li>list item 4</li>
+    <li>list item 5</li>
+    <li>list item 6</li>
+</ul>
+
+<ul id="list2">
     <li>list item 1</li>
     <li>list item 2</li>
     <li>list item 3</li>
@@ -18,8 +30,12 @@
 
 <script src="../build/m4q.js"></script>
 <script>
-    console.log($.charset());
-    console.log($.charset("windows-1251"));
+    var div = $("div");
+
+    console.log(div.html());
+    div.html("<p>New html</p>");
+
+    // $("div").html($("#list, #list2"));
 </script>
 </body>
 </html>

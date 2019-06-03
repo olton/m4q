@@ -1,9 +1,22 @@
 $.fn.extend({
     html: function(value){
-        if (value instanceof $) {
-            value = value.outerHTML();
+        var that = this, v = [];
+
+        if (arguments.length === 0 || not(value)) {
+            return this._prop('innerHTML');
         }
-        return arguments.length === 0 ? this._prop('innerHTML') : this._prop('innerHTML', typeof value === "undefined" ? "" : value);
+
+        if (value instanceof $) {
+            value.each(function(){
+                v.push($(this).outerHTML());
+            });
+        } else {
+            v.push(value);
+        }
+
+        that._prop('innerHTML', v.length === 1 && not(v[0]) ? "" : v.join("\n"));
+
+        return this;
     },
 
     outerHTML: function(){
