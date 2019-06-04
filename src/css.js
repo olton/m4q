@@ -26,6 +26,21 @@ $.fn.extend({
         }
     },
 
+    removeStyleProperty: function(name){
+        var that = this;
+        if (not(name) || this.length === 0) return ;
+        var names = name.split(", ").map(function(el){
+            return (""+el).trim();
+        });
+        $.each(names, function(){
+            var prop = this;
+            that.each(function(){
+                var el = this;
+                el.style.removeProperty(prop);
+            })
+        });
+    },
+
     css: function(o, v){
         if (this.length === 0) {
             return this;

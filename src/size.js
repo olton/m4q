@@ -44,7 +44,7 @@ $.fn.extend({
                     bs = prop === 'width' ? parseInt(style['border-left-width']) + parseInt(style['border-right-width']) : parseInt(style['border-top-width']) + parseInt(style['border-bottom-width']),
                     pa = prop === 'width' ? parseInt(style['padding-left']) + parseInt(style['padding-right']) : parseInt(style['padding-top']) + parseInt(style['padding-bottom']);
 
-                h = $(this).height(val).height() - bs - pa;
+                h = $(this)[prop](val)[prop]() - bs - pa;
                 el.style[prop] = h + 'px';
             });
         }
