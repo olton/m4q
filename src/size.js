@@ -22,11 +22,11 @@ $.fn.extend({
     },
 
     height: function(val){
-        return this._size.call(this, 'height', val);
+        return this._size('height', val);
     },
 
     width: function(val){
-        return this._size.call(this, 'width', val);
+        return this._size('width', val);
     },
 
     _sizeOut: function(prop, val){
@@ -36,16 +36,16 @@ $.fn.extend({
             return ;
         }
 
-        if (val !== undefined && typeof val !== "boolean") {
+        if (!not(val) && typeof val !== "boolean") {
             return this.each(function(){
                 var el = this;
                 if (el === window || el === document) {return ;}
-                var style = getComputedStyle(el, null),
+                var h, style = getComputedStyle(el),
                     bs = prop === 'width' ? parseInt(style['border-left-width']) + parseInt(style['border-right-width']) : parseInt(style['border-top-width']) + parseInt(style['border-bottom-width']),
                     pa = prop === 'width' ? parseInt(style['padding-left']) + parseInt(style['padding-right']) : parseInt(style['padding-top']) + parseInt(style['padding-bottom']);
 
-                val = parseInt(val);
-                el.style[prop] = val + bs + pa + 'px';
+                h = $(this).height(val).height() - bs - pa;
+                el.style[prop] = h + 'px';
             });
         }
 
@@ -57,11 +57,11 @@ $.fn.extend({
     },
 
     outerWidth: function(val){
-        return this._sizeOut.call(this, 'width', val);
+        return this._sizeOut('width', val);
     },
 
     outerHeight: function(val){
-        return this._sizeOut.call(this, 'height', val);
+        return this._sizeOut('height', val);
     },
 
     padding: function(){
