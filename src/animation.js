@@ -294,7 +294,7 @@ $.extend({
                         from = parseUnit(draw[key][0]);
                         to = parseUnit(draw[key][1]);
                     }
-                    unit = to[1] === '' ? 'px' : to[1];
+                    unit = to[1] === '' && numProps.indexOf(key)===-1 ? 'px' : to[1];
                     delta = to[0] - from[0];
                     mapProps[key] = [from[0], to[0], delta, unit];
                 }
@@ -314,8 +314,9 @@ $.extend({
                         (function(t, p){
 
                             for (key in mapProps) {
-                                if (mapProps.hasOwnProperty(key))
+                                if (mapProps.hasOwnProperty(key)) {
                                     $el.css(key, mapProps[key][0] + (mapProps[key][2] * p) + mapProps[key][3]);
+                                }
                             }
 
                         })(1, 1);
@@ -323,10 +324,11 @@ $.extend({
                 }
 
                 cancelAnimationFrame($(el).origin("animation"));
+
                 if (typeof cb === "function") {
-                    $.proxy(cb, $el[0]);
-                    cb.call($el[0], arguments);
+                    $.proxy(cb, $el[0])();
                 }
+
                 return;
             }
 
@@ -348,8 +350,9 @@ $.extend({
                 (function(t, p){
 
                     for (key in mapProps) {
-                        if (mapProps.hasOwnProperty(key))
+                        if (mapProps.hasOwnProperty(key)) {
                             $el.css(key, mapProps[key][0] + (mapProps[key][2] * p) + mapProps[key][3]);
+                        }
                     }
 
                 })(t, p);
@@ -359,8 +362,7 @@ $.extend({
             }
 
             if (t === 1 && typeof cb === "function") {
-                $.proxy(cb, $el[0]);
-                cb.call($el[0], arguments);
+                $.proxy(cb, $el[0])();
             }
             if (t < 1) {
                 $el.origin("animation", requestAnimationFrame(animate));

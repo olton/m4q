@@ -1,56 +1,6 @@
 $.extend({
-
     fx: {
-        off: false,
-        hideOnFadeOut: true
-    },
-
-    hide: function(el, cb){
-        var $el = $(el);
-        if (!!el.style.display) {
-            $el.origin('display', (el.style.display ? el.style.display : getComputedStyle(el, null)['display']));
-        }
-        el.style.display = 'none';
-        if (typeof cb === "function") {
-            $.proxy(cb, el);
-            cb.call(el, arguments);
-        }
-        return this;
-    },
-
-    show: function(el, cb){
-        var display = $(el).origin('display', undefined, "block");
-        el.style.display = display ? display === 'none' ? 'block' : display : '';
-        if (parseInt(el.style.opacity) === 0) {
-            el.style.opacity = "1";
-        }
-        if (typeof cb === "function") {
-            $.proxy(cb, el);
-            cb.call(el, arguments);
-        }
-        return this;
-    },
-
-    visible: function(el, mode, cb){
-        if (mode === undefined) {
-            mode = true;
-        }
-        el.style.visibility = mode ? 'visible' : 'hidden';
-        if (typeof cb === "function") {
-            $.proxy(cb, el);
-            cb.call(el, arguments);
-        }
-        return this;
-    },
-
-    toggle: function(el, cb){
-        var func;
-        if ( getComputedStyle(el, null)['display'] !== 'none') {
-            func = 'hide';
-        } else {
-            func = 'show';
-        }
-        return $[func](el, cb);
+        off: false
     },
 
     fadeIn: function(el, dur, easing, cb){
@@ -78,16 +28,19 @@ $.extend({
         el.style.opacity = "0";
         el.style.display = originDisplay;
 
-        return this.animate(el, function(t, p){
-            el.style.opacity = "" + 1 * p;
-            if (t === 1) {
-                el.style.removeProperty('opacity');
+        return this.animate(el, {
+            opacity: 1
+        }, dur, easing, function(){
+            this.style.removeProperty('opacity');
+
+            if (typeof cb === 'function') {
+                $.proxy(cb, this)();
             }
-        }, dur, easing, cb);
+        });
     },
 
     fadeOut: function(el, dur, easing, cb){
-        var $el = $(el), s = $el.style(), opacity;
+        var $el = $(el), s = $el.style();
 
         if ( s["display"] === 'none' ||  parseInt(s["opacity"]) === 0) return ;
 
@@ -104,17 +57,18 @@ $.extend({
             easing = "linear";
         }
 
-        opacity = $(el).style('opacity');
-
         $el.origin("display", $(el).style('display'));
 
-        return this.animate(el, function(t, p){
-            el.style.opacity = "" + (1 - p) * opacity;
-            if (t === 1) {
-                el.style.display = 'none';
-                el.style.removeProperty('opacity');
+        return this.animate(el, {
+            opacity: 0
+        }, dur, easing, function(){
+            this.style.display = 'none';
+            this.style.removeProperty('opacity');
+
+            if (typeof cb === 'function') {
+                $.proxy(cb, this)();
             }
-        }, dur, easing, cb);
+        });
     },
 
     slideDown: function(el, dur, easing, cb) {
@@ -191,49 +145,6 @@ $.extend({
 });
 
 $.fn.extend({
-    hide: function(cb){
-        var callback = undefined;
-
-        $.each(arguments, function(){
-            if (typeof this === 'function') {
-                callback = this;
-            }
-        });
-
-        return this.each(function(){
-            $.hide(this, callback);
-        });
-    },
-
-    show: function(cb){
-        var callback = undefined;
-
-        $.each(arguments, function(){
-            if (typeof this === 'function') {
-                callback = this;
-            }
-        });
-
-        return this.each(function(){
-            $.show(this, callback);
-        });
-    },
-
-    visible: function(mode, cb){
-        return this.each(function(){
-            $.visible(this, mode, cb);
-        });
-    },
-
-    toggle: function(cb){
-        if (typeof cb !== 'function') {
-            cb = null;
-        }
-        return this.each(function(){
-            $.toggle(this, cb);
-        })
-    },
-
     fadeIn: function(dur, easing, cb){
         return this.each(function(){
             $.fadeIn(this, dur, easing, cb);
@@ -258,4 +169,3 @@ $.fn.extend({
         })
     }
 });
-

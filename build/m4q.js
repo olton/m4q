@@ -541,7 +541,7 @@ function parseUnit(str, out) {
     }
 }(window));
 
-var m4qVersion = "v1.0.0. Built at 05/06/2019 10:03:49";
+var m4qVersion = "v1.0.0. Built at 05/06/2019 15:09:46";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -622,6 +622,61 @@ $.extend = $.fn.extend = function(){
     return target;
 };
 
+
+var now = function(){
+    return Date.now();
+};
+
+$.extend({
+
+    intervalId: -1,
+    intervalQueue: [],
+    intervalTicking: false,
+    intervalTickId: null,
+
+    setInterval: function(fn, int){
+        var that = this;
+
+        this.intervalId++;
+
+        this.intervalQueue.push({
+            id: this.intervalId,
+            fn: fn,
+            interval: int,
+            lastTime: now()
+        });
+
+        if (!this.intervalTicking) {
+            var tick = function(){
+                that.intervalTickId = requestAnimationFrame(tick);
+                $.each(that.intervalQueue, function(){
+                    var item = this;
+                    if (item.interval < 17 || now() - item.lastTime >= item.interval) {
+                        item.fn();
+                        item.lastTime = now();
+                    }
+                });
+            };
+            this.intervalTicking = true;
+            tick();
+        }
+
+        return this.intervalId;
+    },
+
+    clearInterval: function(id){
+        for(var i = 0; i < this.intervalQueue.length; i++){
+            if (id === this.intervalQueue[i].id) {
+                this.intervalQueue.splice(i, 1);
+                break;
+            }
+        }
+        if (this.intervalQueue.length === 0) {
+            cancelAnimationFrame(this.intervalTickId);
+            this.intervalTicking = false;
+        }
+    }
+});
 
 $.fn.extend({
     index: function(sel){
@@ -2664,7 +2719,7 @@ $.extend({
                         from = parseUnit(draw[key][0]);
                         to = parseUnit(draw[key][1]);
                     }
-                    unit = to[1] === '' ? 'px' : to[1];
+                    unit = to[1] === '' && numProps.indexOf(key)===-1 ? 'px' : to[1];
                     delta = to[0] - from[0];
                     mapProps[key] = [from[0], to[0], delta, unit];
                 }
@@ -2684,8 +2739,9 @@ $.extend({
                         (function(t, p){
 
                             for (key in mapProps) {
-                                if (mapProps.hasOwnProperty(key))
+                                if (mapProps.hasOwnProperty(key)) {
                                     $el.css(key, mapProps[key][0] + (mapProps[key][2] * p) + mapProps[key][3]);
+                                }
                             }
 
                         })(1, 1);
@@ -2693,10 +2749,11 @@ $.extend({
                 }
 
                 cancelAnimationFrame($(el).origin("animation"));
+
                 if (typeof cb === "function") {
-                    $.proxy(cb, $el[0]);
-                    cb.call($el[0], arguments);
+                    $.proxy(cb, $el[0])();
                 }
+
                 return;
             }
 
@@ -2718,8 +2775,9 @@ $.extend({
                 (function(t, p){
 
                     for (key in mapProps) {
-                        if (mapProps.hasOwnProperty(key))
+                        if (mapProps.hasOwnProperty(key)) {
                             $el.css(key, mapProps[key][0] + (mapProps[key][2] * p) + mapProps[key][3]);
+                        }
                     }
 
                 })(t, p);
@@ -2729,8 +2787,7 @@ $.extend({
             }
 
             if (t === 1 && typeof cb === "function") {
-                $.proxy(cb, $el[0]);
-                cb.call($el[0], arguments);
+                $.proxy(cb, $el[0])();
             }
             if (t < 1) {
                 $el.origin("animation", requestAnimationFrame(animate));
@@ -2761,12 +2818,6 @@ $.fn.extend({
 
 
 $.extend({
-
-    fx: {
-        off: false,
-        hideOnFadeOut: true
-    },
-
     hide: function(el, cb){
         var $el = $(el);
         if (!!el.style.display) {
@@ -2813,6 +2864,59 @@ $.extend({
             func = 'show';
         }
         return $[func](el, cb);
+    }
+});
+
+$.fn.extend({
+    hide: function(cb){
+        var callback = undefined;
+
+        $.each(arguments, function(){
+            if (typeof this === 'function') {
+                callback = this;
+            }
+        });
+
+        return this.each(function(){
+            $.hide(this, callback);
+        });
+    },
+
+    show: function(cb){
+        var callback = undefined;
+
+        $.each(arguments, function(){
+            if (typeof this === 'function') {
+                callback = this;
+            }
+        });
+
+        return this.each(function(){
+            $.show(this, callback);
+        });
+    },
+
+    visible: function(mode, cb){
+        return this.each(function(){
+            $.visible(this, mode, cb);
+        });
+    },
+
+    toggle: function(cb){
+        if (typeof cb !== 'function') {
+            cb = null;
+        }
+        return this.each(function(){
+            $.toggle(this, cb);
+        })
+    }
+});
+
+
+
+$.extend({
+    fx: {
+        off: false
     },
 
     fadeIn: function(el, dur, easing, cb){
@@ -2840,16 +2944,19 @@ $.extend({
         el.style.opacity = "0";
         el.style.display = originDisplay;
 
-        return this.animate(el, function(t, p){
-            el.style.opacity = "" + 1 * p;
-            if (t === 1) {
-                el.style.removeProperty('opacity');
+        return this.animate(el, {
+            opacity: 1
+        }, dur, easing, function(){
+            this.style.removeProperty('opacity');
+
+            if (typeof cb === 'function') {
+                $.proxy(cb, this)();
             }
-        }, dur, easing, cb);
+        });
     },
 
     fadeOut: function(el, dur, easing, cb){
-        var $el = $(el), s = $el.style(), opacity;
+        var $el = $(el), s = $el.style();
 
         if ( s["display"] === 'none' ||  parseInt(s["opacity"]) === 0) return ;
 
@@ -2866,17 +2973,18 @@ $.extend({
             easing = "linear";
         }
 
-        opacity = $(el).style('opacity');
-
         $el.origin("display", $(el).style('display'));
 
-        return this.animate(el, function(t, p){
-            el.style.opacity = "" + (1 - p) * opacity;
-            if (t === 1) {
-                el.style.display = 'none';
-                el.style.removeProperty('opacity');
+        return this.animate(el, {
+            opacity: 0
+        }, dur, easing, function(){
+            this.style.display = 'none';
+            this.style.removeProperty('opacity');
+
+            if (typeof cb === 'function') {
+                $.proxy(cb, this)();
             }
-        }, dur, easing, cb);
+        });
     },
 
     slideDown: function(el, dur, easing, cb) {
@@ -2953,49 +3061,6 @@ $.extend({
 });
 
 $.fn.extend({
-    hide: function(cb){
-        var callback = undefined;
-
-        $.each(arguments, function(){
-            if (typeof this === 'function') {
-                callback = this;
-            }
-        });
-
-        return this.each(function(){
-            $.hide(this, callback);
-        });
-    },
-
-    show: function(cb){
-        var callback = undefined;
-
-        $.each(arguments, function(){
-            if (typeof this === 'function') {
-                callback = this;
-            }
-        });
-
-        return this.each(function(){
-            $.show(this, callback);
-        });
-    },
-
-    visible: function(mode, cb){
-        return this.each(function(){
-            $.visible(this, mode, cb);
-        });
-    },
-
-    toggle: function(cb){
-        if (typeof cb !== 'function') {
-            cb = null;
-        }
-        return this.each(function(){
-            $.toggle(this, cb);
-        })
-    },
-
     fadeIn: function(dur, easing, cb){
         return this.each(function(){
             $.fadeIn(this, dur, easing, cb);
@@ -3020,8 +3085,6 @@ $.fn.extend({
         })
     }
 });
-
-
 
 $.init = function(sel, ctx){
     var parsed;

@@ -14,6 +14,7 @@ module.exports = function(grunt) {
         'src/promise.js',
 
         'src/core.js',
+        'src/interval.js',
         'src/contains.js',
         'src/prop.js',
         'src/each.js',
@@ -32,6 +33,7 @@ module.exports = function(grunt) {
         'src/proxy.js',
         'src/manipulation.js',
         'src/animation.js',
+        'src/visibility.js',
         'src/effects.js',
         'src/init.js',
         'src/populate.js'
@@ -123,6 +125,16 @@ module.exports = function(grunt) {
                         src: ['build/*.js'], dest: 'build/'
                     }
                 ]
+            }
+        },
+
+        shell: {
+            options: {
+                failOnError: false,
+                stdout: false
+            },
+            copy_to_metro4: {
+                command: 'call copy-to-metro4.bat'
             }
         },
 
