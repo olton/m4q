@@ -4,9 +4,9 @@ $.extend({
     },
 
     fadeIn: function(el, dur, easing, cb){
-        var $el = $(el), s = $el.style();
+        var $el = $(el);
 
-        if ( s["display"] !== 'none' ) return ;
+        if ( isVisible($el[0]) ) return ;
 
         if (not(dur) && not(easing) && not(cb)) {
             cb = null;
@@ -40,9 +40,9 @@ $.extend({
     },
 
     fadeOut: function(el, dur, easing, cb){
-        var $el = $(el), s = $el.style();
+        var $el = $(el);
 
-        if ( s["display"] === 'none' ||  parseInt(s["opacity"]) === 0) return ;
+        if ( !isVisible($el[0]) ) return ;
 
         if (not(dur) && not(easing) && not(cb)) {
             cb = null;

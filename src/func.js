@@ -1,3 +1,7 @@
+function isVisible(elem) {
+    return !!( elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length );
+}
+
 function not(value){
     return value === undefined || value === null;
 }
