@@ -50,10 +50,14 @@
         }
     }
 
-    $.setTimeout(function(){
-        console.log($.intervalQueue);
-    }, 2000);
-    console.log($.intervalQueue);
+    setImmediate(function(){
+        console.log("setImmediate");
+    })
+
+    // $.setTimeout(function(){
+    //     console.log($.intervalQueue);
+    // }, 2000);
+    // console.log($.intervalQueue);
 
     // var modHeight = "12rem";
     // $( "div" ).one( "click", function() {
