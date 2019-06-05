@@ -50,5 +50,18 @@ $.extend({
             cancelAnimationFrame(this.intervalTickId);
             this.intervalTicking = false;
         }
+    },
+
+    setTimeout: function(fn, interval){
+        var that = this, id = this.setInterval(function(){
+            that.clearInterval(id);
+            fn();
+        }, interval);
+
+        return id;
+    },
+
+    clearTimeout: function(id){
+        return this.clearInterval(id);
     }
 });

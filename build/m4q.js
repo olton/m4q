@@ -541,7 +541,7 @@ function parseUnit(str, out) {
     }
 }(window));
 
-var m4qVersion = "v1.0.0. Built at 05/06/2019 15:09:46";
+var m4qVersion = "v1.0.0. Built at 05/06/2019 15:47:01";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -675,6 +675,19 @@ $.extend({
             cancelAnimationFrame(this.intervalTickId);
             this.intervalTicking = false;
         }
+    },
+
+    setTimeout: function(fn, interval){
+        var that = this, id = this.setInterval(function(){
+            that.clearInterval(id);
+            fn();
+        }, interval);
+
+        return id;
+    },
+
+    clearTimeout: function(id){
+        return this.clearInterval(id);
     }
 });
 
