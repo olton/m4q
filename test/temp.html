@@ -30,21 +30,24 @@
 </head>
 <body class="h-vh-100">
 
-<button onclick="fade(1)">FadeIn</button>
-<button onclick="fade(0)">FadeOut</button>
+<!--<button onclick="fade(1)">FadeIn</button>-->
+<!--<button onclick="fade(0)">FadeOut</button>-->
 
 <div id="mydiv" class="foo bar">123</div>
 
 <script src="../build/m4q.js"></script>
 <script>
-    function fade(i){
-        var div = $("#mydiv");
-        if (i) {
-            div.fadeIn();
-        } else {
-            div.fadeOut();
-        }
-    }
+    console.log($("#mydiv").style("width"));
+    $("#mydiv").width(222);
+    console.log($("#mydiv").style("width"));
+    // function fade(i){
+    //     var div = $("#mydiv");
+    //     if (i) {
+    //         div.fadeIn();
+    //     } else {
+    //         div.fadeOut();
+    //     }
+    // }
     // var modHeight = "12rem";
     // $( "div" ).one( "click", function() {
     //     $( this ).outerWidth( modHeight ).addClass( "mod" );

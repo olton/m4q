@@ -541,7 +541,7 @@ function parseUnit(str, out) {
     }
 }(window));
 
-var m4qVersion = "v1.0.0. Built at 04/06/2019 18:57:23";
+var m4qVersion = "v1.0.0. Built at 05/06/2019 10:03:49";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1730,24 +1730,22 @@ $.fn.extend({
 var numProps = ['opacity', 'zIndex'];
 
 $.fn.extend({
-    style: function(name){
+    style: function(name, pseudo){
         if (this.length === 0) {
             return this;
         }
         var el = this[0];
         if (not(name)) {
-            return el.style ? el.style : getComputedStyle(el, null);
+            return getComputedStyle(el, pseudo);
         } else {
-            // Rewrite for array
-            // return ["scrollLeft", "scrollTop"].indexOf(name) > -1 ? $(el)[name]() : el.style[name] ? el.style[name] : getComputedStyle(el, null)[name];
             var result = {}, names = name.split(", ").map(function(el){
                 return (""+el).trim();
             });
             if (names.length === 1)  {
-                return ["scrollLeft", "scrollTop"].indexOf(names[0]) > -1 ? $(el)[names[0]]() : el.style[names[0]] ? el.style[names[0]] : getComputedStyle(el, null)[names[0]];
+                return ["scrollLeft", "scrollTop"].indexOf(names[0]) > -1 ? $(el)[names[0]]() : getComputedStyle(el, pseudo)[names[0]];
             } else {
                 $.each(names, function () {
-                    result[this] = ["scrollLeft", "scrollTop"].indexOf(this) > -1 ? $(el)[this]() : el.style[this] ? el.style[this] : getComputedStyle(el, null)[this];
+                    result[this] = ["scrollLeft", "scrollTop"].indexOf(this) > -1 ? $(el)[this]() : getComputedStyle(el, pseudo)[this];
                 });
                 return result;
             }
@@ -2885,7 +2883,7 @@ $.extend({
         var $el = $(el);
         var targetHeight, originDisplay;
 
-        if ($el.origin("slidedown") === true) return ;
+        if (!isNaN($el.height()) && $el.height() !== 0) return ;
 
         if (not(dur) && not(easing) && not(cb)) {
             cb = null;
@@ -2914,7 +2912,6 @@ $.extend({
             el.style.height = (targetHeight * p) + "px";
             if (t === 1) {
                 $(el).removeStyleProperty("overflow, height, visibility");
-                $el.origin("slidedown", true);
             }
         }, dur, easing, cb);
     },
@@ -2923,7 +2920,7 @@ $.extend({
         var $el = $(el);
         var currHeight;
 
-        if ($el.origin("slidedown") === false || $el.origin("slidedown") === undefined) return ;
+        if ($el.height() === 0) return ;
 
         if (not(dur) && not(easing) && not(cb)) {
             cb = null;
@@ -2950,7 +2947,6 @@ $.extend({
             el.style.height = (1 - p) * currHeight + 'px';
             if (t === 1) {
                 $el.hide().removeStyleProperty("overflow, height");
-                $el.origin("slidedown", false);
             }
         }, dur, easing, cb);
     }

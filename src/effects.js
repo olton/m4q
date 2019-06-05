@@ -121,7 +121,7 @@ $.extend({
         var $el = $(el);
         var targetHeight, originDisplay;
 
-        if ($el.origin("slidedown") === true) return ;
+        if (!isNaN($el.height()) && $el.height() !== 0) return ;
 
         if (not(dur) && not(easing) && not(cb)) {
             cb = null;
@@ -150,7 +150,6 @@ $.extend({
             el.style.height = (targetHeight * p) + "px";
             if (t === 1) {
                 $(el).removeStyleProperty("overflow, height, visibility");
-                $el.origin("slidedown", true);
             }
         }, dur, easing, cb);
     },
@@ -159,7 +158,7 @@ $.extend({
         var $el = $(el);
         var currHeight;
 
-        if ($el.origin("slidedown") === false || $el.origin("slidedown") === undefined) return ;
+        if ($el.height() === 0) return ;
 
         if (not(dur) && not(easing) && not(cb)) {
             cb = null;
@@ -186,7 +185,6 @@ $.extend({
             el.style.height = (1 - p) * currHeight + 'px';
             if (t === 1) {
                 $el.hide().removeStyleProperty("overflow, height");
-                $el.origin("slidedown", false);
             }
         }, dur, easing, cb);
     }

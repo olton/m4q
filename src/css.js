@@ -2,24 +2,22 @@
 var numProps = ['opacity', 'zIndex'];
 
 $.fn.extend({
-    style: function(name){
+    style: function(name, pseudo){
         if (this.length === 0) {
             return this;
         }
         var el = this[0];
         if (not(name)) {
-            return el.style ? el.style : getComputedStyle(el, null);
+            return getComputedStyle(el, pseudo);
         } else {
-            // Rewrite for array
-            // return ["scrollLeft", "scrollTop"].indexOf(name) > -1 ? $(el)[name]() : el.style[name] ? el.style[name] : getComputedStyle(el, null)[name];
             var result = {}, names = name.split(", ").map(function(el){
                 return (""+el).trim();
             });
             if (names.length === 1)  {
-                return ["scrollLeft", "scrollTop"].indexOf(names[0]) > -1 ? $(el)[names[0]]() : el.style[names[0]] ? el.style[names[0]] : getComputedStyle(el, null)[names[0]];
+                return ["scrollLeft", "scrollTop"].indexOf(names[0]) > -1 ? $(el)[names[0]]() : getComputedStyle(el, pseudo)[names[0]];
             } else {
                 $.each(names, function () {
-                    result[this] = ["scrollLeft", "scrollTop"].indexOf(this) > -1 ? $(el)[this]() : el.style[this] ? el.style[this] : getComputedStyle(el, null)[this];
+                    result[this] = ["scrollLeft", "scrollTop"].indexOf(this) > -1 ? $(el)[this]() : getComputedStyle(el, pseudo)[this];
                 });
                 return result;
             }
