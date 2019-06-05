@@ -29,7 +29,8 @@ $.extend({
     acceptData: function(owner){return acceptData(owner);},
     not: function(val){return not(val)},
     parseUnit: function(str, out){return parseUnit(str, out)},
-    unit: function(str, out){return parseUnit(str, out)}
+    unit: function(str, out){return parseUnit(str, out)},
+    isVisible: function(elem) {return isVisible(elem)}
 });
 
 $.fn.extend({

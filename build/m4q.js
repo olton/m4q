@@ -474,7 +474,7 @@ function parseUnit(str, out) {
     }
 }(window));
 
-var m4qVersion = "v1.0.0. Built at 05/06/2019 22:25:55";
+var m4qVersion = "v1.0.0. Built at 05/06/2019 22:26:55";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1295,7 +1295,8 @@ $.extend({
     acceptData: function(owner){return acceptData(owner);},
     not: function(val){return not(val)},
     parseUnit: function(str, out){return parseUnit(str, out)},
-    unit: function(str, out){return parseUnit(str, out)}
+    unit: function(str, out){return parseUnit(str, out)},
+    isVisible: function(elem) {return isVisible(elem)}
 });
 
 $.fn.extend({
