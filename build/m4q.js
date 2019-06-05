@@ -470,7 +470,7 @@ function parseUnit(str, out) {
     }
 }(window));
 
-var m4qVersion = "v1.0.0. Built at 05/06/2019 19:33:33";
+var m4qVersion = "v1.0.0. Built at 05/06/2019 21:40:35";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -2862,9 +2862,9 @@ $.extend({
     },
 
     fadeIn: function(el, dur, easing, cb){
-        var $el = $(el);
+        var $el = $(el), s = $el.style();
 
-        if ( $el.style("display") !== 'none') return ;
+        if ( s["display"] !== 'none' ) return ;
 
         if (not(dur) && not(easing) && not(cb)) {
             cb = null;

@@ -4,9 +4,9 @@ $.extend({
     },
 
     fadeIn: function(el, dur, easing, cb){
-        var $el = $(el);
+        var $el = $(el), s = $el.style();
 
-        if ( $el.style("display") !== 'none') return ;
+        if ( s["display"] !== 'none' ) return ;
 
         if (not(dur) && not(easing) && not(cb)) {
             cb = null;
