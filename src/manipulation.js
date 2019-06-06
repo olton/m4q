@@ -48,9 +48,9 @@
 
 $.fn.extend({
     append: function(elements){
-        if (typeof elements === "string") {
-            elements = $.parseHTML(elements);
-        }
+        if (typeof elements === "string") elements = $.parseHTML(elements);
+        if (elements instanceof HTMLElement) elements = [elements];
+
         return this.each(function(elIndex, el){
             $.each(elements, function(){
                 var child = this;
@@ -60,9 +60,9 @@ $.fn.extend({
     },
 
     appendTo: function(elements){
-        if (typeof elements === "string") {
-            elements = $.parseHTML(elements);
-        }
+        if (typeof elements === "string") elements = $.parseHTML(elements);
+        if (elements instanceof HTMLElement) elements = [elements];
+
         return this.each(function(){
             var el = this;
             $.each(elements, function(parIndex, parent){
@@ -72,9 +72,9 @@ $.fn.extend({
     },
 
     prepend: function(elements){
-        if (typeof elements === "string") {
-            elements = $.parseHTML(elements);
-        }
+        if (typeof elements === "string") elements = $.parseHTML(elements);
+        if (elements instanceof HTMLElement) elements = [elements];
+
         return this.each(function (elIndex, el) {
             $.each(elements, function(){
                 var child = this;
@@ -84,9 +84,9 @@ $.fn.extend({
     },
 
     prependTo: function(elements){
-        if (typeof elements === "string") {
-            elements = $.parseHTML(elements);
-        }
+        if (typeof elements === "string") elements = $.parseHTML(elements);
+        if (elements instanceof HTMLElement) elements = [elements];
+
         return this.each(function(){
             var el = this;
             $.each(elements, function(parIndex, parent){
@@ -96,9 +96,9 @@ $.fn.extend({
     },
 
     insertBefore: function(elements){
-        if (typeof elements === "string") {
-            elements = $.parseHTML(elements);
-        }
+        if (typeof elements === "string") elements = $.parseHTML(elements);
+        if (elements instanceof HTMLElement) elements = [elements];
+
         return this.each(function(){
             var el = this;
             $.each(elements, function(elIndex, element){
@@ -108,9 +108,9 @@ $.fn.extend({
     },
 
     insertAfter: function(elements){
-        if (typeof elements === "string") {
-            elements = $.parseHTML(elements);
-        }
+        if (typeof elements === "string") elements = $.parseHTML(elements);
+        if (elements instanceof HTMLElement) elements = [elements];
+
         return this.each(function(){
             var el = this;
             $.each(elements, function(elIndex, element){
@@ -125,7 +125,7 @@ $.fn.extend({
             if (typeof html === "string") {
                 el.insertAdjacentHTML('afterend', html);
             } else {
-                $(html).insertAfter($(el));
+                $(html).insertAfter(el);
             }
         })
     },
@@ -136,7 +136,7 @@ $.fn.extend({
             if (typeof html === "string") {
                 el.insertAdjacentHTML('beforebegin', html);
             } else {
-                $(html).insertBefore($(el));
+                $(html).insertBefore(el);
             }
         });
     },

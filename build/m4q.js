@@ -474,7 +474,7 @@ function parseUnit(str, out) {
     }
 }(window));
 
-var m4qVersion = "v1.0.0. Built at 06/06/2019 10:41:27";
+var m4qVersion = "v1.0.0. Built at 06/06/2019 21:44:03";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1971,21 +1971,39 @@ $.fn.extend({
         return this._sizeOut('height', val);
     },
 
-    padding: function(){
-        return this.length === 0 ? undefined : {
-            top: parseInt(getComputedStyle(this[0])["padding-top"]),
-            right: parseInt(getComputedStyle(this[0])["padding-right"]),
-            bottom: parseInt(getComputedStyle(this[0])["padding-bottom"]),
-            left: parseInt(getComputedStyle(this[0])["padding-left"])
+    padding: function(p){
+        if (this.length === 0) return;
+        var s = getComputedStyle(this[0], p);
+
+        return {
+            top: parseInt(s["padding-top"]),
+            right: parseInt(s["padding-right"]),
+            bottom: parseInt(s["padding-bottom"]),
+            left: parseInt(s["padding-left"])
         }
     },
 
-    margin: function(){
-        return this.length === 0 ? undefined : {
-            top: parseInt(getComputedStyle(this[0])["margin-top"]),
-            right: parseInt(getComputedStyle(this[0])["margin-right"]),
-            bottom: parseInt(getComputedStyle(this[0])["margin-bottom"]),
-            left: parseInt(getComputedStyle(this[0])["margin-left"])
+    margin: function(p){
+        if (this.length === 0) return;
+        var s = getComputedStyle(this[0], p);
+
+        return {
+            top: parseInt(s["margin-top"]),
+            right: parseInt(s["margin-right"]),
+            bottom: parseInt(s["margin-bottom"]),
+            left: parseInt(s["margin-left"])
+        }
+    },
+
+    border: function(p){
+        if (this.length === 0) return;
+        var s = getComputedStyle(this[0], p);
+
+        return {
+            top: parseInt(s["border-top-width"]),
+            right: parseInt(s["border-right-width"]),
+            bottom: parseInt(s["border-bottom-width"]),
+            left: parseInt(s["border-left-width"])
         }
     }
 });
@@ -2250,9 +2268,9 @@ $.extend({
 
 $.fn.extend({
     append: function(elements){
-        if (typeof elements === "string") {
-            elements = $.parseHTML(elements);
-        }
+        if (typeof elements === "string") elements = $.parseHTML(elements);
+        if (elements instanceof HTMLElement) elements = [elements];
+
         return this.each(function(elIndex, el){
             $.each(elements, function(){
                 var child = this;
@@ -2262,9 +2280,9 @@ $.fn.extend({
     },
 
     appendTo: function(elements){
-        if (typeof elements === "string") {
-            elements = $.parseHTML(elements);
-        }
+        if (typeof elements === "string") elements = $.parseHTML(elements);
+        if (elements instanceof HTMLElement) elements = [elements];
+
         return this.each(function(){
             var el = this;
             $.each(elements, function(parIndex, parent){
@@ -2274,9 +2292,9 @@ $.fn.extend({
     },
 
     prepend: function(elements){
-        if (typeof elements === "string") {
-            elements = $.parseHTML(elements);
-        }
+        if (typeof elements === "string") elements = $.parseHTML(elements);
+        if (elements instanceof HTMLElement) elements = [elements];
+
         return this.each(function (elIndex, el) {
             $.each(elements, function(){
                 var child = this;
@@ -2286,9 +2304,9 @@ $.fn.extend({
     },
 
     prependTo: function(elements){
-        if (typeof elements === "string") {
-            elements = $.parseHTML(elements);
-        }
+        if (typeof elements === "string") elements = $.parseHTML(elements);
+        if (elements instanceof HTMLElement) elements = [elements];
+
         return this.each(function(){
             var el = this;
             $.each(elements, function(parIndex, parent){
@@ -2298,9 +2316,9 @@ $.fn.extend({
     },
 
     insertBefore: function(elements){
-        if (typeof elements === "string") {
-            elements = $.parseHTML(elements);
-        }
+        if (typeof elements === "string") elements = $.parseHTML(elements);
+        if (elements instanceof HTMLElement) elements = [elements];
+
         return this.each(function(){
             var el = this;
             $.each(elements, function(elIndex, element){
@@ -2310,9 +2328,9 @@ $.fn.extend({
     },
 
     insertAfter: function(elements){
-        if (typeof elements === "string") {
-            elements = $.parseHTML(elements);
-        }
+        if (typeof elements === "string") elements = $.parseHTML(elements);
+        if (elements instanceof HTMLElement) elements = [elements];
+
         return this.each(function(){
             var el = this;
             $.each(elements, function(elIndex, element){
@@ -2327,7 +2345,7 @@ $.fn.extend({
             if (typeof html === "string") {
                 el.insertAdjacentHTML('afterend', html);
             } else {
-                $(html).insertAfter($(el));
+                $(html).insertAfter(el);
             }
         })
     },
@@ -2338,7 +2356,7 @@ $.fn.extend({
             if (typeof html === "string") {
                 el.insertAdjacentHTML('beforebegin', html);
             } else {
-                $(html).insertBefore($(el));
+                $(html).insertBefore(el);
             }
         });
     },

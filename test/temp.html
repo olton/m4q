@@ -12,62 +12,19 @@
             padding: 0;
             margin: 0;
         }
-
-        #mydiv {
-            width: 50px;
-            padding: 10px;
-            height: 60px;
-            float: left;
-            margin: 5px;
-            background: red;
-            cursor: pointer;
-            border: 4px solid black;
-            display: flex;
-        }
-
-
     </style>
 </head>
 <body class="h-vh-100">
 
-<div>
-    <button onclick="fade(1)">FadeIn</button>
-    <button onclick="fade(0)">FadeOut</button>
-</div>
-
-<div id="mydiv" class="foo bar" style="opacity: 0">123</div>
-<div id="mydiv2" class="foo bar" style="display: block">123</div>
-<div id="mydiv3" class="foo bar" style="opacity: 0">123</div>
+<div id="mydiv" class="foo bar" style="padding: 10px; border: 1px solid red">123</div>
 
 <script src="../build/m4q.js"></script>
 <script>
-    function fade(i){
-        var div = $("#mydiv, #mydiv3, #mydiv2");
-        if (i) {
-            div.fadeIn();
-        } else {
-            div.fadeOut(function(){
-                console.log("---")
-            });
-        }
-    }
+    var new_div = $("<div>").text("New div");
+    var div = $("#mydiv");
 
-    var elem = $("#mydiv2")[0];
-    console.log( elem.offsetWidth, elem.offsetHeight, elem.getClientRects().length );
+    div.append([new_div[0]]);
 
-    var elem2 = $("#mydiv3")[0];
-    console.log(!!( elem2.offsetWidth || elem2.offsetHeight || elem2.getClientRects().length ));
-
-    // $.setTimeout(function(){
-    //     console.log($.intervalQueue);
-    // }, 2000);
-    // console.log($.intervalQueue);
-
-    // var modHeight = "12rem";
-    // $( "div" ).one( "click", function() {
-    //     $( this ).outerWidth( modHeight ).addClass( "mod" );
-    //     modHeight -= 8;
-    // });
 </script>
 </body>
 </html>
