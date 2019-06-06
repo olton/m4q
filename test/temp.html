@@ -35,14 +35,14 @@
     <button onclick="fade(0)">FadeOut</button>
 </div>
 
-<div id="mydiv" class="foo bar">123</div>
+<div id="mydiv" class="foo bar" style="opacity: 0">123</div>
 <div id="mydiv2" class="foo bar" style="display: block">123</div>
 <div id="mydiv3" class="foo bar" style="opacity: 0">123</div>
 
 <script src="../build/m4q.js"></script>
 <script>
     function fade(i){
-        var div = $("#mydiv");
+        var div = $("#mydiv, #mydiv3, #mydiv2");
         if (i) {
             div.fadeIn();
         } else {
