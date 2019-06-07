@@ -1,4 +1,31 @@
 $.extend({
+    uniqueId: function () {
+        var d = new Date().getTime();
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = (d + Math.random() * 16) % 16 | 0;
+            d = Math.floor(d / 16);
+            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        });
+    },
+
+    toArray: function(n){
+        var i, out = [];
+
+        for (i = 0 ; i < n.length; i++ ) {
+            out.push(n[i]);
+        }
+
+        return out;
+    },
+
+    import: function(ctx){
+        var res = [];
+        this.each(ctx, function(){
+            res.push(this);
+        });
+        return this.merge($(), res);
+    },
+
     merge: function( first, second ) {
         var len = +second.length,
             j = 0,
@@ -55,13 +82,5 @@ $.extend({
 $.fn.extend({
     items: function(){
         return $.toArray(this);
-    },
-
-    clone: function(){
-        var res = [], out = $();
-        this.each(function(){
-            res.push(this.cloneNode(true));
-        });
-        return $.merge(out, res);
     }
 });

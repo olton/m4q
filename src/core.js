@@ -12,33 +12,6 @@ var $ = function(selector, context){
     return new $.init(selector, context);
 };
 
-$.uniqueId = function () {
-    var d = new Date().getTime();
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = (d + Math.random() * 16) % 16 | 0;
-        d = Math.floor(d / 16);
-        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-    });
-};
-
-$.toArray = function(n){
-    var i, out = [];
-
-    for (i = 0 ; i < n.length; i++ ) {
-        out.push(n[i]);
-    }
-
-    return out;
-};
-
-$.import = function(ctx){
-    var res = [], out = $();
-    this.each(ctx, function(){
-        res.push(this);
-    });
-    return this.merge(out, res);
-};
-
 $.version = m4qVersion;
 
 $.fn = $.prototype = {

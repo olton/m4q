@@ -149,10 +149,13 @@ $.fn.extend({
         });
     },
 
-    clone: function(){
+    clone: function(deep){
         var res = [];
+        if (not(deep)) {
+            deep = false;
+        }
         this.each(function(){
-            res.push(this.cloneNode(true));
+            res.push(this.cloneNode(deep));
         });
         return $.merge($(), res);
     },

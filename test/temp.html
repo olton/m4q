@@ -20,13 +20,14 @@
 <h2>Greetings</h2>
 <div class="container">
     <div class="inner">Hello</div>
-    <div class="inner">Goodbye</div>
+<!--    <div class="inner">Goodbye</div>-->
 </div>
 
 <script src="../build/m4q.js"></script>
 <script>
-    // $('.inner').append("#mydiv");
-    $( "<p>Test</p>" ).insertBefore($('.inner'));
+    $('.inner').clone(true).appendTo("#mydiv");
+    // $('.inner').before("<p>Test</p>");
+    // $( "<p>Test</p>" ).insertBefore($('.inner'));
 
 </script>
 </body>
