@@ -22,6 +22,21 @@ $.extend({
         while (new Date() < ms){}
     },
 
+    isSelector: function(selector){
+        if (typeof(selector) !== 'string') {
+            return false;
+        }
+        if (selector.indexOf("<") !== -1) {
+            return false;
+        }
+        try {
+            $(selector);
+        } catch(error) {
+            return false;
+        }
+        return true;
+    },
+
     camelCase: function(string){return camelCase(string);},
     isPlainObject: function(obj){return isPlainObject(obj);},
     isEmptyObject: function(obj){return isEmptyObject(obj);},

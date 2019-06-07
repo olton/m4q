@@ -474,7 +474,7 @@ function parseUnit(str, out) {
     }
 }(window));
 
-var m4qVersion = "v1.0.0. Built at 06/06/2019 21:44:03";
+var m4qVersion = "v1.0.0. Built at 07/06/2019 09:24:10";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1286,6 +1286,21 @@ $.extend({
     sleep: function(ms) {
         ms += new Date().getTime();
         while (new Date() < ms){}
+    },
+
+    isSelector: function(selector){
+        if (typeof(selector) !== 'string') {
+            return false;
+        }
+        if (selector.indexOf("<") !== -1) {
+            return false;
+        }
+        try {
+            $(selector);
+        } catch(error) {
+            return false;
+        }
+        return true;
     },
 
     camelCase: function(string){return camelCase(string);},
@@ -2268,72 +2283,79 @@ $.extend({
 
 $.fn.extend({
     append: function(elements){
-        if (typeof elements === "string") elements = $.parseHTML(elements);
+
+        if (typeof elements === "string") elements = $.isSelector(elements) ? $(elements) : $.parseHTML(elements);
         if (elements instanceof HTMLElement) elements = [elements];
 
         return this.each(function(elIndex, el){
             $.each(elements, function(){
                 var child = this;
+                if (el === this) return ;
                 el.append(elIndex === 0 ? child : child.cloneNode(true));
             });
         })
     },
 
     appendTo: function(elements){
-        if (typeof elements === "string") elements = $.parseHTML(elements);
+        if (typeof elements === "string") elements = $.isSelector(elements) ? $(elements) : $.parseHTML(elements);
         if (elements instanceof HTMLElement) elements = [elements];
 
         return this.each(function(){
             var el = this;
             $.each(elements, function(parIndex, parent){
+                if (el === this) return ;
                 parent.append(parIndex === 0 ? el : el.cloneNode(true));
             });
         })
     },
 
     prepend: function(elements){
-        if (typeof elements === "string") elements = $.parseHTML(elements);
+        if (typeof elements === "string") elements = $.isSelector(elements) ? $(elements) : $.parseHTML(elements);
         if (elements instanceof HTMLElement) elements = [elements];
 
         return this.each(function (elIndex, el) {
             $.each(elements, function(){
                 var child = this;
+                if (el === this) return ;
                 el.prepend(elIndex === 0 ? child : child.cloneNode(true))
             });
         })
     },
 
     prependTo: function(elements){
-        if (typeof elements === "string") elements = $.parseHTML(elements);
+        if (typeof elements === "string") elements = $.isSelector(elements) ? $(elements) : $.parseHTML(elements);
         if (elements instanceof HTMLElement) elements = [elements];
 
         return this.each(function(){
             var el = this;
             $.each(elements, function(parIndex, parent){
+                if (el === this) return ;
                 $(parent).prepend(parIndex === 0 ? el : el.cloneNode(true));
             })
         })
     },
 
     insertBefore: function(elements){
-        if (typeof elements === "string") elements = $.parseHTML(elements);
+        if (typeof elements === "string") elements = $.isSelector(elements) ? $(elements) : $.parseHTML(elements);
         if (elements instanceof HTMLElement) elements = [elements];
 
         return this.each(function(){
             var el = this;
             $.each(elements, function(elIndex, element){
+                if (el === this) return ;
                 element.parentNode.insertBefore(elIndex === 0 ? el : el.cloneNode(true), element);
             });
         })
     },
 
     insertAfter: function(elements){
-        if (typeof elements === "string") elements = $.parseHTML(elements);
+        if (typeof elements === "string") elements = $.isSelector(elements) ? $(elements) : $.parseHTML(elements);
         if (elements instanceof HTMLElement) elements = [elements];
 
         return this.each(function(){
             var el = this;
             $.each(elements, function(elIndex, element){
+                if (el === this) return ;
                 element.parentNode.insertBefore(elIndex === 0 ? el : el.cloneNode(true), element.nextSibling);
             });
         });
@@ -2362,11 +2384,11 @@ $.fn.extend({
     },
 
     clone: function(){
-        var res = [], out = $();
+        var res = [];
         this.each(function(){
             res.push(this.cloneNode(true));
         });
-        return $.merge(out, res);
+        return $.merge($(), res);
     },
 
     remove: function(selector){

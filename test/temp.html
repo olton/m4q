@@ -17,14 +17,20 @@
 <body class="h-vh-100">
 
 <div id="mydiv" class="foo bar" style="padding: 10px; border: 1px solid red">123</div>
+<h2>Greetings</h2>
+<div class="container">
+    <div class="inner">Hello</div>
+    <div class="inner">Goodbye</div>
+</div>
 
 <script src="../build/m4q.js"></script>
 <script>
-    var new_div = $("<div>").text("New div");
-    var div = $("#mydiv");
+    // $('.inner').append("<p>Test</p>");
+    $( "<p>Test</p>" ).appendTo('.inner');
 
-    div.append([new_div[0]]);
-
+    console.log($.isSelector(".inner"));
+    console.log($.isSelector("<p>Test</p>"));
+    console.log($.isSelector($(".inner")));
 </script>
 </body>
 </html>
