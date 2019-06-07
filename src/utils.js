@@ -37,6 +37,10 @@ $.extend({
         return true;
     },
 
+    remove: function(s){
+        $(s).remove();
+    },
+
     camelCase: function(string){return camelCase(string);},
     isPlainObject: function(obj){return isPlainObject(obj);},
     isEmptyObject: function(obj){return isEmptyObject(obj);},

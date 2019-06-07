@@ -474,7 +474,7 @@ function parseUnit(str, out) {
     }
 }(window));
 
-var m4qVersion = "v1.0.0. Built at 07/06/2019 09:24:10";
+var m4qVersion = "v1.0.0. Built at 07/06/2019 12:52:48";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1301,6 +1301,10 @@ $.extend({
             return false;
         }
         return true;
+    },
+
+    remove: function(s){
+        $(s).remove();
     },
 
     camelCase: function(string){return camelCase(string);},
@@ -2281,14 +2285,20 @@ $.extend({
     });
 })([Element.prototype, Document.prototype, DocumentFragment.prototype]);
 
+var normalizeElements = function(s){
+    var result = undefined;
+    if (typeof s === "string") result = $.isSelector(s) ? $(s) : $.parseHTML(s);
+    else if (s instanceof HTMLElement) result = [s];
+    else if (isArrayLike(s)) result = s;
+    return result;
+};
+
 $.fn.extend({
     append: function(elements){
-
-        if (typeof elements === "string") elements = $.isSelector(elements) ? $(elements) : $.parseHTML(elements);
-        if (elements instanceof HTMLElement) elements = [elements];
+        var elems = normalizeElements(elements);
 
         return this.each(function(elIndex, el){
-            $.each(elements, function(){
+            $.each(elems, function(){
                 var child = this;
                 if (el === this) return ;
                 el.append(elIndex === 0 ? child : child.cloneNode(true));
@@ -2297,12 +2307,11 @@ $.fn.extend({
     },
 
     appendTo: function(elements){
-        if (typeof elements === "string") elements = $.isSelector(elements) ? $(elements) : $.parseHTML(elements);
-        if (elements instanceof HTMLElement) elements = [elements];
+        var elems = normalizeElements(elements);
 
         return this.each(function(){
             var el = this;
-            $.each(elements, function(parIndex, parent){
+            $.each(elems, function(parIndex, parent){
                 if (el === this) return ;
                 parent.append(parIndex === 0 ? el : el.cloneNode(true));
             });
@@ -2310,11 +2319,10 @@ $.fn.extend({
     },
 
     prepend: function(elements){
-        if (typeof elements === "string") elements = $.isSelector(elements) ? $(elements) : $.parseHTML(elements);
-        if (elements instanceof HTMLElement) elements = [elements];
+        var elems = normalizeElements(elements);
 
         return this.each(function (elIndex, el) {
-            $.each(elements, function(){
+            $.each(elems, function(){
                 var child = this;
                 if (el === this) return ;
                 el.prepend(elIndex === 0 ? child : child.cloneNode(true))
@@ -2323,12 +2331,11 @@ $.fn.extend({
     },
 
     prependTo: function(elements){
-        if (typeof elements === "string") elements = $.isSelector(elements) ? $(elements) : $.parseHTML(elements);
-        if (elements instanceof HTMLElement) elements = [elements];
+        var elems = normalizeElements(elements);
 
         return this.each(function(){
             var el = this;
-            $.each(elements, function(parIndex, parent){
+            $.each(elems, function(parIndex, parent){
                 if (el === this) return ;
                 $(parent).prepend(parIndex === 0 ? el : el.cloneNode(true));
             })
@@ -2336,12 +2343,11 @@ $.fn.extend({
     },
 
     insertBefore: function(elements){
-        if (typeof elements === "string") elements = $.isSelector(elements) ? $(elements) : $.parseHTML(elements);
-        if (elements instanceof HTMLElement) elements = [elements];
+        var elems = normalizeElements(elements);
 
         return this.each(function(){
             var el = this;
-            $.each(elements, function(elIndex, element){
+            $.each(elems, function(elIndex, element){
                 if (el === this) return ;
                 element.parentNode.insertBefore(elIndex === 0 ? el : el.cloneNode(true), element);
             });
@@ -2349,12 +2355,11 @@ $.fn.extend({
     },
 
     insertAfter: function(elements){
-        if (typeof elements === "string") elements = $.isSelector(elements) ? $(elements) : $.parseHTML(elements);
-        if (elements instanceof HTMLElement) elements = [elements];
+        var elems = normalizeElements(elements);
 
         return this.each(function(){
             var el = this;
-            $.each(elements, function(elIndex, element){
+            $.each(elems, function(elIndex, element){
                 if (el === this) return ;
                 element.parentNode.insertBefore(elIndex === 0 ? el : el.cloneNode(true), element.nextSibling);
             });

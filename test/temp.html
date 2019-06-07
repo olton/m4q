@@ -25,12 +25,9 @@
 
 <script src="../build/m4q.js"></script>
 <script>
-    // $('.inner').append("<p>Test</p>");
-    $( "<p>Test</p>" ).appendTo('.inner');
+    // $('.inner').append("#mydiv");
+    $( "<p>Test</p>" ).insertBefore($('.inner'));
 
-    console.log($.isSelector(".inner"));
-    console.log($.isSelector("<p>Test</p>"));
-    console.log($.isSelector($(".inner")));
 </script>
 </body>
 </html>
