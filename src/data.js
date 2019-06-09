@@ -14,7 +14,7 @@ function getData(data){
 function dataAttr(elem, key, data){
     var name;
 
-    if ( data === undefined && elem.nodeType === 1 ) {
+    if ( not(data) && elem.nodeType === 1 ) {
         name = "data-" + key.replace( /[A-Z]/g, "-$&" ).toLowerCase();
         data = elem.getAttribute( name );
 
@@ -36,7 +36,7 @@ var Data = function(ns){
     Data.uid++;
 };
 
-Data.uid = 1;
+Data.uid = -1;
 
 Data.prototype = {
     cache: function(owner){
@@ -128,12 +128,12 @@ $.extend({
         return dataSet.hasData(elem);
     },
 
-    data: function(elem, name, data){
-        return dataSet.access(elem, name, data);
+    data: function(elem, key, val){
+        return dataSet.access(elem, key, val);
     },
 
-    removeData: function(elem, name){
-        return dataSet.remove(elem, name);
+    removeData: function(elem, key){
+        return dataSet.remove(elem, key);
     },
 
     dataSet: function(ns){

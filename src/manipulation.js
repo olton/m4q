@@ -160,21 +160,23 @@ $.fn.extend({
         return $.merge($(), res);
     },
 
-    remove: function(selector){
-        var i = 0, node, out = [];
+    remove: function(selector){ //check it
+        var i = 0, node, out, res = [];
 
         if (this.length === 0) {
             return ;
         }
 
-        for ( ; ( node = this[ i ] ) != null; i++ ) {
+        out = selector ? this.filter(function(el){
+            return matches.call(el, selector);
+        }) : this.items();
+
+        for ( ; ( node = out[ i ] ) != null; i++ ) {
             if (node.parentNode) {
-                out.push(node.parentNode.removeChild(node));
+                res.push(node.parentNode.removeChild(node));
             }
         }
 
-        return selector ? out.filter(function(el){
-            return matches.call(el, selector);
-        }) : out;
+        return $.merge($(), res);
     }
 });
