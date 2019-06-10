@@ -97,14 +97,20 @@ $.extend({
         if (not(type)) {
             type = "before";
         }
-        this.eventHooks[camelCase(type+"-"+event)] = handler;
+        $.each(str2arr(event), function(){
+            this.eventHooks[camelCase(type+"-"+this)] = handler;
+        });
+        return this;
     },
 
     removeEventHook: function(event, type){
         if (not(type)) {
             type = "before";
         }
-        delete this.eventHooks[camelCase(type+"-"+event)];
+        $.each(str2arr(event), function(){
+            delete this.eventHooks[camelCase(type+"-"+this)];
+        });
+        return this;
     },
 
     removeEventHooks: function(event){
@@ -112,23 +118,15 @@ $.extend({
         if (not(event)) {
             this.eventHooks = {};
         } else {
-            $.each(event.split(","), function(){
-                var ev = (""+this).trim();
-                that.removeEventHook(ev);
+            $.each(str2arr(event), function(){
+                delete that.eventHooks[camelCase(type+"-"+this)];
             });
         }
+        return this;
     }
 });
 
 $.fn.extend({
-
-    /**
-     * $.on('click', function)
-     * $.on('click', function, options)
-     * $.on('click', sel, function)
-     * $.on('click', sel, function, options)
-     */
-
     on: function(eventsList, sel, handler, data, options){
         if (this.length === 0) {
             return ;
@@ -221,7 +219,7 @@ $.fn.extend({
             return ;
         }
 
-        if (eventsList.toLowerCase() === 'all') {
+        if (not(eventsList) || eventsList.toLowerCase() === 'all') {
             return this.each(function(){
                 var el = this;
                 $.each($.events, function(){
@@ -297,10 +295,10 @@ $.fn.extend({
     .split( " " )
     .forEach(
     function( name ) {
-        $.fn[ name ] = function( sel, fn, opt ) {
+        $.fn[ name ] = function( sel, fn, data, opt ) {
             return arguments.length > 0 ?
-                this.on( name, sel, fn, opt ) :
-                this.trigger( name );
+                this.on( name, sel, fn, data, opt ) :
+                this.trigger( name, data );
         };
 });
 
