@@ -160,7 +160,26 @@ $.fn.extend({
         return $.merge($(), res);
     },
 
-    remove: function(selector){ //check it
+    import: function(deep){
+        var res = [];
+        if (not(deep)) {
+            deep = false;
+        }
+        this.each(function(){
+            res.push(document.importNode(this, deep));
+        });
+        return $.merge($(), res);
+    },
+
+    adopt: function(){
+        var res = [];
+        this.each(function(){
+            res.push(document.adoptNode(this));
+        });
+        return $.merge($(), res);
+    },
+
+    remove: function(selector){
         var i = 0, node, out, res = [];
 
         if (this.length === 0) {
@@ -174,6 +193,7 @@ $.fn.extend({
         for ( ; ( node = out[ i ] ) != null; i++ ) {
             if (node.parentNode) {
                 res.push(node.parentNode.removeChild(node));
+                $.removeData(node);
             }
         }
 

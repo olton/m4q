@@ -19,17 +19,27 @@
 <div id="mydiv" class="foo bar" style="padding: 10px; border: 1px solid red">123</div>
 <h2>Greetings</h2>
 <div class="container">
-    <div class="inner">Hello</div>
-    <div class="inner remove">Goodbye</div>
+    <div class="inner first">Hello</div>
+    <div class="inner second">Goodbye</div>
 </div>
 
 <script src="../build/m4q.js"></script>
 <script>
-    console.log($('.inner').remove(".remove"));
-    // $('.inner').clone(true).appendTo("#mydiv");
-    // $('.inner').before("<p>Test</p>");
-    // $( "<p>Test</p>" ).insertBefore($('.inner'));
+    var handler = function(e){
+        console.log(e.customData);
+    };
+    var handler2 = function(e){
+        console.log(e.customData);
+    };
+    $(".first").on("click", handler, {
+        el: "first"
+    });
+    $(".second").one("click", handler2, {
+        el: "second"
+    });
 
+    // console.log($.getEvents());
+    // console.log(+undefined);
 </script>
 </body>
 </html>
