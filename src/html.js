@@ -2,7 +2,7 @@ $.fn.extend({
     html: function(value){
         var that = this, v = [];
 
-        if (arguments.length === 0 || not(value)) {
+        if (arguments.length === 0) {
             return this._prop('innerHTML');
         }
 
