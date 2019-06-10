@@ -2,6 +2,11 @@ function isVisible(elem) {
     return !!( elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length );
 }
 
+function isHidden(elem) {
+    var s = getComputedStyle(elem);
+    return !isVisible(elem) || +s['opacity'] === 0 || elem.hidden || s['visibility'] === "hidden";
+}
+
 function not(value){
     return value === undefined || value === null;
 }

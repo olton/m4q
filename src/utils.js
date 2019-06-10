@@ -65,7 +65,7 @@ $.extend({
     },
 
     remove: function(s){
-        $(s).remove();
+        return $(s).remove();
     },
 
     camelCase: function(string){return camelCase(string);},
@@ -76,7 +76,8 @@ $.extend({
     not: function(val){return not(val)},
     parseUnit: function(str, out){return parseUnit(str, out)},
     unit: function(str, out){return parseUnit(str, out)},
-    isVisible: function(elem) {return isVisible(elem)}
+    isVisible: function(elem) {return isVisible(elem)},
+    isHidden: function(elem) {return isHidden(elem)}
 });
 
 $.fn.extend({
