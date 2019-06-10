@@ -31,6 +31,17 @@
     var handler2 = function(e){
         console.log(e.customData);
     };
+
+    $.addEventHook("click", function(){
+        console.log("Before hook");
+    });
+
+    $.addEventHook("click", function(){
+        console.log("After hook");
+    }, "after");
+
+    console.log($.getEventHooks());
+
     $(".first").on("click", handler, {
         el: "first"
     });

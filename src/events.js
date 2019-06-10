@@ -31,7 +31,7 @@ Event.prototype.stop = function(immediate){
 
 $.extend({
     events: [],
-    eventHook: {},
+    eventHooks: {},
 
     eventUID: -1,
 
@@ -51,7 +51,7 @@ $.extend({
 
         eventObj = {
             element: obj.el,
-            event: obj.eventName,
+            event: obj.event,
             handler: obj.handler,
             selector: obj.selector,
             ns: obj.ns,
@@ -89,10 +89,35 @@ $.extend({
         return this.events;
     },
 
-    addEventHook: function(event, handler){},
-    removeEventHook: function(event, index){},
-    removeEventHooks: function(event){},
-    clearEventHooks: function(){}
+    getEventHooks: function(){
+        return this.eventHooks;
+    },
+
+    addEventHook: function(event, handler, type){
+        if (not(type)) {
+            type = "before";
+        }
+        this.eventHooks[camelCase(type+"-"+event)] = handler;
+    },
+
+    removeEventHook: function(event, type){
+        if (not(type)) {
+            type = "before";
+        }
+        delete this.eventHooks[camelCase(type+"-"+event)];
+    },
+
+    removeEventHooks: function(event){
+        var that = this;
+        if (not(event)) {
+            this.eventHooks = {};
+        } else {
+            $.each(event.split(","), function(){
+                var ev = (""+this).trim();
+                that.removeEventHook(ev);
+            });
+        }
+    }
 });
 
 $.fn.extend({
@@ -131,10 +156,16 @@ $.fn.extend({
 
                 h = function(e){
                     var target = e.target;
+                    var beforeHook = $.eventHooks[camelCase("before-"+name)];
+                    var afterHook = $.eventHooks[camelCase("after-"+name)];
 
                     Object.defineProperty(e, 'customData', {
                         value: data
                     });
+
+                    if (typeof beforeHook === "function") {
+                        beforeHook.call(target, e);
+                    }
 
                     if (!sel) {
                         handler.call(target, e);
@@ -149,6 +180,11 @@ $.fn.extend({
                             target = target.parentNode;
                         }
                     }
+
+                    if (typeof afterHook === "function") {
+                        afterHook.call(target, e);
+                    }
+
                     if (options.once) {
                         index = +$(el).origin( "event-"+e.type+(sel ? ":"+sel:"")+(ns ? ":"+ns:"") );
                         if (!isNaN(index)) $.events.splice(index, 1);
