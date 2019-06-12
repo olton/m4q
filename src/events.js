@@ -315,3 +315,30 @@ $.ready = function(fn){
 $.load = function(fn){
     return $(window).on("load", fn);
 };
+
+$.unload = function(fn){
+    return $(window).on("unload", fn);
+};
+
+$.fn.extend({
+    unload: function(fn){
+        return (this.length === 0 || this[0]['self'] !== window) ? undefined : $.unload(fn);
+    }
+});
+
+$.beforeunload = function(fn){
+    if (typeof fn === "string") {
+        return $(window).on("beforeunload", function(e){
+            e.returnValue = fn;
+            return fn;
+        });
+    } else {
+        return $(window).on("beforeunload", fn);
+    }
+};
+
+$.fn.extend({
+    beforeunload: function(fn){
+        return (this.length === 0 || this[0]['self'] !== window) ? undefined : $.beforeunload(fn);
+    }
+});
