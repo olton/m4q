@@ -311,3 +311,7 @@ $.fn.extend( {
 $.ready = function(fn){
     document.addEventListener('DOMContentLoaded', fn);
 };
+
+$.load = function(fn){
+    return $(window).on("load", fn);
+};

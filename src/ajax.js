@@ -98,6 +98,11 @@ $.ajax = function(p){
 $.fn.extend({
     load: function(url, data, options){
         var that = this;
+
+        if (this[0]['self'] === window ) {
+            return $.load(url);
+        }
+
         return $.get(url, data, options).then(function(data){
             that.each(function(){
                 this.innerHTML = data;

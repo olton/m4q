@@ -479,7 +479,7 @@ function parseUnit(str, out) {
     }
 }(window));
 
-var m4qVersion = "v1.0.0. Built at 10/06/2019 22:33:03";
+var m4qVersion = "v1.0.0. Built at 12/06/2019 09:03:35";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1644,6 +1644,9 @@ $.ready = function(fn){
     document.addEventListener('DOMContentLoaded', fn);
 };
 
+$.load = function(fn){
+    return $(window).on("load", fn);
+};
 
 $.fn.extend({
     html: function(value){
@@ -1803,6 +1806,11 @@ $.ajax = function(p){
 $.fn.extend({
     load: function(url, data, options){
         var that = this;
+
+        if (this[0]['self'] === window ) {
+            return $.load(url);
+        }
+
         return $.get(url, data, options).then(function(data){
             that.each(function(){
                 this.innerHTML = data;

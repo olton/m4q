@@ -36,11 +36,13 @@
 
 <script src="../build/m4q.js"></script>
 <script>
-    console.log( $.isHidden( $(".vis1")[0] ) ); // Outputs false
-    console.log( $.isHidden( $(".vis2")[0] ) ); // Outputs true
-    console.log( $.isHidden( $(".vis3")[0] ) ); // Outputs true
-    console.log( $.isHidden( $(".vis4")[0] ) ); // Outputs true
-    console.log( $.isHidden( $(".vis5")[0] ) ); // Outputs true
+$.load(function(){
+    console.log("loaded")
+});
+
+$(window).load(function(){
+    console.log("loaded again")
+})
 </script>
 </body>
 </html>
