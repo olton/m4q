@@ -16,33 +16,36 @@
 </head>
 <body class="h-vh-100">
 
-<!--<div id="mydiv" class="foo bar" style="padding: 10px; border: 1px solid red">123</div>-->
-<!--<h2>Greetings</h2>-->
-<!--<div class="container">-->
-<!--&lt;!&ndash;    <div class="inner first">Hello</div>&ndash;&gt;-->
-<!--&lt;!&ndash;    <div class="inner second">Goodbye</div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;    <span class="span">span 1</span>&ndash;&gt;-->
-<!--&lt;!&ndash;    <span class="span">span 2</span>&ndash;&gt;-->
-
-<!--</div>-->
-
-<div class="vis1">123</div>
-<div class="vis2" style="display: none">123</div>
-<div class="vis3" hidden>123</div>
-<div class="vis4" style="visibility: hidden">123</div>
-<div class="vis5" style="opacity: 0">123</div>
+<ul id="tree">
+    <li >Favorites
+        <ul>
+            <li >Projects</li>
+            <li >Downloads</li>
+            <li >Desktop</li>
+        </ul>
+    </li>
+    <li >OneDrive
+        <ul>
+            <li >Documents</li>
+            <li >Projects
+                <ul>
+                    <li >Web</li>
+                    <li >Android</li>
+                    <li >Windows</li>
+                    <li >iOS</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>
 
 
 <script src="../build/m4q.js"></script>
 <script>
-$.load(function(){
-    console.log("loaded")
-});
-
-$(window).load(function(){
-    console.log("loaded again")
-})
+    $("#tree").on("mousedown", "li", function(e){
+        console.log($(this).closest("li").text());
+        e.stop();
+    });
 </script>
 </body>
 </html>

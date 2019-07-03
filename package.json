@@ -4,9 +4,9 @@
   "description": "Helper for DOM manipulation",
   "version": "1.0.0",
   "build": "1",
-  "status": "alpha",
+  "status": "beta",
   "main": "build/m4q.js",
-  "homepage": "",
+  "homepage": "https://metroui.org.ua",
   "author": {
     "name": "Sergey Pimenov",
     "url": "https://pimenov.oom.ua"
@@ -17,11 +17,12 @@
   },
   "keywords": [
     "metro4",
-    "mquery",
+    "m4q",
     "javascript",
     "browser",
     "library",
-    "dom"
+    "dom",
+    "animation"
   ],
   "bugs": {
     "url": "https://github.com/olton/m4q/issues"
@@ -30,7 +31,6 @@
   "dependencies": {},
   "scripts": {
     "build": "npm install && grunt",
-    "start": "grunt watch",
     "test": "node-qunit-phantomjs ./test/qunit.html"
   },
   "devDependencies": {

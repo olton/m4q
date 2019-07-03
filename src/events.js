@@ -172,7 +172,7 @@ $.fn.extend({
                             if (matches.call(target, sel)) {
                                 handler.call(target, e);
                                 if (e.isPropagationStopped) {
-                                    e.stop(true);
+                                    break;
                                 }
                             }
                             target = target.parentNode;

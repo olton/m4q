@@ -69,6 +69,11 @@ module.exports = function(grunt) {
             "} )( typeof window !== \"undefined\" ? window : this, function( window ) {\n"+
             "\t\n",
 
+        footer: "\n\treturn m4q; \n});\n",
+
+        banner2: "(function (global, undefined) {\n",
+        footer2: "}(window));",
+
         clean: {
             build: ['build']
         },
@@ -76,12 +81,13 @@ module.exports = function(grunt) {
         concat: {
             global: {
                 options: {
-                    banner: '<%= copyright %>' + "\n" + "<%= banner %>\n",
-                    footer: "\n\treturn m4q; \n});\n",
+                    // banner: '<%= copyright %>' + "\n" + "<%= banner %>\n",
+                    banner: "<%= banner2 %>\n",
+                    footer: "<%= footer2 %>\n",
                     stripBanners: true,
                     separator: "\n\n",
-                    process: function(src) {
-                        return src.replace(/\n/g, '\n');
+                    process: function(src, filePath){
+                        return '// Source: ' + filePath + '\n\n' + src;
                     }
                 },
                 src: source_files,
