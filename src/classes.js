@@ -11,7 +11,7 @@ $.fn.extend({
         var result = false;
 
         this.each(function(){
-            if (this.classList.contains(cls)) {
+            if (this.classList && this.classList.contains(cls)) {
                 result = true;
             }
         });

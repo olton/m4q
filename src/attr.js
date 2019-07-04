@@ -2,39 +2,28 @@ $.fn.extend({
     attr: function(name, val){
         var attributes = {};
 
-        if (this.length === 0) {
-            return ;
-        }
-
-        if (arguments.length === 0) {
+        if (this.length && arguments.length === 0) {
             $.each(this[0].attributes, function(){
                 attributes[this.nodeName] = this.nodeValue;
             });
             return attributes;
         }
 
-        if (not(name)) {
-            return name;
-        }
-
         if (typeof name === 'string' && val === undefined) {
-            return this[0].nodeType === 1 && this[0].hasAttribute(name) ? this[0].getAttribute(name) : undefined;
+            return this.length && this[0].nodeType === 1 && this[0].hasAttribute(name) ? this[0].getAttribute(name) : undefined;
         }
 
-        if (isPlainObject(name)) {
-            this.each(function(){
-                for (var key in name) {
-                    if (name.hasOwnProperty(key))
-                        this.setAttribute(key, name[key]);
-                }
-            });
-        } else {
-            this.each(function(){
-                this.setAttribute(name, val);
-            });
-        }
-
-        return this;
+        return this.each(function(){
+            var el = this;
+            if (isPlainObject(name)) {
+                $.each(name, function(k, v){
+                    el.setAttribute(k, v);
+                });
+            } else {
+                el.setAttribute(name, val);
+                console.log(name, val);
+            }
+        });
     },
 
     removeAttr: function(name){
@@ -43,8 +32,8 @@ $.fn.extend({
         if (not(name)) {
             return this.each(function(){
                 var el = this;
-                $.each($(el).attr(), function(key){
-                    el.removeAttribute(key);
+                $.each(this.attributes, function(){
+                    el.removeAttribute(this);
                 })
             });
         }
@@ -62,9 +51,6 @@ $.fn.extend({
     },
 
     toggleAttr: function(name, val){
-
-        if (not(name)) return ;
-
         return this.each(function(){
             var el = this;
 
@@ -85,6 +71,10 @@ $.fn.extend({
 $.extend({
     meta: function(name){
         return not(name) ? $("meta") : $("meta[name='$name']".replace("$name", name));
+    },
+
+    metaBy: function(name){
+        return not(name) ? $("meta") : $("meta[$name]".replace("$name", name));
     },
 
     doctype: function(){

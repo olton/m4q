@@ -31,9 +31,13 @@
   "dependencies": {},
   "scripts": {
     "build": "npm install && grunt",
-    "test": "node-qunit-phantomjs ./test/qunit.html"
+    "cy:test": "cypress open --config fileServerFolder=test,baseUrl=http://localhost:8080",
+    "cy:run": "cypress run --config fileServerFolder=test,baseUrl=http://localhost:8080,video=false",
+    "start": "http-server ./ -c-1 -s",
+    "test": "start-server-and-test start http://localhost:8080 cy:run"
   },
   "devDependencies": {
+    "cypress": "^3.3.2",
     "grunt": "^1.0.4",
     "grunt-build-number": "^1.0.0",
     "grunt-contrib-clean": "^2.0.0",
@@ -43,8 +47,6 @@
     "grunt-ftp-push": "^1.2.1",
     "grunt-replace": "^1.0.1",
     "grunt-shell": "^3.0.1",
-    "load-grunt-tasks": "^5.0.0",
-    "node-qunit-phantomjs": "^2.0.1",
-    "qunit": "^2.9.2"
+    "load-grunt-tasks": "^5.0.0"
   }
 }

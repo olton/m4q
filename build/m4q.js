@@ -481,7 +481,7 @@ function parseUnit(str, out) {
 
 // Source: src/core.js
 
-var m4qVersion = "v1.0.0. Built at 03/07/2019 19:10:20";
+var m4qVersion = "v1.0.0. Built at 04/07/2019 21:38:48";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1980,7 +1980,7 @@ $.fn.extend({
         var result = false;
 
         this.each(function(){
-            if (this.classList.contains(cls)) {
+            if (this.classList && this.classList.contains(cls)) {
                 result = true;
             }
         });
@@ -2256,39 +2256,28 @@ $.fn.extend({
     attr: function(name, val){
         var attributes = {};
 
-        if (this.length === 0) {
-            return ;
-        }
-
-        if (arguments.length === 0) {
+        if (this.length && arguments.length === 0) {
             $.each(this[0].attributes, function(){
                 attributes[this.nodeName] = this.nodeValue;
             });
             return attributes;
         }
 
-        if (not(name)) {
-            return name;
-        }
-
         if (typeof name === 'string' && val === undefined) {
-            return this[0].nodeType === 1 && this[0].hasAttribute(name) ? this[0].getAttribute(name) : undefined;
+            return this.length && this[0].nodeType === 1 && this[0].hasAttribute(name) ? this[0].getAttribute(name) : undefined;
         }
 
-        if (isPlainObject(name)) {
-            this.each(function(){
-                for (var key in name) {
-                    if (name.hasOwnProperty(key))
-                        this.setAttribute(key, name[key]);
-                }
-            });
-        } else {
-            this.each(function(){
-                this.setAttribute(name, val);
-            });
-        }
-
-        return this;
+        return this.each(function(){
+            var el = this;
+            if (isPlainObject(name)) {
+                $.each(name, function(k, v){
+                    el.setAttribute(k, v);
+                });
+            } else {
+                el.setAttribute(name, val);
+                console.log(name, val);
+            }
+        });
     },
 
     removeAttr: function(name){
@@ -2297,8 +2286,8 @@ $.fn.extend({
         if (not(name)) {
             return this.each(function(){
                 var el = this;
-                $.each($(el).attr(), function(key){
-                    el.removeAttribute(key);
+                $.each(this.attributes, function(){
+                    el.removeAttribute(this);
                 })
             });
         }
@@ -2316,9 +2305,6 @@ $.fn.extend({
     },
 
     toggleAttr: function(name, val){
-
-        if (not(name)) return ;
-
         return this.each(function(){
             var el = this;
 
@@ -2339,6 +2325,10 @@ $.fn.extend({
 $.extend({
     meta: function(name){
         return not(name) ? $("meta") : $("meta[name='$name']".replace("$name", name));
+    },
+
+    metaBy: function(name){
+        return not(name) ? $("meta") : $("meta[$name]".replace("$name", name));
     },
 
     doctype: function(){
