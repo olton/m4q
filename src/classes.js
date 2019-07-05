@@ -9,11 +9,22 @@ $.fn.extend({
 
     hasClass: function(cls){
         var result = false;
+        var classes = cls.split(" ").filter(function(v){
+            return (""+v).trim() !== "";
+        });
+
+        if (not(cls)) {
+            return false;
+        }
 
         this.each(function(){
-            if (this.classList && this.classList.contains(cls)) {
-                result = true;
-            }
+            var el = this;
+
+            $.each(classes, function(){
+                if (!result && el.classList && el.classList.contains(this)) {
+                    result = true;
+                }
+            });
         });
 
         return result;
@@ -28,13 +39,13 @@ $.fn.extend({
 
 ['add', 'remove', 'toggle'].forEach(function (method) {
     $.fn[method + "Class"] = function(cls){
-        if (!cls || (""+cls).trim() === "") return this;
+        if (not(cls) || (""+cls).trim() === "") return this;
         return this.each(function(){
             var el = this;
             $.each(cls.split(" ").filter(function(v){
                 return (""+v).trim() !== "";
             }), function(){
-                el.classList[method](this);
+                if (el.classList) el.classList[method](this);
             });
         });
     }
