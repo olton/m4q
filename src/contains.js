@@ -1,12 +1,13 @@
 $.fn.extend({
     index: function(sel){
-        var el, _index = undefined;
+        var el, _index = -1;
 
         if (this.length === 0) {
-            return -1;
+            return _index;
         }
 
         el = not(sel) ? this[0] : $(sel)[0];
+
         $.each(el.parentNode.children, function(i){
             if (this === el) {
                 _index = i;

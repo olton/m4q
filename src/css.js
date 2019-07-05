@@ -1,4 +1,3 @@
-//var nonDigit = /[^0-9.\-]/;
 var numProps = ['opacity', 'zIndex'];
 
 $.fn.extend({
@@ -25,25 +24,20 @@ $.fn.extend({
     },
 
     removeStyleProperty: function(name){
-        var that = this;
-        if (not(name) || this.length === 0) return ;
+        if (not(name) || this.length === 0) return this;
         var names = name.split(", ").map(function(el){
             return (""+el).trim();
         });
-        $.each(names, function(){
-            var prop = this;
-            that.each(function(){
-                var el = this;
-                el.style.removeProperty(prop);
-            })
+
+        return this.each(function(){
+            var el = this;
+            $.each(names, function(){
+                el.style.removeProperty(this);
+            });
         });
     },
 
     css: function(o, v){
-        if (this.length === 0) {
-            return this;
-        }
-
         if (not(o) || (typeof o === "string" && not(v))) {
             return  this.style(o);
         }

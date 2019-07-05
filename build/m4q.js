@@ -481,7 +481,7 @@ function parseUnit(str, out) {
 
 // Source: src/core.js
 
-var m4qVersion = "v1.0.0. Built at 05/07/2019 08:28:34";
+var m4qVersion = "v1.0.0. Built at 05/07/2019 08:50:12";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -610,13 +610,14 @@ $.extend({
 
 $.fn.extend({
     index: function(sel){
-        var el, _index = undefined;
+        var el, _index = -1;
 
         if (this.length === 0) {
-            return -1;
+            return _index;
         }
 
         el = not(sel) ? this[0] : $(sel)[0];
+
         $.each(el.parentNode.children, function(i){
             if (this === el) {
                 _index = i;
@@ -1871,7 +1872,6 @@ $.fn.extend({
 
 // Source: src/css.js
 
-//var nonDigit = /[^0-9.\-]/;
 var numProps = ['opacity', 'zIndex'];
 
 $.fn.extend({
@@ -1898,25 +1898,20 @@ $.fn.extend({
     },
 
     removeStyleProperty: function(name){
-        var that = this;
-        if (not(name) || this.length === 0) return ;
+        if (not(name) || this.length === 0) return this;
         var names = name.split(", ").map(function(el){
             return (""+el).trim();
         });
-        $.each(names, function(){
-            var prop = this;
-            that.each(function(){
-                var el = this;
-                el.style.removeProperty(prop);
-            })
+
+        return this.each(function(){
+            var el = this;
+            $.each(names, function(){
+                el.style.removeProperty(this);
+            });
         });
     },
 
     css: function(o, v){
-        if (this.length === 0) {
-            return this;
-        }
-
         if (not(o) || (typeof o === "string" && not(v))) {
             return  this.style(o);
         }
