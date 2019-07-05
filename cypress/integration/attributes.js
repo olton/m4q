@@ -1,20 +1,4 @@
 describe("Work with attributes", ()=>{
-    it("Window must have property m4q", () => {
-        cy.visit("/test/attributes.html");
-        cy.window().should('have.property', 'm4q');
-    });
-    it("$() must be instanceof m4q", () => {
-        cy.visit("/test/attributes.html");
-        cy.window().then(win => {
-            assert.equal(win.$() instanceof win.m4q, true);
-        });
-    });
-    it("$('#fake').attr() must return a empty m4q object", () => {
-        cy.visit("/test/attributes.html");
-        cy.window().then(win => {
-            assert.equal(win.$("#fake").attr().length, 0);
-        });
-    });
     it("$(document).attr() must return a object", () => {
         cy.visit("/test/attributes.html");
         cy.window().then(win => {
@@ -56,6 +40,15 @@ describe("Work with attributes", ()=>{
         cy.window().then( win => {
             win.$('#my-div').attr('id', 'new-id');
             expect(win.$('#new-id').attr('id')).to.equal('new-id');
+        });
+    });
+    it("Get and set attribute for fake", () => {
+        cy.visit("/test/attributes.html");
+        cy.window().then( win => {
+            assert.equal(win.$('#fake').attr(), undefined);
+            assert.equal(win.$('#fake').attr('id'), undefined);
+            assert.equal(win.$('#fake').id(), undefined);
+            assert.equal(win.$('#fake').id('new_id'), undefined);
         });
     });
     it("Get meta with $.meta(), must be a object", () => {

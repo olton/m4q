@@ -15,14 +15,11 @@ m4q.global = function(){
     global.$ = $;
 };
 
-m4q.noConflict = function(deep) {
+m4q.noConflict = function() {
     if ( global.$ === $ ) {
         global.$ = _$;
     }
 
-    if (deep && global.m4q === $) {
-        global.m4q = _m4q;
-    }
-
     return $;
 };
+

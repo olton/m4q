@@ -6,7 +6,21 @@ $.fn.extend({
             return _index;
         }
 
-        el = not(sel) ? this[0] : $(sel)[0];
+        el = not(sel) || typeof sel !== "string" ? this[0] : $(sel)[0];
+
+        if (not(sel)) {
+            el = this[0];
+        } else if (sel instanceof $ && sel.length > 0) {
+            el = sel[0];
+        } else if (typeof sel === "string") {
+            el = $(sel)[0];
+        } else {
+            el = undefined;
+        }
+
+        if (not(el)) {
+            return _index;
+        }
 
         $.each(el.parentNode.children, function(i){
             if (this === el) {

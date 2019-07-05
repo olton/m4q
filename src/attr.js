@@ -2,6 +2,10 @@ $.fn.extend({
     attr: function(name, val){
         var attributes = {};
 
+        if (this.length === 0 && arguments.length === 0) {
+            return undefined;
+        }
+
         if (this.length && arguments.length === 0) {
             $.each(this[0].attributes, function(){
                 attributes[this.nodeName] = this.nodeValue;
@@ -64,7 +68,7 @@ $.fn.extend({
     },
 
     id: function(val){
-        return $(this[0]).attr("id", val);
+        return this.length ? $(this[0]).attr("id", val) : undefined;
     }
 });
 
