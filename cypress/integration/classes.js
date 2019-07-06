@@ -43,4 +43,11 @@ describe("M4Q Create element", ()=>{
             assert.equal(win.$("#my-div").hasClass("my-class"), false);
         });
     });
+    it("Check $.cls()", () => {
+        cy.visit("/test/classes.html");
+        cy.window().then( win => {
+            assert.equal(win.$("#my-div").cls(), "my-class");
+            assert.isArray(win.$("#my-div").cls(true));
+        });
+    });
 });

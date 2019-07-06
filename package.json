@@ -47,6 +47,7 @@
     "grunt-ftp-push": "^1.2.1",
     "grunt-replace": "^1.0.1",
     "grunt-shell": "^3.0.1",
-    "load-grunt-tasks": "^5.0.0"
+    "load-grunt-tasks": "^5.0.0",
+    "start-server-and-test": "^1.9.1"
   }
 }

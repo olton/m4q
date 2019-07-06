@@ -481,7 +481,7 @@ function parseUnit(str, out) {
 
 // Source: src/core.js
 
-var m4qVersion = "v1.0.0. Built at 05/07/2019 20:33:39";
+var m4qVersion = "v1.0.0. Built at 06/07/2019 14:15:18";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -648,7 +648,7 @@ $.fn.extend({
     },
 
     eq: function(i){
-        return $(this.get(i >= 0 ? i : this.length + i));
+        return i && this.length > 0 ? $.extend($(this.get(i)), {_prevObj: this}) : this;
     },
 
     contains: function(s){
@@ -2029,6 +2029,10 @@ $.fn.extend({
         return this.each(function(){
             this.className = "";
         });
+    },
+
+    cls: function(array){
+        return this.length === 0 ? undefined : array ? this[0].className.split(" ") : this[0].className;
     }
 });
 

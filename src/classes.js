@@ -34,6 +34,10 @@ $.fn.extend({
         return this.each(function(){
             this.className = "";
         });
+    },
+
+    cls: function(array){
+        return this.length === 0 ? undefined : array ? this[0].className.split(" ") : this[0].className;
     }
 });
 

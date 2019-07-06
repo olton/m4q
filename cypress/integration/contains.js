@@ -17,4 +17,14 @@ describe("M4Q CSS routines", ()=>{
             assert.equal(win.$("#list1 li").get(100), undefined);
         });
     });
+    it("Check $.eq()", () => {
+        cy.visit("/test/contains.html");
+        cy.window().then( win => {
+            assert.equal(win.$("#list1 li").eq() instanceof win.$, true);
+            assert.equal(win.$("#list1 li").eq(1).id(), "bar");
+            assert.equal(win.$("#list1 li").eq(100).length, 0);
+            assert.equal(win.$("#fake li").eq() instanceof win.$, true);
+            assert.equal(win.$("#fake li").eq(1).length, 0);
+        });
+    });
 });

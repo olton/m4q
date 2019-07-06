@@ -38,7 +38,7 @@ $.fn.extend({
     },
 
     eq: function(i){
-        return $(this.get(i >= 0 ? i : this.length + i));
+        return i && this.length > 0 ? $.extend($(this.get(i)), {_prevObj: this}) : this;
     },
 
     contains: function(s){
