@@ -481,7 +481,7 @@ function parseUnit(str, out) {
 
 // Source: src/core.js
 
-var m4qVersion = "v1.0.0. Built at 06/07/2019 14:15:18";
+var m4qVersion = "v1.0.0. Built at 06/07/2019 19:59:20";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -616,8 +616,6 @@ $.fn.extend({
             return _index;
         }
 
-        el = not(sel) || typeof sel !== "string" ? this[0] : $(sel)[0];
-
         if (not(sel)) {
             el = this[0];
         } else if (sel instanceof $ && sel.length > 0) {
@@ -632,7 +630,7 @@ $.fn.extend({
             return _index;
         }
 
-        $.each(el.parentNode.children, function(i){
+        if (el && el.parentNode) $.each(el.parentNode.children, function(i){
             if (this === el) {
                 _index = i;
             }
@@ -649,10 +647,6 @@ $.fn.extend({
 
     eq: function(i){
         return i && this.length > 0 ? $.extend($(this.get(i)), {_prevObj: this}) : this;
-    },
-
-    contains: function(s){
-        return this.find(s).length > 0;
     },
 
     is: function(s){
@@ -730,15 +724,17 @@ $.fn.extend({
     },
 
     odd: function(){
-        return this.filter(function(el, i){
+        var result = this.filter(function(el, i){
             return i % 2 === 0;
         });
+        return $.extend(result, {_prevObj: this});
     },
 
     even: function(){
-        return this.filter(function(el, i){
+        var result = this.filter(function(el, i){
             return i % 2 !== 0;
         });
+        return $.extend(result, {_prevObj: this});
     },
 
     filter: function(fn){
@@ -748,27 +744,34 @@ $.fn.extend({
                 return matches.call(el, sel);
             };
         }
-        return $.merge($(), [].filter.call(this, fn));
+
+        return $.extend($.merge($(), [].filter.call(this, fn)), {_prevObj: this});
     },
 
     find: function(s){
-        var res = [], out = $();
+        var res = [], result;
 
         if (s instanceof $) return s;
 
         if (this.length === 0) {
-            return this;
+            result = this;
+        } else {
+            this.each(function () {
+                var el = this;
+                if (typeof el.querySelectorAll !== "undefined") res = res.concat([].slice.call(el.querySelectorAll(s)));
+            });
+            result = $.merge($(), res);
         }
 
-        this.each(function () {
-            var el = this;
-            if (typeof el.querySelectorAll !== "undefined") res = res.concat([].slice.call(el.querySelectorAll(s)));
-        });
-        return $.merge(out, res);
+        return $.extend(result, {_prevObj: this});
+    },
+
+    contains: function(s){
+        return this.find(s).length > 0;
     },
 
     children: function(s){
-        var i, res = [], out = $();
+        var i, res = [];
 
         if (s instanceof $) return s;
 
@@ -782,11 +785,12 @@ $.fn.extend({
         res = s ? res.filter(function(el){
             return matches.call(el, s);
         }) : res;
-        return $.merge(out, res);
+
+        return $.extend($.merge($(), res), {_prevObj: this});
     },
 
     parent: function(s){
-        var res = [], out = $();
+        var res = [];
         if (this.length === 0) {
             return ;
         }
@@ -801,11 +805,12 @@ $.fn.extend({
         res = s ? res.filter(function(el){
             return matches.call(el, s);
         }) : res;
-        return $.merge(out, res);
+
+        return $.extend($.merge($(), res), {_prevObj: this});
     },
 
     parents: function(s){
-        var res = [], out = $();
+        var res = [];
 
         if (this.length === 0) {
             return ;
@@ -829,7 +834,7 @@ $.fn.extend({
             }
         });
 
-        return $.merge(out, res);
+        return $.extend($.merge($(), res), {_prevObj: this});
     },
 
     siblings: function(s){
@@ -856,7 +861,7 @@ $.fn.extend({
             })
         }
 
-        return $.merge($(), res);
+        return $.extend($.merge($(), res), {_prevObj: this});
     },
 
     _siblingAll: function(dir, s){
@@ -883,7 +888,7 @@ $.fn.extend({
             })
         }
 
-        return $.merge($(), res);
+        return $.extend($.merge($(), res), {_prevObj: this});
     },
 
     _sibling: function(dir, s){
@@ -908,7 +913,7 @@ $.fn.extend({
             })
         }
 
-        return $.merge($(), res);
+        return $.extend($.merge($(), res), {_prevObj: this});
     },
 
     prev: function(s){
@@ -952,7 +957,7 @@ $.fn.extend({
             }
         });
 
-        return $.merge($(), res.reverse());
+        return $.extend($.merge($(), res.reverse()), {_prevObj: this});
     },
 
     has: function(selector){
@@ -971,8 +976,20 @@ $.fn.extend({
         });
 
         return out;
-    }
+    },
 
+    back: function(to_start){
+        var ret;
+        if (to_start === true) {
+            ret = this._prevObj;
+            while (ret) {
+                ret = ret._prevObj;
+            }
+        } else {
+            ret = this._prevObj ? this._prevObj : this;
+        }
+        return ret;
+    }
 });
 
 // Source: src/prop.js
@@ -1274,7 +1291,7 @@ $.fn.extend({
 $.extend({
     uniqueId: function () {
         var d = new Date().getTime();
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        return 'm4q-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
             var r = (d + Math.random() * 16) % 16 | 0;
             d = Math.floor(d / 16);
             return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
