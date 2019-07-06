@@ -481,7 +481,7 @@ function parseUnit(str, out) {
 
 // Source: src/core.js
 
-var m4qVersion = "v1.0.0. Built at 06/07/2019 19:59:20";
+var m4qVersion = "v1.0.0. Built at 06/07/2019 21:17:42";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -650,27 +650,33 @@ $.fn.extend({
     },
 
     is: function(s){
-        var result = false;
+        var result = false, el;
 
         if (this.length === 0) {
-            return ;
+            return false;
         }
 
         if (s instanceof $) {
             return this.same(s);
         }
 
+        el = this[0];
+
         if (s === ":selected") {
-            return this[0].selected;
+            this.each(function(){
+                if (el.selected) result = true;
+            });
         } else
 
         if (s === ":checked") {
-            return this[0].checked;
+            this.each(function(){
+                if (el.checked) result = true;
+            });
         } else
 
         if (s === ":hidden") {
-            var styles = getComputedStyle(this[0]);
-            return this[0].hidden || styles['display'] === 'none' || styles['visibility'] === 'hidden' || parseInt(styles['opacity']) === 0;
+            var styles = getComputedStyle(el);
+            result = el.hidden || styles['display'] === 'none' || styles['visibility'] === 'hidden' || parseInt(styles['opacity']) === 0;
         } else
 
         if (typeof  s === "string" && [':selected'].indexOf(s) === -1) {

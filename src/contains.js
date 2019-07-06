@@ -40,27 +40,33 @@ $.fn.extend({
     },
 
     is: function(s){
-        var result = false;
+        var result = false, el;
 
         if (this.length === 0) {
-            return ;
+            return false;
         }
 
         if (s instanceof $) {
             return this.same(s);
         }
 
+        el = this[0];
+
         if (s === ":selected") {
-            return this[0].selected;
+            this.each(function(){
+                if (el.selected) result = true;
+            });
         } else
 
         if (s === ":checked") {
-            return this[0].checked;
+            this.each(function(){
+                if (el.checked) result = true;
+            });
         } else
 
         if (s === ":hidden") {
-            var styles = getComputedStyle(this[0]);
-            return this[0].hidden || styles['display'] === 'none' || styles['visibility'] === 'hidden' || parseInt(styles['opacity']) === 0;
+            var styles = getComputedStyle(el);
+            result = el.hidden || styles['display'] === 'none' || styles['visibility'] === 'hidden' || parseInt(styles['opacity']) === 0;
         } else
 
         if (typeof  s === "string" && [':selected'].indexOf(s) === -1) {
