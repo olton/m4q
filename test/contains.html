@@ -30,8 +30,16 @@
     <input type="checkbox" id="ch2" >
 </div>
 
+<div>
+    <div id="no_hidden">No hidden</div>
+    <input type="hidden" id="inp_hidden">
+    <div hidden id="div_hidden">hidden div 1</div>
+    <div style="display: none" id="div_no_display">hidden div 2</div>
+    <div style="visibility: hidden" id="div_no_visible">hidden div 3</div>
+    <div style="opacity: 0" id="div_opacity">hidden div 4</div>
+</div>
+
 <script src="../build/m4q.js"></script>
 <script>
-    console.log($("#list1 li").eq(1).find("#bar").back());
 </script>
 </body>

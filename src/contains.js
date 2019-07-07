@@ -36,11 +36,11 @@ $.fn.extend({
     },
 
     eq: function(i){
-        return i && this.length > 0 ? $.extend($(this.get(i)), {_prevObj: this}) : this;
+        return !not(i) && this.length > 0 ? $.extend($(this.get(i)), {_prevObj: this}) : this;
     },
 
     is: function(s){
-        var result = false, el;
+        var result = false;
 
         if (this.length === 0) {
             return false;
@@ -50,23 +50,29 @@ $.fn.extend({
             return this.same(s);
         }
 
-        el = this[0];
-
         if (s === ":selected") {
             this.each(function(){
-                if (el.selected) result = true;
+                if (this.selected) result = true;
             });
         } else
 
         if (s === ":checked") {
             this.each(function(){
-                if (el.checked) result = true;
+                if (this.checked) result = true;
             });
         } else
 
         if (s === ":hidden") {
-            var styles = getComputedStyle(el);
-            result = el.hidden || styles['display'] === 'none' || styles['visibility'] === 'hidden' || parseInt(styles['opacity']) === 0;
+            this.each(function(){
+                var styles = getComputedStyle(this);
+                if (
+                    this.getAttribute('type') === 'hidden'
+                    || this.hidden
+                    || styles['display'] === 'none'
+                    || styles['visibility'] === 'hidden'
+                    || parseInt(styles['opacity']) === 0
+                ) result = true;
+            });
         } else
 
         if (typeof  s === "string" && [':selected'].indexOf(s) === -1) {

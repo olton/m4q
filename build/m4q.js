@@ -481,7 +481,7 @@ function parseUnit(str, out) {
 
 // Source: src/core.js
 
-var m4qVersion = "v1.0.0. Built at 06/07/2019 21:17:42";
+var m4qVersion = "v1.0.0. Built at 07/07/2019 10:31:37";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -646,11 +646,11 @@ $.fn.extend({
     },
 
     eq: function(i){
-        return i && this.length > 0 ? $.extend($(this.get(i)), {_prevObj: this}) : this;
+        return !not(i) && this.length > 0 ? $.extend($(this.get(i)), {_prevObj: this}) : this;
     },
 
     is: function(s){
-        var result = false, el;
+        var result = false;
 
         if (this.length === 0) {
             return false;
@@ -660,23 +660,29 @@ $.fn.extend({
             return this.same(s);
         }
 
-        el = this[0];
-
         if (s === ":selected") {
             this.each(function(){
-                if (el.selected) result = true;
+                if (this.selected) result = true;
             });
         } else
 
         if (s === ":checked") {
             this.each(function(){
-                if (el.checked) result = true;
+                if (this.checked) result = true;
             });
         } else
 
         if (s === ":hidden") {
-            var styles = getComputedStyle(el);
-            result = el.hidden || styles['display'] === 'none' || styles['visibility'] === 'hidden' || parseInt(styles['opacity']) === 0;
+            this.each(function(){
+                var styles = getComputedStyle(this);
+                if (
+                    this.getAttribute('type') === 'hidden'
+                    || this.hidden
+                    || styles['display'] === 'none'
+                    || styles['visibility'] === 'hidden'
+                    || parseInt(styles['opacity']) === 0
+                ) result = true;
+            });
         } else
 
         if (typeof  s === "string" && [':selected'].indexOf(s) === -1) {
