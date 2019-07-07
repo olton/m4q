@@ -108,12 +108,19 @@ $.fn.extend({
 
     same: function(o){
         var result = true;
-        if (!o instanceof $ || this.length !== o.length) return false;
+
+        if (!(o instanceof $)) {
+            o = $(o);
+        }
+
+        if (this.length !== o.length) return false;
+
         this.each(function(){
             if (o.items().indexOf(this) === -1) {
                 result = false;
             }
         });
+
         return result;
     },
 
@@ -201,7 +208,7 @@ $.fn.extend({
 
         this.each(function(){
             if (this.parentNode) {
-                res.push(this.parentNode);
+                if (res.indexOf(this.parentNode) === -1) res.push(this.parentNode);
             }
         });
         res = s ? res.filter(function(el){
@@ -223,7 +230,7 @@ $.fn.extend({
         this.each(function(){
             var par = this.parentNode;
             while (par) {
-                if (par.nodeType === 1) {
+                if (par.nodeType === 1 && res.indexOf(par) === -1) {
                     if (!not(s)) {
                         if (matches.call(par, s)) {
                             res.push(par);
@@ -363,7 +370,7 @@ $.fn.extend({
     },
 
     has: function(selector){
-        var out = $();
+        var res = [];
 
         if (this.length === 0) {
             return ;
@@ -373,11 +380,11 @@ $.fn.extend({
             var el = $(this);
             var child = el.children(selector);
             if (child.length > 0) {
-                $.merge(out, el);
+                res.push(this);
             }
         });
 
-        return out;
+        return $.extend($.merge($(), res), {_prevObj: this});
     },
 
     back: function(to_start){
@@ -385,6 +392,7 @@ $.fn.extend({
         if (to_start === true) {
             ret = this._prevObj;
             while (ret) {
+                if (!ret._prevObj) break;
                 ret = ret._prevObj;
             }
         } else {
