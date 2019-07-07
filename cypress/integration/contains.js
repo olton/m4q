@@ -1,4 +1,4 @@
-describe("M4Q CSS routines", ()=>{
+describe("M4Q contains routines", ()=>{
     it("Check $.is()", () => {
         cy.visit("/test/contains.html");
         cy.window().then( win => {
