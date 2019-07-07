@@ -481,7 +481,7 @@ function parseUnit(str, out) {
 
 // Source: src/core.js
 
-var m4qVersion = "v1.0.0. Built at 07/07/2019 12:29:15";
+var m4qVersion = "v1.0.0. Built at 07/07/2019 18:17:28";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1089,12 +1089,11 @@ function acceptData(owner){
 }
 
 function getData(data){
-    if (data === "true") return true;
-    if (data === "false") return false;
-    if (data === "null") return null;
-    if (data === +data + "") return +data;
-    if (/^(?:\{[\w\W]*\}|\[[\w\W]*\])$/.test(data)) return JSON.parse(data);
-    return data;
+    try {
+        return JSON.parse(data);
+    } catch (e) {
+        return data;
+    }
 }
 
 function dataAttr(elem, key, data){
@@ -1205,11 +1204,9 @@ Data.prototype = {
     }
 };
 
-var dataSet = new Data('Internal');
+var dataSet = new Data('m4q');
 
 $.extend({
-    Data: new Data('m4q'),
-
     hasData: function(elem){
         return dataSet.hasData(elem);
     },
@@ -1223,6 +1220,7 @@ $.extend({
     },
 
     dataSet: function(ns){
+        if (not(ns)) return dataSet;
         if (['INTERNAL', 'M4Q'].indexOf(ns.toUpperCase()) > -1) {
             throw Error("You can not use reserved name for your dataset");
         }
@@ -1288,7 +1286,7 @@ $.fn.extend({
     origin: function(name, value, def){
 
         if (this.length === 0) {
-            return ;
+            return this;
         }
 
         if (not(name) && not(value)) {
@@ -1549,7 +1547,7 @@ $.fn.extend({
                 var h, ev = this,
                     event = ev.split("."),
                     name = event[0],
-                    ns = event[1],
+                    ns = options.ns ? options.ns : event[1],
                     index, originEvent;
 
                 h = function(e){
@@ -2434,9 +2432,7 @@ $.extend({
 
 $.extend({
     proxy: function(fn, context){
-        return function() {
-            fn.apply(context, arguments);
-        };
+        return typeof fn !== "function" ? undefined : fn.bind(context);
     }
 });
 

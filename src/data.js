@@ -3,12 +3,11 @@ function acceptData(owner){
 }
 
 function getData(data){
-    if (data === "true") return true;
-    if (data === "false") return false;
-    if (data === "null") return null;
-    if (data === +data + "") return +data;
-    if (/^(?:\{[\w\W]*\}|\[[\w\W]*\])$/.test(data)) return JSON.parse(data);
-    return data;
+    try {
+        return JSON.parse(data);
+    } catch (e) {
+        return data;
+    }
 }
 
 function dataAttr(elem, key, data){
@@ -119,11 +118,9 @@ Data.prototype = {
     }
 };
 
-var dataSet = new Data('Internal');
+var dataSet = new Data('m4q');
 
 $.extend({
-    Data: new Data('m4q'),
-
     hasData: function(elem){
         return dataSet.hasData(elem);
     },
@@ -137,6 +134,7 @@ $.extend({
     },
 
     dataSet: function(ns){
+        if (not(ns)) return dataSet;
         if (['INTERNAL', 'M4Q'].indexOf(ns.toUpperCase()) > -1) {
             throw Error("You can not use reserved name for your dataset");
         }
@@ -202,7 +200,7 @@ $.fn.extend({
     origin: function(name, value, def){
 
         if (this.length === 0) {
-            return ;
+            return this;
         }
 
         if (not(name) && not(value)) {

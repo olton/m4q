@@ -149,7 +149,7 @@ $.fn.extend({
                 var h, ev = this,
                     event = ev.split("."),
                     name = event[0],
-                    ns = event[1],
+                    ns = options.ns ? options.ns : event[1],
                     index, originEvent;
 
                 h = function(e){
