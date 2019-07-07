@@ -481,7 +481,7 @@ function parseUnit(str, out) {
 
 // Source: src/core.js
 
-var m4qVersion = "v1.0.0. Built at 07/07/2019 11:26:11";
+var m4qVersion = "v1.0.0. Built at 07/07/2019 12:29:15";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -2434,13 +2434,9 @@ $.extend({
 
 $.extend({
     proxy: function(fn, context){
-        if (typeof fn !== "function") {
-            return ;
-        }
-        if (context === undefined || context === null) {
-            context = this;
-        }
-        return fn.bind(context);
+        return function() {
+            fn.apply(context, arguments);
+        };
     }
 });
 
