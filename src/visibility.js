@@ -1,4 +1,26 @@
 $.extend({
+    hidden: function(el, val, cb){
+        el = $(el)[0];
+
+        if (typeof val === "string") {
+            val = val.toLowerCase() === "true";
+        }
+
+        if (typeof val === "function") {
+            cb = val;
+            val = !el.hidden;
+        }
+
+        el.hidden = val;
+
+        if (typeof cb === "function") {
+            $.bind(cb, el);
+            cb.call(el, arguments);
+        }
+
+        return this;
+    },
+
     hide: function(el, cb){
         var $el = $(el);
         if (!!el.style.display) {
@@ -6,7 +28,7 @@ $.extend({
         }
         el.style.display = 'none';
         if (typeof cb === "function") {
-            $.proxy(cb, el);
+            $.bind(cb, el);
             cb.call(el, arguments);
         }
         return this;
@@ -19,7 +41,7 @@ $.extend({
             el.style.opacity = "1";
         }
         if (typeof cb === "function") {
-            $.proxy(cb, el);
+            $.bind(cb, el);
             cb.call(el, arguments);
         }
         return this;
@@ -31,7 +53,7 @@ $.extend({
         }
         el.style.visibility = mode ? 'visible' : 'hidden';
         if (typeof cb === "function") {
-            $.proxy(cb, el);
+            $.bind(cb, el);
             cb.call(el, arguments);
         }
         return this;
@@ -84,11 +106,14 @@ $.fn.extend({
     },
 
     toggle: function(cb){
-        if (typeof cb !== 'function') {
-            cb = null;
-        }
         return this.each(function(){
             $.toggle(this, cb);
+        })
+    },
+
+    hidden: function(val, cb){
+        return this.each(function(){
+            $.hidden(this, val, cb);
         })
     }
 });

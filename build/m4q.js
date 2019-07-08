@@ -481,7 +481,7 @@ function parseUnit(str, out) {
 
 // Source: src/core.js
 
-var m4qVersion = "v1.0.0. Built at 07/07/2019 18:17:28";
+var m4qVersion = "v1.0.0. Built at 08/07/2019 14:03:17";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1016,19 +1016,15 @@ $.fn.extend({
 
 $.fn.extend({
     _prop: function(prop, value){
-        if (this.length === 0) {
-            return ;
-        }
-
         if (arguments.length === 1) {
-            return this[0][prop];
+            return this.length === 0 ? undefined : this[0][prop];
         }
 
         if (not(value)) {
             value = '';
         }
 
-        this.each(function(){
+        return this.each(function(){
             var el = this;
 
             el[prop] = value;
@@ -1048,12 +1044,10 @@ $.fn.extend({
                 });
             }
         });
-
-        return this;
     },
 
     prop: function(prop, value){
-        return arguments.length === 0 ? this._prop(prop) : this._prop(prop, typeof value === "undefined" ? "" : value);
+        return arguments.length === 1 ? this._prop(prop) : this._prop(prop, typeof value === "undefined" ? "" : value);
     }
 });
 
@@ -2238,26 +2232,43 @@ $.fn.extend({
 $.fn.extend({
     offset: function(val){
         var rect;
-        if (this.length === 0) {
-            return ;
-        }
+
         if (not(val)) {
+            if (this.length === 0) return undefined;
             rect = this[0].getBoundingClientRect();
             return {
                 top: rect.top + pageYOffset,
                 left: rect.left + pageXOffset
             }
         }
+
         return this.each(function(){ //?
-            $(this).css({
-                top: val.top,
-                left: val.left
+            var el = $(this),
+                top = val.top,
+                left = val.left,
+                position = getComputedStyle(this)['position'],
+                offset = el.offset();
+
+            console.log(el.offset());
+
+            if (position === "static") {
+                el.css("position", "relative");
+            }
+
+            if (["absolute", "fixed"].indexOf(position) === -1) {
+                top = top - offset.top;
+                left = left - offset.left;
+            }
+
+            el.css({
+                top: top,
+                left: left
             })
         });
     },
 
     position: function(margin){
-        var ml = 0, mt = 0;
+        var ml = 0, mt = 0, el, style;
 
         // margin = !!margin;
         if (not(margin)) {
@@ -2267,17 +2278,20 @@ $.fn.extend({
         }
 
         if (this.length === 0) {
-            return ;
+            return undefined;
         }
 
+        el = this[0];
+        style = getComputedStyle(el);
+
         if (margin) {
-            ml = parseInt(getComputedStyle(this[0], null)['margin-left']);
-            mt = parseInt(getComputedStyle(this[0], null)['margin-top']);
+            ml = parseInt(style['margin-left']);
+            mt = parseInt(style['margin-top']);
         }
 
         return {
-            left: this[0].offsetLeft - ml,
-            top: this[0].offsetTop - mt
+            left: el.offsetLeft - ml,
+            top: el.offsetTop - mt
         }
     },
 
@@ -2431,8 +2445,12 @@ $.extend({
 // Source: src/proxy.js
 
 $.extend({
-    proxy: function(fn, context){
-        return typeof fn !== "function" ? undefined : fn.bind(context);
+    proxy: function(fn, ctx){
+        return typeof fn !== "function" ? undefined : fn.bind(ctx);
+    },
+
+    bind: function(fn, ctx){
+        return this.proxy(fn, ctx);
     }
 });
 
@@ -3041,6 +3059,28 @@ $.fn.extend({
 // Source: src/visibility.js
 
 $.extend({
+    hidden: function(el, val, cb){
+        el = $(el)[0];
+
+        if (typeof val === "string") {
+            val = val.toLowerCase() === "true";
+        }
+
+        if (typeof val === "function") {
+            cb = val;
+            val = !el.hidden;
+        }
+
+        el.hidden = val;
+
+        if (typeof cb === "function") {
+            $.bind(cb, el);
+            cb.call(el, arguments);
+        }
+
+        return this;
+    },
+
     hide: function(el, cb){
         var $el = $(el);
         if (!!el.style.display) {
@@ -3048,7 +3088,7 @@ $.extend({
         }
         el.style.display = 'none';
         if (typeof cb === "function") {
-            $.proxy(cb, el);
+            $.bind(cb, el);
             cb.call(el, arguments);
         }
         return this;
@@ -3061,7 +3101,7 @@ $.extend({
             el.style.opacity = "1";
         }
         if (typeof cb === "function") {
-            $.proxy(cb, el);
+            $.bind(cb, el);
             cb.call(el, arguments);
         }
         return this;
@@ -3073,7 +3113,7 @@ $.extend({
         }
         el.style.visibility = mode ? 'visible' : 'hidden';
         if (typeof cb === "function") {
-            $.proxy(cb, el);
+            $.bind(cb, el);
             cb.call(el, arguments);
         }
         return this;
@@ -3126,11 +3166,14 @@ $.fn.extend({
     },
 
     toggle: function(cb){
-        if (typeof cb !== 'function') {
-            cb = null;
-        }
         return this.each(function(){
             $.toggle(this, cb);
+        })
+    },
+
+    hidden: function(val, cb){
+        return this.each(function(){
+            $.hidden(this, val, cb);
         })
     }
 });

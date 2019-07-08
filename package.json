@@ -1,7 +1,7 @@
 {
   "name": "m4q",
   "title": "m4q",
-  "description": "Helper for DOM manipulation",
+  "description": "Helper for DOM manipulation and animation",
   "version": "1.0.0",
   "build": "1",
   "status": "beta",
@@ -34,7 +34,8 @@
     "cy:test": "cypress open --config fileServerFolder=test,baseUrl=http://localhost:8080",
     "cy:run": "cypress run --config fileServerFolder=test,baseUrl=http://localhost:8080,video=false",
     "start": "http-server ./ -c-1 -s",
-    "test": "start-server-and-test start http://localhost:8080 cy:run"
+    "test": "start-server-and-test start http://localhost:8080 cy:run",
+    "manual-test": "start-server-and-test start http://localhost:8080 cy:test"
   },
   "devDependencies": {
     "cypress": "^3.3.2",

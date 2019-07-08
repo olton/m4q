@@ -1,18 +1,14 @@
 $.fn.extend({
     _prop: function(prop, value){
-        if (this.length === 0) {
-            return ;
-        }
-
         if (arguments.length === 1) {
-            return this[0][prop];
+            return this.length === 0 ? undefined : this[0][prop];
         }
 
         if (not(value)) {
             value = '';
         }
 
-        this.each(function(){
+        return this.each(function(){
             var el = this;
 
             el[prop] = value;
@@ -32,11 +28,9 @@ $.fn.extend({
                 });
             }
         });
-
-        return this;
     },
 
     prop: function(prop, value){
-        return arguments.length === 0 ? this._prop(prop) : this._prop(prop, typeof value === "undefined" ? "" : value);
+        return arguments.length === 1 ? this._prop(prop) : this._prop(prop, typeof value === "undefined" ? "" : value);
     }
 });
