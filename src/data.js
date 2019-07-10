@@ -1,35 +1,9 @@
-function acceptData(owner){
-    return owner.nodeType === 1 || owner.nodeType === 9 || !( +owner.nodeType );
-}
-
-function getData(data){
-    try {
-        return JSON.parse(data);
-    } catch (e) {
-        return data;
-    }
-}
-
-function dataAttr(elem, key, data){
-    var name;
-
-    if ( not(data) && elem.nodeType === 1 ) {
-        name = "data-" + key.replace( /[A-Z]/g, "-$&" ).toLowerCase();
-        data = elem.getAttribute( name );
-
-        if ( typeof data === "string" ) {
-            try {
-                data = getData( data );
-            } catch ( e ) {}
-
-            dataSet.set( elem, key, data );
-        } else {
-            data = undefined;
-        }
-    }
-    return data;
-}
-
+/*
+ * Data routines
+ * Url: https://jquery.com
+ * Copyright (c) Copyright JS Foundation and other contributors, https://js.foundation/
+ * Licensed under MIT
+ */
 var Data = function(ns){
     this.expando = "DATASET:UID:" + ns.toUpperCase();
     Data.uid++;

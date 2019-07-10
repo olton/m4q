@@ -6,6 +6,8 @@
 
 // Source: src/func.js
 
+var numProps = ['opacity', 'zIndex'];
+
 function isVisible(elem) {
     return !!( elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length );
 }
@@ -63,6 +65,48 @@ function parseUnit(str, out) {
     out[0] = parseFloat(str);
     out[1] = str.match(/[\d.\-+]*\s*(.*)/)[1] || '';
     return out;
+}
+
+function setStyleProp(el, key, val){
+    key = camelCase(key);
+
+    if (["scrollLeft", "scrollTop"].indexOf(key) > -1) {
+        el[key] = (parseInt(val));
+    } else {
+        el.style[key] = isNaN(val) || numProps.indexOf(""+key) > -1 ? val : val + 'px';
+    }
+}
+
+function acceptData(owner){
+    return owner.nodeType === 1 || owner.nodeType === 9 || !( +owner.nodeType );
+}
+
+function getData(data){
+    try {
+        return JSON.parse(data);
+    } catch (e) {
+        return data;
+    }
+}
+
+function dataAttr(elem, key, data){
+    var name;
+
+    if ( not(data) && elem.nodeType === 1 ) {
+        name = "data-" + key.replace( /[A-Z]/g, "-$&" ).toLowerCase();
+        data = elem.getAttribute( name );
+
+        if ( typeof data === "string" ) {
+            try {
+                data = getData( data );
+            } catch ( e ) {}
+
+            dataSet.set( elem, key, data );
+        } else {
+            data = undefined;
+        }
+    }
+    return data;
 }
 
 
@@ -481,7 +525,7 @@ function parseUnit(str, out) {
 
 // Source: src/core.js
 
-var m4qVersion = "v1.0.0. Built at 08/07/2019 17:29:30";
+var m4qVersion = "v1.0.0. Built at 10/07/2019 19:29:38";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1128,38 +1172,12 @@ $.fn.extend({
 
 // Source: src/data.js
 
-function acceptData(owner){
-    return owner.nodeType === 1 || owner.nodeType === 9 || !( +owner.nodeType );
-}
-
-function getData(data){
-    try {
-        return JSON.parse(data);
-    } catch (e) {
-        return data;
-    }
-}
-
-function dataAttr(elem, key, data){
-    var name;
-
-    if ( not(data) && elem.nodeType === 1 ) {
-        name = "data-" + key.replace( /[A-Z]/g, "-$&" ).toLowerCase();
-        data = elem.getAttribute( name );
-
-        if ( typeof data === "string" ) {
-            try {
-                data = getData( data );
-            } catch ( e ) {}
-
-            dataSet.set( elem, key, data );
-        } else {
-            data = undefined;
-        }
-    }
-    return data;
-}
-
+/*
+ * Data routines
+ * Url: https://jquery.com
+ * Copyright (c) Copyright JS Foundation and other contributors, https://js.foundation/
+ * Licensed under MIT
+ */
 var Data = function(ns){
     this.expando = "DATASET:UID:" + ns.toUpperCase();
     Data.uid++;
@@ -1903,16 +1921,14 @@ $.fn.extend({
 
 // Source: src/css.js
 
-var numProps = ['opacity', 'zIndex'];
-
 $.fn.extend({
 
-    _getStyle: function(el, prop, pseudo){
-        return ["scrollLeft", "scrollTop"].indexOf(prop) > -1 ? $(el)[prop]() : getComputedStyle(el, pseudo)[prop];
-    },
-
     style: function(name, pseudo){
-        var that = this, el;
+        var el;
+
+        function _getStyle(el, prop, pseudo){
+            return ["scrollLeft", "scrollTop"].indexOf(prop) > -1 ? $(el)[prop]() : getComputedStyle(el, pseudo)[prop];
+        }
 
         if (typeof name === 'string' && this.length === 0) {
             return undefined;
@@ -1931,11 +1947,11 @@ $.fn.extend({
                 return (""+el).trim();
             });
             if (names.length === 1)  {
-                return this._getStyle(el, names[0], pseudo);
+                return _getStyle(el, names[0], pseudo);
             } else {
                 $.each(names, function () {
                     var prop = this;
-                    result[this] = that._getStyle(el, prop, pseudo);
+                    result[this] = _getStyle(el, prop, pseudo);
                 });
                 return result;
             }
@@ -1956,33 +1972,23 @@ $.fn.extend({
         });
     },
 
-    css: function(o, v){
+    css: function(key, val){
+        var that = this;
 
-        o = o || 'all';
+        key = key || 'all';
 
-        if (typeof o === "string" && not(v)) {
-            return  this.style(o);
+        if (typeof key === "string" && not(val)) {
+            return  this.style(key);
         }
 
         return this.each(function(){
             var el = this;
-            if (typeof o === "object") {
-                for (var key in o) {
-                    if (o.hasOwnProperty(key)) {
-                        if (["scrollLeft", "scrollTop"].indexOf(key) > -1) {
-                            $(el)[name](parseInt(o[key]));
-                        } else {
-                            el.style[camelCase(key)] = isNaN(o[key]) || numProps.indexOf(key) > -1 ? o[key] : o[key] + 'px';
-                        }
-                    }
-                }
-            } else if (typeof o === "string") {
-                o = camelCase(o);
-                if (["scrollLeft", "scrollTop"].indexOf(o) > -1) {
-                    $(el)[o](parseInt(v));
-                } else {
-                    el.style[o] = isNaN(v) || numProps.indexOf(o) > -1 ? v : v + 'px';
-                }
+            if (typeof key === "object") {
+                $.each(key, function(key, val){
+                    setStyleProp(el, key, val);
+                });
+            } else if (typeof key === "string") {
+                setStyleProp(el, key, val);
             }
         });
     },
@@ -2237,8 +2243,6 @@ $.fn.extend({
                 position = getComputedStyle(this)['position'],
                 offset = el.offset();
 
-            console.log(el.offset());
-
             if (position === "static") {
                 el.css("position", "relative");
             }
@@ -2258,11 +2262,10 @@ $.fn.extend({
     position: function(margin){
         var ml = 0, mt = 0, el, style;
 
-        // margin = !!margin;
         if (not(margin)) {
             margin = false;
         } else {
-            margin = !!margin;
+            margin = getData(margin);
         }
 
         if (this.length === 0) {

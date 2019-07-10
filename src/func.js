@@ -1,3 +1,5 @@
+var numProps = ['opacity', 'zIndex'];
+
 function isVisible(elem) {
     return !!( elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length );
 }
@@ -55,4 +57,46 @@ function parseUnit(str, out) {
     out[0] = parseFloat(str);
     out[1] = str.match(/[\d.\-+]*\s*(.*)/)[1] || '';
     return out;
+}
+
+function setStyleProp(el, key, val){
+    key = camelCase(key);
+
+    if (["scrollLeft", "scrollTop"].indexOf(key) > -1) {
+        el[key] = (parseInt(val));
+    } else {
+        el.style[key] = isNaN(val) || numProps.indexOf(""+key) > -1 ? val : val + 'px';
+    }
+}
+
+function acceptData(owner){
+    return owner.nodeType === 1 || owner.nodeType === 9 || !( +owner.nodeType );
+}
+
+function getData(data){
+    try {
+        return JSON.parse(data);
+    } catch (e) {
+        return data;
+    }
+}
+
+function dataAttr(elem, key, data){
+    var name;
+
+    if ( not(data) && elem.nodeType === 1 ) {
+        name = "data-" + key.replace( /[A-Z]/g, "-$&" ).toLowerCase();
+        data = elem.getAttribute( name );
+
+        if ( typeof data === "string" ) {
+            try {
+                data = getData( data );
+            } catch ( e ) {}
+
+            dataSet.set( elem, key, data );
+        } else {
+            data = undefined;
+        }
+    }
+    return data;
 }

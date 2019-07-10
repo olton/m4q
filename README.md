@@ -8,8 +8,7 @@ m4q is not a complete jQuery equivalent and there are differences.
 
 #### Status
 [![develop Status](https://img.shields.io/badge/status-in&nbsp;develop-lightgrey.svg)](https://david-dm.org/olton/m4q)
-[![dependencies Status](https://david-dm.org/olton/m4q/status.svg)](https://david-dm.org/olton/m4q)
-[![devDependencies Status](https://david-dm.org/olton/m4q/dev-status.svg)](https://david-dm.org/olton/m4q?type=dev)
+[![Dependencies](https://img.shields.io/badge/Dependencies-none-green.svg?style=flat)](https://github.com/olton/m4q/blob/master/LICENSE)
 [![full size](http://img.badgesize.io/olton/m4q/master/build/m4q.js?label=full+size&color=orange)](https://github.com/olton/m4q/blob/master/build/m4q.js)
 [![gzip full](http://img.badgesize.io/olton/m4q/master/build/m4q.js?compression=gzip&label=gzip+full&color=yellow)](https://github.com/olton/m4q/blob/master/build/m4q.js)
 [![gzip min](http://img.badgesize.io/olton/m4q/master/build/m4q.min.js?compression=gzip&label=gzip+min&color=ff69b4)](https://github.com/olton/m4q/blob/master/build/m4q.min.js)
@@ -24,4 +23,8 @@ Read about `m4q` usage in the [Metro 4 docs](https://metroui.org.ua/m4q-about.ht
 
 
 ### Credits
-- Easing functions by [Andy Ray](https://github.com/AndrewRayCode/easing-utils) 
+- `Data` by [jQuery](https://jquery.com)  
+- `Easing` functions by [Andy Ray](https://github.com/AndrewRayCode/easing-utils)
+- `setImmediate` by [Yuzu](https://github.com/YuzuJS)
+- `Promise` by [Roman Dvornov](https://github.com/lahmatiy/es6-promise-polyfill)
+- `setInterval` based on `raf-interval` by [当耐特](https://github.com/dntzhang/raf-interval) 

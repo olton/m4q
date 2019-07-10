@@ -18,8 +18,6 @@ $.fn.extend({
                 position = getComputedStyle(this)['position'],
                 offset = el.offset();
 
-            console.log(el.offset());
-
             if (position === "static") {
                 el.css("position", "relative");
             }
@@ -39,11 +37,10 @@ $.fn.extend({
     position: function(margin){
         var ml = 0, mt = 0, el, style;
 
-        // margin = !!margin;
         if (not(margin)) {
             margin = false;
         } else {
-            margin = !!margin;
+            margin = getData(margin);
         }
 
         if (this.length === 0) {

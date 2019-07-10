@@ -1,13 +1,11 @@
-var numProps = ['opacity', 'zIndex'];
-
 $.fn.extend({
 
-    _getStyle: function(el, prop, pseudo){
-        return ["scrollLeft", "scrollTop"].indexOf(prop) > -1 ? $(el)[prop]() : getComputedStyle(el, pseudo)[prop];
-    },
-
     style: function(name, pseudo){
-        var that = this, el;
+        var el;
+
+        function _getStyle(el, prop, pseudo){
+            return ["scrollLeft", "scrollTop"].indexOf(prop) > -1 ? $(el)[prop]() : getComputedStyle(el, pseudo)[prop];
+        }
 
         if (typeof name === 'string' && this.length === 0) {
             return undefined;
@@ -26,11 +24,11 @@ $.fn.extend({
                 return (""+el).trim();
             });
             if (names.length === 1)  {
-                return this._getStyle(el, names[0], pseudo);
+                return _getStyle(el, names[0], pseudo);
             } else {
                 $.each(names, function () {
                     var prop = this;
-                    result[this] = that._getStyle(el, prop, pseudo);
+                    result[this] = _getStyle(el, prop, pseudo);
                 });
                 return result;
             }
@@ -51,33 +49,23 @@ $.fn.extend({
         });
     },
 
-    css: function(o, v){
+    css: function(key, val){
+        var that = this;
 
-        o = o || 'all';
+        key = key || 'all';
 
-        if (typeof o === "string" && not(v)) {
-            return  this.style(o);
+        if (typeof key === "string" && not(val)) {
+            return  this.style(key);
         }
 
         return this.each(function(){
             var el = this;
-            if (typeof o === "object") {
-                for (var key in o) {
-                    if (o.hasOwnProperty(key)) {
-                        if (["scrollLeft", "scrollTop"].indexOf(key) > -1) {
-                            $(el)[name](parseInt(o[key]));
-                        } else {
-                            el.style[camelCase(key)] = isNaN(o[key]) || numProps.indexOf(key) > -1 ? o[key] : o[key] + 'px';
-                        }
-                    }
-                }
-            } else if (typeof o === "string") {
-                o = camelCase(o);
-                if (["scrollLeft", "scrollTop"].indexOf(o) > -1) {
-                    $(el)[o](parseInt(v));
-                } else {
-                    el.style[o] = isNaN(v) || numProps.indexOf(o) > -1 ? v : v + 'px';
-                }
+            if (typeof key === "object") {
+                $.each(key, function(key, val){
+                    setStyleProp(el, key, val);
+                });
+            } else if (typeof key === "string") {
+                setStyleProp(el, key, val);
             }
         });
     },
