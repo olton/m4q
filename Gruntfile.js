@@ -132,16 +132,6 @@ module.exports = function(grunt) {
             }
         },
 
-        shell: {
-            options: {
-                failOnError: false,
-                stdout: false
-            },
-            copy_to_metro4: {
-                command: 'call copy-to-metro4.bat'
-            }
-        },
-
         watch: {
             scripts: {
                 files: ['src/*.js', 'Gruntfile.js'],

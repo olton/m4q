@@ -40,8 +40,11 @@ $.fn.extend({
         }
 
         return this.each(function(){
+            var el = $(this);
             if (typeof this.value !== "undefined") {
                 this.value = value;
+            } else {
+                el.html(value);
             }
         });
     },

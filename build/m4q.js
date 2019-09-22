@@ -109,6 +109,9 @@ function dataAttr(elem, key, data){
     return data;
 }
 
+function iif(val1, val2, val3){
+    return val1 ? val1 : val2 ? val2 : val3;
+}
 
 // Source: src/setimmediate.js
 
@@ -525,7 +528,7 @@ function dataAttr(elem, key, data){
 
 // Source: src/core.js
 
-var m4qVersion = "v1.0.0. Built at 10/07/2019 19:29:38";
+var m4qVersion = "v1.0.0. Built at 22/09/2019 21:50:04";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1100,8 +1103,11 @@ $.fn.extend({
         }
 
         return this.each(function(){
+            var el = $(this);
             if (typeof this.value !== "undefined") {
                 this.value = value;
+            } else {
+                el.html(value);
             }
         });
     },
@@ -1447,7 +1453,8 @@ $.extend({
     parseUnit: function(str, out){return parseUnit(str, out)},
     unit: function(str, out){return parseUnit(str, out)},
     isVisible: function(elem) {return isVisible(elem)},
-    isHidden: function(elem) {return isHidden(elem)}
+    isHidden: function(elem) {return isHidden(elem)},
+    iif: function(v1, v2, v3){return iif(v1, v2, v3);}
 });
 
 $.fn.extend({
@@ -1587,14 +1594,13 @@ $.extend({
 });
 
 $.fn.extend({
-    on: function(eventsList, sel, handler, data, options){
+    on: function(eventsList, sel, handler, options){
         if (this.length === 0) {
             return ;
         }
 
         if (typeof sel === 'function') {
-            options = data;
-            data = handler;
+            options = handler;
             handler = sel;
             sel = undefined;
         }
@@ -1612,14 +1618,12 @@ $.fn.extend({
                     ns = options.ns ? options.ns : event[1],
                     index, originEvent;
 
+                $.eventUID++;
+
                 h = function(e){
                     var target = e.target;
                     var beforeHook = $.eventHooks[camelCase("before-"+name)];
                     var afterHook = $.eventHooks[camelCase("after-"+name)];
-
-                    Object.defineProperty(e, 'customData', {
-                        value: data
-                    });
 
                     if (typeof beforeHook === "function") {
                         beforeHook.call(target, e);
@@ -1649,10 +1653,18 @@ $.fn.extend({
                     }
                 };
 
-                $.eventUID++;
+                Object.defineProperty(h, "name", {
+                    value: handler.name.trim() !== "" ? handler.name : "func_event_"+name+"_"+$.eventUID
+                });
 
                 originEvent = name+(sel ? ":"+sel:"")+(ns ? ":"+ns:"");
+
+                if (options.capture === undefined) {
+                    options.capture = false;
+                }
+
                 el.addEventListener(name, h, options);
+
                 index = $.setEventHandler({
                     el: el,
                     event: name,
@@ -1666,17 +1678,24 @@ $.fn.extend({
         });
     },
 
-    one: function(events, sel, handler, data){
-        var args = [].slice.call(arguments).filter(function(el){
-            return !not(el);
-        });
-        args.push({once: true});
-        return this["on"].apply(this, args);
+    one: function(events, sel, handler, options){
+        if (!isPlainObject(options)) {
+            options = {};
+        }
+
+        options.once = true;
+
+        return this["on"].apply(this, [events, sel, handler, options]);
     },
 
-    off: function(eventsList, sel){
-        if (not(eventsList) || this.length === 0) {
-            return ;
+    off: function(eventsList, sel, options){
+        if (!isPlainObject(options)) {
+            options = {};
+        }
+
+        if (isPlainObject(sel)) {
+            options = sel;
+            sel = null;
         }
 
         if (not(eventsList) || eventsList.toLowerCase() === 'all') {
@@ -1698,13 +1717,13 @@ $.fn.extend({
             $.each(str2arr(eventsList), function(){
                 var evMap = this.split("."),
                     name = evMap[0],
-                    ns = evMap[1],
+                    ns = options.ns ? options.ns : evMap[1],
                     originEvent, index;
 
                 originEvent = "event-"+name+(sel ? ":"+sel:"")+(ns ? ":"+ns:"");
                 index = $(el).origin(originEvent);
 
-                if (index && $.events[index].handler) {
+                if (index !== undefined && $.events[index].handler) {
                     el.removeEventListener(name, $.events[index].handler);
                     $.events[index].handler = null;
                 }
@@ -1755,10 +1774,10 @@ $.fn.extend({
     .split( " " )
     .forEach(
     function( name ) {
-        $.fn[ name ] = function( sel, fn, data, opt ) {
+        $.fn[ name ] = function( sel, fn, opt ) {
             return arguments.length > 0 ?
-                this.on( name, sel, fn, data, opt ) :
-                this.trigger( name, data );
+                this.on( name, sel, fn, opt ) :
+                this.trigger( name );
         };
 });
 
@@ -2360,7 +2379,7 @@ $.fn.extend({
                 });
             } else {
                 el.setAttribute(name, val);
-                console.log(name, val);
+                // console.log(name, val);
             }
         });
     },

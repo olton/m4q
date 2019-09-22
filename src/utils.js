@@ -77,7 +77,8 @@ $.extend({
     parseUnit: function(str, out){return parseUnit(str, out)},
     unit: function(str, out){return parseUnit(str, out)},
     isVisible: function(elem) {return isVisible(elem)},
-    isHidden: function(elem) {return isHidden(elem)}
+    isHidden: function(elem) {return isHidden(elem)},
+    iif: function(v1, v2, v3){return iif(v1, v2, v3);}
 });
 
 $.fn.extend({

@@ -13,10 +13,6 @@ m4q is not a complete jQuery equivalent and there are differences.
 [![gzip full](http://img.badgesize.io/olton/m4q/master/build/m4q.js?compression=gzip&label=gzip+full&color=yellow)](https://github.com/olton/m4q/blob/master/build/m4q.js)
 [![gzip min](http://img.badgesize.io/olton/m4q/master/build/m4q.min.js?compression=gzip&label=gzip+min&color=ff69b4)](https://github.com/olton/m4q/blob/master/build/m4q.min.js)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat)](https://github.com/olton/m4q/blob/master/LICENSE)
-<!--
-[![Known Vulnerabilities](https://snyk.io/test/github/olton/m4q/badge.svg?targetFile=package.json)](https://snyk.io/test/github/olton/m4q?targetFile=package.json)
-[![Maintainability](https://api.codeclimate.com/v1/badges/4201551c70bc4ee030b5/maintainability)](https://codeclimate.com/github/olton/m4q/maintainability)
--->
 
 ## Documentation
 Read about `m4q` usage in the [Metro 4 docs](https://metroui.org.ua/m4q-about.html)

@@ -4,7 +4,7 @@
   "description": "Helper for DOM manipulation and animation",
   "version": "1.0.0",
   "build": "1",
-  "status": "beta",
+  "status": "",
   "main": "build/m4q.js",
   "homepage": "https://metroui.org.ua",
   "author": {
@@ -38,7 +38,7 @@
     "manual-test": "start-server-and-test start http://localhost:8080 cy:test"
   },
   "devDependencies": {
-    "cypress": "^3.3.2",
+    "cypress": "^3.4.0",
     "grunt": "^1.0.4",
     "grunt-build-number": "^1.0.0",
     "grunt-contrib-clean": "^2.0.0",

@@ -100,3 +100,7 @@ function dataAttr(elem, key, data){
     }
     return data;
 }
+
+function iif(val1, val2, val3){
+    return val1 ? val1 : val2 ? val2 : val3;
+}

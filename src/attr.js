@@ -25,7 +25,7 @@ $.fn.extend({
                 });
             } else {
                 el.setAttribute(name, val);
-                console.log(name, val);
+                // console.log(name, val);
             }
         });
     },
