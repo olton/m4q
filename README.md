@@ -7,8 +7,8 @@ m4q is not a complete jQuery equivalent and there are differences.
 ## Version 1.0.0
 
 #### Status
-[![develop Status](https://img.shields.io/badge/status-in&nbsp;develop-lightgrey.svg)](https://david-dm.org/olton/m4q)
-[![Dependencies](https://img.shields.io/badge/Dependencies-none-green.svg?style=flat)](https://github.com/olton/m4q/blob/master/LICENSE)
+[![develop Status](https://img.shields.io/badge/status-release-darklime.svg)](https://david-dm.org/olton/m4q)
+[![Dependencies](https://img.shields.io/badge/Dependencies-none-darklime.svg?style=flat)](https://github.com/olton/m4q/blob/master/LICENSE)
 [![full size](http://img.badgesize.io/olton/m4q/master/build/m4q.js?label=full+size&color=orange)](https://github.com/olton/m4q/blob/master/build/m4q.js)
 [![gzip full](http://img.badgesize.io/olton/m4q/master/build/m4q.js?compression=gzip&label=gzip+full&color=yellow)](https://github.com/olton/m4q/blob/master/build/m4q.js)
 [![gzip min](http://img.badgesize.io/olton/m4q/master/build/m4q.min.js?compression=gzip&label=gzip+min&color=ff69b4)](https://github.com/olton/m4q/blob/master/build/m4q.min.js)
