@@ -2,7 +2,7 @@
   "name": "m4q",
   "title": "m4q",
   "description": "Helper for DOM manipulation and animation",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "build": "1",
   "status": "",
   "main": "build/m4q.js",
