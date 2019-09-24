@@ -31,7 +31,7 @@ $.init = function(sel, ctx){
         sel = document.doctype;
     }
 
-    if (sel.nodeType || sel.self === window) {
+    if (sel && (sel.nodeType || sel.self === window)) {
         this[0] = sel;
         this.length = 1;
         return this;
