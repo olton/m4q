@@ -64,8 +64,7 @@ no_git
 *.ftpauth
 
 commit.bat
-build.bat
 tag.bat
 delete-tag.bat
 copy-to-metro4.bat
-Build.js
+final.bat

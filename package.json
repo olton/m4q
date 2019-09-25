@@ -2,9 +2,7 @@
   "name": "m4q",
   "title": "m4q",
   "description": "Helper for DOM manipulation and animation",
-  "version": "1.0.1",
-  "build": "1",
-  "status": "",
+  "version": "1.0.2",
   "main": "build/m4q.js",
   "homepage": "https://metroui.org.ua",
   "author": {
