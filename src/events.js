@@ -187,7 +187,7 @@ $.fn.extend({
                 };
 
                 Object.defineProperty(h, "name", {
-                    value: handler.name.trim() !== "" ? handler.name : "func_event_"+name+"_"+$.eventUID
+                    value: handler.name && handler.name !== "" ? handler.name : "func_event_"+name+"_"+$.eventUID
                 });
 
                 originEvent = name+(sel ? ":"+sel:"")+(ns ? ":"+ns:"");
