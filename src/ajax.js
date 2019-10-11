@@ -29,7 +29,7 @@ $.ajax = function(p){
         }
 
         if (p.headers) {
-            $.each(function(k, v){
+            $.each(p.headers, function(k, v){
                 xhr.setRequestHeader(k, v);
                 headers.push(k);
             });
