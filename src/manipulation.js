@@ -1,3 +1,4 @@
+// TODO optimise promises append, prepend to one definition
 (function (arr) {
     arr.forEach(function (item) {
         if (item.hasOwnProperty('append')) {

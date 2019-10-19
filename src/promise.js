@@ -187,7 +187,7 @@
         if (typeof resolver !== 'function')
             throw new TypeError('Promise constructor takes a function argument');
 
-        if (this instanceof Promise === false)
+        if (!this instanceof Promise)
             throw new TypeError('Failed to construct \'Promise\': Please use the \'new\' operator, this object constructor cannot be called as a function.');
 
         this.then_ = [];
@@ -222,6 +222,10 @@
             }
 
             return subscriber.then;
+        },
+
+        done: function(onFulfillment){
+            return this.then(onFulfillment, null);
         },
 
         'catch': function(onRejection) {
