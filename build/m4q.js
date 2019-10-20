@@ -532,7 +532,7 @@ function iif(val1, val2, val3){
 
 // Source: src/core.js
 
-var m4qVersion = "v1.0.2. Built at 19/10/2019 08:26:27";
+var m4qVersion = "v1.0.2. Built at 20/10/2019 17:42:48";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
