@@ -1,5 +1,6 @@
 ### 1.0.3
 + [x] Events: add `$(document).ready(...)`
++ [x] Events: fix context for event handler function
 
 ### 1.0.2
 + [x] Events: fix `function.name` property for IE11

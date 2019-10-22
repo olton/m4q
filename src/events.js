@@ -163,7 +163,7 @@ $.fn.extend({
                     }
 
                     if (!sel) {
-                        handler.call(target, e);
+                        handler.call(el, e);
                     } else {
                         while (target && target !== el) {
                             if (matches.call(target, sel)) {

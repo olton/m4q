@@ -6,11 +6,17 @@
     <title>Test events</title>
 </head>
 <body>
-
+<button>Clear</button>
+<button><span>Span</span></button>
 
 <script src="../build/m4q.js"></script>
 
 <script>
+    $("button").on("click", function(e){
+        console.log(this);
+        console.log(e.target);
+    });
+
     $(document).ready(function(){
         console.log("Yes, document ready");
     });
