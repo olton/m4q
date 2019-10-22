@@ -354,3 +354,11 @@ $.fn.extend({
         return (this.length === 0 || this[0]['self'] !== window) ? undefined : $.beforeunload(fn);
     }
 });
+
+$.fn.extend({
+    ready: function(fn){
+        if (this.length && this[0] === document && typeof fn === 'function') {
+            return $.ready(fn);
+        }
+    }
+});
