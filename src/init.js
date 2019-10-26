@@ -1,5 +1,5 @@
 $.init = function(sel, ctx){
-    var parsed;
+    var parsed, r;
 
     this.uid = $.uniqueId();
 
@@ -38,9 +38,19 @@ $.init = function(sel, ctx){
     }
 
     if (sel instanceof $) {
-        var r = $();
+        r = $();
         $.each(sel, function(){
             r.push(this);
+        });
+        return r;
+    }
+
+    if (Array.isArray(sel)) {
+        r = $();
+        $.each(sel, function(){
+            $(this).each(function(){
+                r.push(this);
+            });
         });
         return r;
     }

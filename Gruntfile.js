@@ -47,7 +47,7 @@ module.exports = function(grunt) {
             ' * Copyright 2018 - <%= grunt.template.today("yyyy") %> by <%= pkg.author.name %>\n' +
             ' * <%= pkg.description %>\n' +
             ' * Licensed under <%= pkg.license %>\n' +
-            ' */\n',
+            ' */\n\n',
 
         banner: "" +
             "( function( global, factory ) {\n" +
@@ -80,7 +80,7 @@ module.exports = function(grunt) {
             global: {
                 options: {
                     // banner: '<%= copyright %>' + "\n" + "<%= banner %>\n",
-                    banner: "<%= banner2 %>\n",
+                    banner: "<%= copyright %> <%= banner2 %>\n",
                     footer: "<%= footer2 %>\n",
                     stripBanners: true,
                     separator: "\n\n",

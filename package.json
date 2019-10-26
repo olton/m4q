@@ -1,13 +1,13 @@
 {
   "name": "m4q",
   "title": "m4q",
-  "description": "Helper for DOM manipulation and animation",
+  "description": "Helper for DOM manipulation, animation, and ajax routines.",
   "version": "1.0.3",
   "main": "build/m4q.js",
-  "homepage": "https://metroui.org.ua",
+  "homepage": "https://metroui.org.ua/m4q-about.html",
   "author": {
     "name": "Sergey Pimenov",
-    "url": "https://pimenov.oom.ua"
+    "url": "https://pimenov.com.ua"
   },
   "repository": {
     "type": "git",
