@@ -1,3 +1,5 @@
+### 1.0.4
+
 ### 1.0.3
 + [x] Events: add `$(document).ready(...)`
 + [x] Events: fix context for event handler function
