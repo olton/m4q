@@ -6,22 +6,32 @@
     <title>Test events</title>
 </head>
 <body>
-<button>Clear</button>
-<button><span>Span</span></button>
+<button id="b1">Clear</button>
+<button id="b2"><span id="s1">Span</span></button>
 
 <script src="../build/m4q.js"></script>
 
 <script>
-    $("button").on("click", function(e){
-        console.log(this);
-        console.log(e.target);
+    // $("button").on("click", function(e){
+    //     console.log(this);
+    //     console.log(e.target);
+    // });
+    //
+    // $(document).ready(function(){
+    //     console.log("Yes, document ready");
+    // });
+    // $("body").ready(function(){
+    //     console.log("Yes, body ready");
+    // })
+
+    $("#b2").on("click", "#s1", function(e){
+        console.log("span");
+        e.preventDefault();
+        e.stopPropagation();
     });
 
-    $(document).ready(function(){
-        console.log("Yes, document ready");
-    });
-    $("body").ready(function(){
-        console.log("Yes, body ready");
+    $("#b2").on("click", function(e){
+        console.log("button");
     })
 </script>
 </body>

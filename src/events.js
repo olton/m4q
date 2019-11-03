@@ -169,6 +169,7 @@ $.fn.extend({
                             if (matches.call(target, sel)) {
                                 handler.call(target, e);
                                 if (e.isPropagationStopped) {
+                                    e.stopImmediatePropagation();
                                     break;
                                 }
                             }
@@ -192,11 +193,7 @@ $.fn.extend({
 
                 originEvent = name+(sel ? ":"+sel:"")+(ns ? ":"+ns:"");
 
-                if (options.capture === undefined) {
-                    options.capture = false;
-                }
-
-                el.addEventListener(name, h, options);
+                el.addEventListener(name, h, !isEmptyObject(options) ? options : false);
 
                 index = $.setEventHandler({
                     el: el,

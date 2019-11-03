@@ -228,6 +228,10 @@
             return this.then(onFulfillment, null);
         },
 
+        always: function(onAlways){
+            return this.then(onAlways, onAlways);
+        },
+
         'catch': function(onRejection) {
             return this.then(null, onRejection);
         }
