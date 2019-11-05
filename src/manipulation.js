@@ -1,48 +1,28 @@
-// TODO optimise promises append, prepend to one definition
 (function (arr) {
     arr.forEach(function (item) {
-        if (item.hasOwnProperty('append')) {
-            return;
-        }
-        Object.defineProperty(item, 'append', {
-            configurable: true,
-            enumerable: true,
-            writable: true,
-            value: function append() {
-                var argArr = Array.prototype.slice.call(arguments),
-                    docFrag = document.createDocumentFragment();
-
-                argArr.forEach(function (argItem) {
-                    var isNode = argItem instanceof Node;
-                    docFrag.appendChild(isNode ? argItem : document.createTextNode(String(argItem)));
-                });
-
-                this.appendChild(docFrag);
+        ['append', 'prepend'].forEach(function(where){
+            if (item.hasOwnProperty(where)) {
+                return;
             }
-        });
-    });
-})([Element.prototype, Document.prototype, DocumentFragment.prototype]);
+            Object.defineProperty(item, where, {
+                configurable: true,
+                enumerable: true,
+                writable: true,
+                value: function prepend() {
+                    var argArr = Array.prototype.slice.call(arguments),
+                        docFrag = document.createDocumentFragment();
 
-(function (arr) {
-    arr.forEach(function (item) {
-        if (item.hasOwnProperty('prepend')) {
-            return;
-        }
-        Object.defineProperty(item, 'prepend', {
-            configurable: true,
-            enumerable: true,
-            writable: true,
-            value: function prepend() {
-                var argArr = Array.prototype.slice.call(arguments),
-                    docFrag = document.createDocumentFragment();
+                    argArr.forEach(function (argItem) {
+                        var isNode = argItem instanceof Node;
+                        docFrag.appendChild(isNode ? argItem : document.createTextNode(String(argItem)));
+                    });
 
-                argArr.forEach(function (argItem) {
-                    var isNode = argItem instanceof Node;
-                    docFrag.appendChild(isNode ? argItem : document.createTextNode(String(argItem)));
-                });
-
-                this.insertBefore(docFrag, this.firstChild);
-            }
+                    if (where === 'prepend')
+                        this.insertBefore(docFrag, this.firstChild);
+                    else
+                        this.appendChild(docFrag);
+                }
+            });
         });
     });
 })([Element.prototype, Document.prototype, DocumentFragment.prototype]);
@@ -60,10 +40,11 @@ $.fn.extend({
         var elems = normalizeElements(elements);
 
         return this.each(function(elIndex, el){
-            $.each(elems, function(){
-                var child = this;
+            $.each(elems, function(i){
                 if (el === this) return ;
-                el.append(elIndex === 0 ? child : child.cloneNode(true));
+                var child = elIndex === 0 ? this : this.cloneNode(true);
+                el.append(child);
+                $.script(child);
             });
         })
     },
@@ -85,9 +66,10 @@ $.fn.extend({
 
         return this.each(function (elIndex, el) {
             $.each(elems, function(){
-                var child = this;
                 if (el === this) return ;
-                el.prepend(elIndex === 0 ? child : child.cloneNode(true))
+                var child = elIndex === 0 ? this : this.cloneNode(true);
+                el.prepend(child);
+                $.script(child);
             });
         })
     },

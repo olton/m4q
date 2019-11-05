@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>Test manipulation</title>
+</head>
+<body>
+<div id="target">
+    <span>target</span>
+</div>
+
+<script src="../build/m4q.js"></script>
+
+<script>
+    var target = $('#target');
+    var div1 = $("<div>").html("prepend");
+    var div2 = $("<div>").html("append");
+    target.prepend(div1);
+    target.append(div2);
+</script>
+</body>

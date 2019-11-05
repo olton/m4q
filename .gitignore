@@ -59,6 +59,7 @@ validation-status.json
 bower_components
 node_modules
 no_git
+poligon
 
 # Special files
 *.ftpauth

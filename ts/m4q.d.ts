@@ -1,17 +1,17 @@
 type M4QObject = object;
 type func = () => void;
 type func_a = (...args: any[]) => void;
-type Element = HTMLElement;
 type Iterable = any;
 
 declare function setImmediate(fn: func): number;
 declare function clearImmediate(id: number): void;
 
-declare class Promise {
+declare class Promise<T> {
     constructor(resolver: func_a);
 
     then(resolve: func_a, reject: func_a);
     done(resolve: func_a);
+    always(resolve: func_a);
     catch(reject: func_a);
 
     static all(promises: any[]): any;
@@ -20,7 +20,7 @@ declare class Promise {
     static reject(val: any): any;
 }
 
-declare class m4q {
+declare class m4q<T, C> {
     constructor(selector: any, context: any);
 
     static version: string;
@@ -32,17 +32,17 @@ declare class m4q {
     init(selector: any, context: any): any;
 
     // animation.js
-    animate(el: Element, draw: any, dur: number, timing: string, cb: func): any;
-    stop(el: Element, done: boolean): any;
+    animate(el: HTMLElement, draw: any, dur: number, timing: string, cb: func): any;
+    stop(el: HTMLElement, done: boolean): any;
 
     // ajax.js
-    ajax(params: object): Promise;
-    get(url: string, data: any, options: object): Promise;
-    post(url: string, data: any, options: object): Promise;
-    put(url: string, data: any, options: object): Promise;
-    patch(url: string, data: any, options: object): Promise;
-    delete(url: string, data: any, options: object): Promise;
-    json(url: string, data: any, options: object): Promise;
+    ajax(params: object): Promise<func_a>;
+    get(url: string, data: any, options: object): Promise<func_a>;
+    post(url: string, data: any, options: object): Promise<func_a>;
+    put(url: string, data: any, options: object): Promise<func_a>;
+    patch(url: string, data: any, options: object): Promise<func_a>;
+    delete(url: string, data: any, options: object): Promise<func_a>;
+    json(url: string, data: any, options: object): Promise<func_a>;
 
     // attr.js
     meta(name: string): any;
@@ -55,10 +55,10 @@ declare class m4q {
     each(context: any, callback: func_a): any;
 
     // effects.js
-    fadeIn(el: Element, dur: number, easing: string, cb: func): any;
-    fadeOut(el: Element, dur: number, easing: string, cb: func): any;
-    slideDown(el: Element, dur: number, easing: string, cb: func): any;
-    slideUp(el: Element, dur: number, easing: string, cb: func): any;
+    fadeIn(el: HTMLElement, dur: number, easing: string, cb: func): any;
+    fadeOut(el: HTMLElement, dur: number, easing: string, cb: func): any;
+    slideDown(el: HTMLElement, dur: number, easing: string, cb: func): any;
+    slideUp(el: HTMLElement, dur: number, easing: string, cb: func): any;
 
     // events.js
     static events: any[];
@@ -92,11 +92,11 @@ declare class m4q {
     bind(fn: func, context: any): func;
 
     // visibility.js
-    hidden(el: Element, val: string, cb: func): any;
-    hide(el: Element, cb: func): any;
-    show(el: Element, cb: func): any;
-    visible(el: Element, mode: string, cb: func): any;
-    toggle(el: Element, cb: func): any;
+    hidden(el: HTMLElement, val: string, cb: func): any;
+    hide(el: HTMLElement, cb: func): any;
+    show(el: HTMLElement, cb: func): any;
+    visible(el: HTMLElement, mode: string, cb: func): any;
+    toggle(el: HTMLElement, cb: func): any;
 
     // utils.js
     uniqueId(): string;
@@ -116,6 +116,9 @@ declare class m4q {
     unit(val: any): any[];
     isVisible(el: any): boolean;
     isHidden(el: any): boolean;
+
+    // script.js
+    script(el: HTMLElement): void;
 }
 
 
@@ -174,7 +177,7 @@ declare namespace m4q {
         function stop(done: boolean): any;
 
         // ajax.js
-        function load(url: string, data: any, options: object): Promise;
+        function load(url: string, data: any, options: object): Promise<func_a>;
 
         // attr.js
         function attr(name: string, val: any): any;
@@ -314,5 +317,8 @@ declare namespace m4q {
 
         // utils.js
         function items(): any[];
+
+        // script.js
+        function script(): void;
     }
 }

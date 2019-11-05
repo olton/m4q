@@ -14,18 +14,7 @@ $.fn.extend({
             el[prop] = value;
 
             if (prop === "innerHTML") {
-                $.each($(el).find("script"), function(){
-                    var script = this;
-                    var s = document.createElement('script');
-                    s.type = 'text/javascript';
-                    if (script.src) {
-                        s.src = script.src;
-                    } else {
-                        s.textContent = script.innerText;
-                    }
-                    document.body.appendChild(s);
-                    script.parentNode.removeChild(script);
-                });
+                $.script(el);
             }
         });
     },

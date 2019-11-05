@@ -1,4 +1,7 @@
 ### 1.0.4
++ [x] Manipulation: optimise `append`, `prepend` to one definition for IE
++ [x] Script: add `$.script`, `$.fn.script` to execute scripts from element
++ [x] Manipulation: `$.fn.append`, `$.fn.prepend` now support script tag processing
 
 ### 1.0.3
 + [x] Events: add `$(document).ready(...)`

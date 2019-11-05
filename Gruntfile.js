@@ -16,6 +16,7 @@ module.exports = function(grunt) {
         'src/core.js',
         'src/interval.js',
         'src/contains.js',
+        'src/script.js',
         'src/prop.js',
         'src/each.js',
         'src/data.js',
