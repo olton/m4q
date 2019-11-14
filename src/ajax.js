@@ -51,7 +51,7 @@ $.ajax = function(p){
         }
 
         if (method !== "POST") {
-            url += "?" + (typeof data === "string" ? data : JSON.stringify(data));
+            url += "?" + (typeof data === "string" ? data : isEmptyObject(data) ? "" : JSON.stringify(data));
         }
 
         xhr.open(method, url, async, p.user, p.password);
