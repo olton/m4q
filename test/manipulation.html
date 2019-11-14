@@ -16,7 +16,15 @@
     var target = $('#target');
     var div1 = $("<div>").html("prepend");
     var div2 = $("<div>").html("append");
-    target.prepend(div1);
-    target.append(div2);
+    var script = $.script().text("alert('ku')");
+    var head = $.head();
+    var body = $.body();
+
+    console.log(head);
+    script.appendTo(body);
+
+    console.log($.window());
+    console.log($.document());
+
 </script>
 </body>

@@ -4,35 +4,46 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title>Test proxy</title>
+    <style>
+        ul {
+            list-style: none inside;
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+        }
+
+        ul li {
+            display: block;
+            padding: 0 16px 0 50px;
+            border: 1px solid gray;
+            line-height: 40px;
+            height: 40px;
+            position: relative;
+        }
+
+        span {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+
 </head>
 <body>
 <div>
-    <button id="primary1">Primary 1</button>
-    <button id="primary2">Primary 2</button>
-    <button id="secondary1">Remove EventListener 1</button>
-    <button id="secondary2">Remove EventListener 2</button>
+    <ul>
+        <li>Item 1 <span class="drag-item-marker">span 1</span></li>
+    </ul>
 </div>
 
 <script src="../build/m4q.js"></script>
 
 <script>
-    $("#primary1").on("click", function(){
-        alert("Button primary 1 was clicked!");
+    var useDraw = true;
+    $("ul").on("mouseDown", (useDraw ? ".drag-item-marker" : "li"), function(e){
+        console.log("span");
+        e.preventDefault();
+        e.stopPropagation();
     });
-
-    function p2click(e){
-        alert("Button primary 2 was clicked!");
-    }
-
-    $("#primary2").on("click", p2click);
-
-    $("#secondary1").on("click", function(){
-        $("#primary1").off("click");
-    });
-
-    $("#secondary2").on("click", function(){
-        $("#primary2").off("click");
-    });
-
 </script>
 </body>

@@ -1,24 +1,25 @@
 $.ajax = function(p){
     return new Promise(function(resolve, reject){
         var xhr = new XMLHttpRequest(), data;
-        var method = (p.method || 'GET').toUpperCase();
+        var method = (p.method || "GET").toUpperCase();
         var headers = [];
         var async = not(p.async) ? true : p.async;
         var url = p.url;
 
         var exec = function(fn, params){
-            if (typeof fn === "function") fn.apply(null, params);
+            if (typeof fn === "function") {
+                fn.apply(null, params);
+            }
         };
 
         if (p.data instanceof HTMLFormElement) {
             var _action = p.data.getAttribute("action");
             var _method = p.data.getAttribute("method");
 
-            if (not(url) && _action && _action.trim() !== "") url = _action;
-            if (_method && _method.trim() !== "") method = _method.toUpperCase();
+            if (not(url) && _action && _action.trim() !== "") {url = _action;}
+            if (_method && _method.trim() !== "") {method = _method.toUpperCase();}
         }
 
-        xhr.open(method, url, async, p.user, p.password);
 
         if (p.timeout) {
             xhr.timeout = p.timeout;
@@ -26,13 +27,6 @@ $.ajax = function(p){
 
         if (p.withCredentials) {
             xhr.withCredentials = p.withCredentials;
-        }
-
-        if (p.headers) {
-            $.each(p.headers, function(k, v){
-                xhr.setRequestHeader(k, v);
-                headers.push(k);
-            });
         }
 
         if (p.data instanceof HTMLFormElement) {
@@ -46,12 +40,9 @@ $.ajax = function(p){
         } else if (isPlainObject(p.data)) {
             var _data = [];
             $.each(p.data, function(k, v){
-                _data.push(k+"="+v);
+                _data.push(k+"="+JSON.stringify(v));
             });
             data = _data.join("&");
-            if (headers.indexOf("Content-type") === -1) {
-                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            }
         } else if (p.data instanceof FormData) {
             data = p.data;
         } else {
@@ -59,6 +50,22 @@ $.ajax = function(p){
             data.append("_data", JSON.stringify(p.data));
         }
 
+        if (method !== "POST") {
+            url += "?" + (typeof data === "string" ? data : JSON.stringify(data));
+        }
+
+        xhr.open(method, url, async, p.user, p.password);
+        if (p.headers) {
+            $.each(p.headers, function(k, v){
+                xhr.setRequestHeader(k, v);
+                headers.push(k);
+            });
+        }
+        if (method === "POST") {
+            if (headers.indexOf("Content-type") === -1) {
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            }
+        }
         xhr.send(data);
 
         xhr.addEventListener("load", function(e){

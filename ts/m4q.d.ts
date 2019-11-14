@@ -50,6 +50,10 @@ declare class m4q<T, C> {
     doctype(): any;
     html(): any;
     charset(): any;
+    head(): any;
+    document(): any;
+    window(): any;
+    body(): any;
 
     // each.js
     each(context: any, callback: func_a): any;

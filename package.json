@@ -29,14 +29,14 @@
   "dependencies": {},
   "scripts": {
     "build": "npm install && grunt",
-    "cy:test": "cypress open --config fileServerFolder=test,baseUrl=http://localhost:8080",
-    "cy:run": "cypress run --config fileServerFolder=test,baseUrl=http://localhost:8080,video=false",
+    "cy:test": "cypress open",
+    "cy:run": "cypress run",
     "start": "http-server ./ -c-1 -s",
     "test": "start-server-and-test start http://localhost:8080 cy:run",
     "manual-test": "start-server-and-test start http://localhost:8080 cy:test"
   },
   "devDependencies": {
-    "cypress": "^3.4.0",
+    "cypress": "^3.6.0",
     "grunt": "^1.0.4",
     "grunt-build-number": "^1.0.0",
     "grunt-contrib-clean": "^2.0.0",

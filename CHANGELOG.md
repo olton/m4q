@@ -1,7 +1,10 @@
 ### 1.0.4
 + [x] Manipulation: optimise `append`, `prepend` to one definition for IE
-+ [x] Script: add `$.script`, `$.fn.script` to execute scripts from element
++ [x] Script: add `$.script`, `$.fn.script` to execute scripts from element or create script object
 + [x] Manipulation: `$.fn.append`, `$.fn.prepend` now support script tag processing
++ [x] Clone: now support cloning `data` if second argument `withData`is `true` - `$(el).clone(true, true)`
++ [x] Events: nwo you can define event name with `hyphen` or in `camelCase` notation. Example: `mouse-down`, `accordionCreate`
++ [x] Ajax: fixed handler for sending data
 
 ### 1.0.3
 + [x] Events: add `$(document).ready(...)`

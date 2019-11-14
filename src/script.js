@@ -1,21 +1,36 @@
 function createScript(script){
     var s = document.createElement('script');
     s.type = 'text/javascript';
-    if (script.src) {
-        s.src = script.src;
+
+    if (not(script)) return $(s);
+
+    var _script = $(script)[0];
+
+    if (_script.src) {
+        s.src = _script.src;
     } else {
-        s.textContent = script.innerText;
+        s.textContent = _script.innerText;
     }
+
     document.body.appendChild(s);
-    script.parentNode.removeChild(script);
+
+    if (_script.parentNode) _script.parentNode.removeChild(_script);
+
     return s;
 }
 
 $.extend({
     script: function(el){
-        if (el.tagName && el.tagName === "SCRIPT") {
-            createScript(el);
-        } else $.each($(el).find("script"), function(){
+
+        if (not(el)) {
+            return createScript();
+        }
+
+        var _el = $(el)[0];
+
+        if (_el.tagName && _el.tagName === "SCRIPT") {
+            createScript(_el);
+        } else $.each($(_el).find("script"), function(){
             createScript(this);
         });
     }

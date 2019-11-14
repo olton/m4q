@@ -120,6 +120,10 @@ function iif(val1, val2, val3){
     return val1 ? val1 : val2 ? val2 : val3;
 }
 
+function normalizeEventName(name) {
+    return typeof name !== "string" ? undefined : name.replace(/\-/g, "").toLowerCase();
+}
+
 // Source: src/setimmediate.js
 
 /*
@@ -543,7 +547,7 @@ function iif(val1, val2, val3){
 
 // Source: src/core.js
 
-var m4qVersion = "v1.0.4. Built at 05/11/2019 16:19:03";
+var m4qVersion = "v1.0.4. Built at 14/11/2019 11:42:27";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1080,21 +1084,36 @@ $.fn.extend({
 function createScript(script){
     var s = document.createElement('script');
     s.type = 'text/javascript';
-    if (script.src) {
-        s.src = script.src;
+
+    if (not(script)) return $(s);
+
+    var _script = $(script)[0];
+
+    if (_script.src) {
+        s.src = _script.src;
     } else {
-        s.textContent = script.innerText;
+        s.textContent = _script.innerText;
     }
+
     document.body.appendChild(s);
-    script.parentNode.removeChild(script);
+
+    if (_script.parentNode) _script.parentNode.removeChild(_script);
+
     return s;
 }
 
 $.extend({
     script: function(el){
-        if (el.tagName && el.tagName === "SCRIPT") {
-            createScript(el);
-        } else $.each($(el).find("script"), function(){
+
+        if (not(el)) {
+            return createScript();
+        }
+
+        var _el = $(el)[0];
+
+        if (_el.tagName && _el.tagName === "SCRIPT") {
+            createScript(_el);
+        } else $.each($(_el).find("script"), function(){
             createScript(this);
         });
     }
@@ -1492,7 +1511,10 @@ $.extend({
     unit: function(str, out){return parseUnit(str, out)},
     isVisible: function(elem) {return isVisible(elem)},
     isHidden: function(elem) {return isHidden(elem)},
-    iif: function(v1, v2, v3){return iif(v1, v2, v3);}
+    iif: function(v1, v2, v3){return iif(v1, v2, v3);},
+    matches: function(el, s) {
+        return matches.call(el, s);
+    }
 });
 
 $.fn.extend({
@@ -1652,7 +1674,7 @@ $.fn.extend({
             $.each(str2arr(eventsList), function(){
                 var h, ev = this,
                     event = ev.split("."),
-                    name = event[0],
+                    name = normalizeEventName(event[0]),
                     ns = options.ns ? options.ns : event[1],
                     index, originEvent;
 
@@ -1751,7 +1773,7 @@ $.fn.extend({
             var el = this;
             $.each(str2arr(eventsList), function(){
                 var evMap = this.split("."),
-                    name = evMap[0],
+                    name = normalizeEventName(evMap[0]),
                     ns = options.ns ? options.ns : evMap[1],
                     originEvent, index;
 
@@ -1769,16 +1791,20 @@ $.fn.extend({
     },
 
     trigger: function(name, data){
+        var _name;
+
         if (this.length === 0) {
             return ;
         }
 
-        if (['focus', 'blur'].indexOf(name) > -1) {
-            this[0][name]();
+        _name = normalizeEventName(name);
+
+        if (['focus', 'blur'].indexOf(_name) > -1) {
+            this[0][_name]();
             return this;
         }
 
-        var e = new CustomEvent(name, data || {});
+        var e = new CustomEvent(_name, data || {});
 
         return this.each(function(){
             this.dispatchEvent(e);
@@ -1786,18 +1812,22 @@ $.fn.extend({
     },
 
     fire: function(name, data){
+        var _name;
+
         if (this.length === 0) {
             return ;
         }
 
-        if (['focus', 'blur'].indexOf(name) > -1) {
-            this[0][name]();
+        _name = normalizeEventName(name);
+
+        if (['focus', 'blur'].indexOf(_name) > -1) {
+            this[0][_name]();
             return this;
         }
 
         var e = document.createEvent('Events');
         e.detail = data;
-        e.initEvent(name, true, false);
+        e.initEvent(_name, true, false);
 
         return this.each(function(){
             this.dispatchEvent(e);
@@ -1870,24 +1900,25 @@ $.fn.extend({
 $.ajax = function(p){
     return new Promise(function(resolve, reject){
         var xhr = new XMLHttpRequest(), data;
-        var method = (p.method || 'GET').toUpperCase();
+        var method = (p.method || "GET").toUpperCase();
         var headers = [];
         var async = not(p.async) ? true : p.async;
         var url = p.url;
 
         var exec = function(fn, params){
-            if (typeof fn === "function") fn.apply(null, params);
+            if (typeof fn === "function") {
+                fn.apply(null, params);
+            }
         };
 
         if (p.data instanceof HTMLFormElement) {
             var _action = p.data.getAttribute("action");
             var _method = p.data.getAttribute("method");
 
-            if (not(url) && _action && _action.trim() !== "") url = _action;
-            if (_method && _method.trim() !== "") method = _method.toUpperCase();
+            if (not(url) && _action && _action.trim() !== "") {url = _action;}
+            if (_method && _method.trim() !== "") {method = _method.toUpperCase();}
         }
 
-        xhr.open(method, url, async, p.user, p.password);
 
         if (p.timeout) {
             xhr.timeout = p.timeout;
@@ -1895,13 +1926,6 @@ $.ajax = function(p){
 
         if (p.withCredentials) {
             xhr.withCredentials = p.withCredentials;
-        }
-
-        if (p.headers) {
-            $.each(p.headers, function(k, v){
-                xhr.setRequestHeader(k, v);
-                headers.push(k);
-            });
         }
 
         if (p.data instanceof HTMLFormElement) {
@@ -1915,12 +1939,9 @@ $.ajax = function(p){
         } else if (isPlainObject(p.data)) {
             var _data = [];
             $.each(p.data, function(k, v){
-                _data.push(k+"="+v);
+                _data.push(k+"="+JSON.stringify(v));
             });
             data = _data.join("&");
-            if (headers.indexOf("Content-type") === -1) {
-                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            }
         } else if (p.data instanceof FormData) {
             data = p.data;
         } else {
@@ -1928,6 +1949,22 @@ $.ajax = function(p){
             data.append("_data", JSON.stringify(p.data));
         }
 
+        if (method !== "POST") {
+            url += "?" + (typeof data === "string" ? data : JSON.stringify(data));
+        }
+
+        xhr.open(method, url, async, p.user, p.password);
+        if (p.headers) {
+            $.each(p.headers, function(k, v){
+                xhr.setRequestHeader(k, v);
+                headers.push(k);
+            });
+        }
+        if (method === "POST") {
+            if (headers.indexOf("Content-type") === -1) {
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            }
+        }
         xhr.send(data);
 
         xhr.addEventListener("load", function(e){
@@ -2486,6 +2523,22 @@ $.extend({
         return $("html");
     },
 
+    head: function(){
+        return $("html").find("head");
+    },
+
+    body: function(){
+        return $("body");
+    },
+
+    document: function(){
+        return $(document);
+    },
+
+    window: function(){
+        return $(window);
+    },
+
     charset: function(val){
         var meta = $("meta[charset]");
         if (val) {
@@ -2549,24 +2602,24 @@ var normalizeElements = function(s){
 
 $.fn.extend({
     append: function(elements){
-        var elems = normalizeElements(elements);
+        var _elements = normalizeElements(elements);
 
         return this.each(function(elIndex, el){
-            $.each(elems, function(i){
+            $.each(_elements, function(){
                 if (el === this) return ;
                 var child = elIndex === 0 ? this : this.cloneNode(true);
-                el.append(child);
                 $.script(child);
+                if (child.tagName && child.tagName !== "SCRIPT") el.append(child);
             });
         })
     },
 
     appendTo: function(elements){
-        var elems = normalizeElements(elements);
+        var _elements = normalizeElements(elements);
 
         return this.each(function(){
             var el = this;
-            $.each(elems, function(parIndex, parent){
+            $.each(_elements, function(parIndex, parent){
                 if (el === this) return ;
                 parent.append(parIndex === 0 ? el : el.cloneNode(true));
             });
@@ -2574,24 +2627,24 @@ $.fn.extend({
     },
 
     prepend: function(elements){
-        var elems = normalizeElements(elements);
+        var _elements = normalizeElements(elements);
 
         return this.each(function (elIndex, el) {
-            $.each(elems, function(){
+            $.each(_elements, function(){
                 if (el === this) return ;
                 var child = elIndex === 0 ? this : this.cloneNode(true);
-                el.prepend(child);
                 $.script(child);
+                if (child.tagName && child.tagName !== "SCRIPT") el.prepend(child);
             });
         })
     },
 
     prependTo: function(elements){
-        var elems = normalizeElements(elements);
+        var _elements = normalizeElements(elements);
 
         return this.each(function(){
             var el = this;
-            $.each(elems, function(parIndex, parent){
+            $.each(_elements, function(parIndex, parent){
                 if (el === this) return ;
                 $(parent).prepend(parIndex === 0 ? el : el.cloneNode(true));
             })
@@ -2599,25 +2652,31 @@ $.fn.extend({
     },
 
     insertBefore: function(elements){
-        var elems = normalizeElements(elements);
+        var _elements = normalizeElements(elements);
 
         return this.each(function(){
             var el = this;
-            $.each(elems, function(elIndex, element){
+            $.each(_elements, function(elIndex){
                 if (el === this) return ;
-                element.parentNode.insertBefore(elIndex === 0 ? el : el.cloneNode(true), element);
+                var parent = this.parentNode;
+                if (parent) {
+                    parent.insertBefore(elIndex === 0 ? el : el.cloneNode(true), this);
+                }
             });
         })
     },
 
     insertAfter: function(elements){
-        var elems = normalizeElements(elements);
+        var _elements = normalizeElements(elements);
 
         return this.each(function(){
             var el = this;
-            $.each(elems, function(elIndex, element){
+            $.each(_elements, function(elIndex, element){
                 if (el === this) return ;
-                element.parentNode.insertBefore(elIndex === 0 ? el : el.cloneNode(true), element.nextSibling);
+                var parent = this.parentNode;
+                if (parent) {
+                    parent.insertBefore(elIndex === 0 ? el : el.cloneNode(true), element.nextSibling);
+                }
             });
         });
     },
@@ -2644,13 +2703,25 @@ $.fn.extend({
         });
     },
 
-    clone: function(deep){
+    clone: function(deep, withData){
         var res = [];
         if (not(deep)) {
             deep = false;
         }
+        if (not(withData)) {
+            withData = false;
+        }
         this.each(function(){
-            res.push(this.cloneNode(deep));
+            var el = this.cloneNode(deep);
+            var $el = $(el);
+            var data;
+            if (withData && $.hasData(this)) {
+                data = $(this).data();
+                $.each(data, function(k, v){
+                    $el.data(k, v);
+                })
+            }
+            res.push(el);
         });
         return $.merge($(), res);
     },

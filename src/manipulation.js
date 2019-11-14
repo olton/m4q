@@ -37,24 +37,24 @@ var normalizeElements = function(s){
 
 $.fn.extend({
     append: function(elements){
-        var elems = normalizeElements(elements);
+        var _elements = normalizeElements(elements);
 
         return this.each(function(elIndex, el){
-            $.each(elems, function(i){
+            $.each(_elements, function(){
                 if (el === this) return ;
                 var child = elIndex === 0 ? this : this.cloneNode(true);
-                el.append(child);
                 $.script(child);
+                if (child.tagName && child.tagName !== "SCRIPT") el.append(child);
             });
         })
     },
 
     appendTo: function(elements){
-        var elems = normalizeElements(elements);
+        var _elements = normalizeElements(elements);
 
         return this.each(function(){
             var el = this;
-            $.each(elems, function(parIndex, parent){
+            $.each(_elements, function(parIndex, parent){
                 if (el === this) return ;
                 parent.append(parIndex === 0 ? el : el.cloneNode(true));
             });
@@ -62,24 +62,24 @@ $.fn.extend({
     },
 
     prepend: function(elements){
-        var elems = normalizeElements(elements);
+        var _elements = normalizeElements(elements);
 
         return this.each(function (elIndex, el) {
-            $.each(elems, function(){
+            $.each(_elements, function(){
                 if (el === this) return ;
                 var child = elIndex === 0 ? this : this.cloneNode(true);
-                el.prepend(child);
                 $.script(child);
+                if (child.tagName && child.tagName !== "SCRIPT") el.prepend(child);
             });
         })
     },
 
     prependTo: function(elements){
-        var elems = normalizeElements(elements);
+        var _elements = normalizeElements(elements);
 
         return this.each(function(){
             var el = this;
-            $.each(elems, function(parIndex, parent){
+            $.each(_elements, function(parIndex, parent){
                 if (el === this) return ;
                 $(parent).prepend(parIndex === 0 ? el : el.cloneNode(true));
             })
@@ -87,25 +87,31 @@ $.fn.extend({
     },
 
     insertBefore: function(elements){
-        var elems = normalizeElements(elements);
+        var _elements = normalizeElements(elements);
 
         return this.each(function(){
             var el = this;
-            $.each(elems, function(elIndex, element){
+            $.each(_elements, function(elIndex){
                 if (el === this) return ;
-                element.parentNode.insertBefore(elIndex === 0 ? el : el.cloneNode(true), element);
+                var parent = this.parentNode;
+                if (parent) {
+                    parent.insertBefore(elIndex === 0 ? el : el.cloneNode(true), this);
+                }
             });
         })
     },
 
     insertAfter: function(elements){
-        var elems = normalizeElements(elements);
+        var _elements = normalizeElements(elements);
 
         return this.each(function(){
             var el = this;
-            $.each(elems, function(elIndex, element){
+            $.each(_elements, function(elIndex, element){
                 if (el === this) return ;
-                element.parentNode.insertBefore(elIndex === 0 ? el : el.cloneNode(true), element.nextSibling);
+                var parent = this.parentNode;
+                if (parent) {
+                    parent.insertBefore(elIndex === 0 ? el : el.cloneNode(true), element.nextSibling);
+                }
             });
         });
     },
@@ -132,13 +138,25 @@ $.fn.extend({
         });
     },
 
-    clone: function(deep){
+    clone: function(deep, withData){
         var res = [];
         if (not(deep)) {
             deep = false;
         }
+        if (not(withData)) {
+            withData = false;
+        }
         this.each(function(){
-            res.push(this.cloneNode(deep));
+            var el = this.cloneNode(deep);
+            var $el = $(el);
+            var data;
+            if (withData && $.hasData(this)) {
+                data = $(this).data();
+                $.each(data, function(k, v){
+                    $el.data(k, v);
+                })
+            }
+            res.push(el);
         });
         return $.merge($(), res);
     },

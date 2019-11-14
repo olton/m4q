@@ -104,3 +104,7 @@ function dataAttr(elem, key, data){
 function iif(val1, val2, val3){
     return val1 ? val1 : val2 ? val2 : val3;
 }
+
+function normalizeEventName(name) {
+    return typeof name !== "string" ? undefined : name.replace(/\-/g, "").toLowerCase();
+}

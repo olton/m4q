@@ -89,6 +89,22 @@ $.extend({
         return $("html");
     },
 
+    head: function(){
+        return $("html").find("head");
+    },
+
+    body: function(){
+        return $("body");
+    },
+
+    document: function(){
+        return $(document);
+    },
+
+    window: function(){
+        return $(window);
+    },
+
     charset: function(val){
         var meta = $("meta[charset]");
         if (val) {

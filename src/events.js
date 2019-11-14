@@ -147,7 +147,7 @@ $.fn.extend({
             $.each(str2arr(eventsList), function(){
                 var h, ev = this,
                     event = ev.split("."),
-                    name = event[0],
+                    name = normalizeEventName(event[0]),
                     ns = options.ns ? options.ns : event[1],
                     index, originEvent;
 
@@ -246,7 +246,7 @@ $.fn.extend({
             var el = this;
             $.each(str2arr(eventsList), function(){
                 var evMap = this.split("."),
-                    name = evMap[0],
+                    name = normalizeEventName(evMap[0]),
                     ns = options.ns ? options.ns : evMap[1],
                     originEvent, index;
 
@@ -264,16 +264,20 @@ $.fn.extend({
     },
 
     trigger: function(name, data){
+        var _name;
+
         if (this.length === 0) {
             return ;
         }
 
-        if (['focus', 'blur'].indexOf(name) > -1) {
-            this[0][name]();
+        _name = normalizeEventName(name);
+
+        if (['focus', 'blur'].indexOf(_name) > -1) {
+            this[0][_name]();
             return this;
         }
 
-        var e = new CustomEvent(name, data || {});
+        var e = new CustomEvent(_name, data || {});
 
         return this.each(function(){
             this.dispatchEvent(e);
@@ -281,18 +285,22 @@ $.fn.extend({
     },
 
     fire: function(name, data){
+        var _name;
+
         if (this.length === 0) {
             return ;
         }
 
-        if (['focus', 'blur'].indexOf(name) > -1) {
-            this[0][name]();
+        _name = normalizeEventName(name);
+
+        if (['focus', 'blur'].indexOf(_name) > -1) {
+            this[0][_name]();
             return this;
         }
 
         var e = document.createEvent('Events');
         e.detail = data;
-        e.initEvent(name, true, false);
+        e.initEvent(_name, true, false);
 
         return this.each(function(){
             this.dispatchEvent(e);

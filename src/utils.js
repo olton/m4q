@@ -78,7 +78,10 @@ $.extend({
     unit: function(str, out){return parseUnit(str, out)},
     isVisible: function(elem) {return isVisible(elem)},
     isHidden: function(elem) {return isHidden(elem)},
-    iif: function(v1, v2, v3){return iif(v1, v2, v3);}
+    iif: function(v1, v2, v3){return iif(v1, v2, v3);},
+    matches: function(el, s) {
+        return matches.call(el, s);
+    }
 });
 
 $.fn.extend({

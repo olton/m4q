@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>Test index</title>
+</head>
+<body>
+<button onclick="sendGet()">Send GET</button>
+<button onclick="sendPost()">Send POST</button>
+
+<script src="../build/m4q.js"></script>
+
+<script>
+    var target = "http://poligon.local";
+    function sendGet() {
+        $.get(target, {
+            id: 1
+        })
+    }
+    function sendPost() {
+        $.post(target, {
+            id: 1,
+            view: {
+                id: 1
+            }
+        })
+    }
+</script>
+</body>

@@ -7,10 +7,13 @@
 </head>
 <body>
 <h1>Test DataSet</h1>
-<div id="div">Test block</div>
+<div id="div" data-role="test-role">Test block</div>
 <script src="../build/m4q.js"></script>
 
 <script>
-    console.log($("html").attr());
+    var div = $("div").data("key", "val");
+    console.log("data", div.data());
+    console.log("clone", div.clone().data());
+    console.log("deep", div.clone(true).data());
 </script>
 </body>
