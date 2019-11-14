@@ -67,7 +67,7 @@ poligon
 commit.bat
 tag.bat
 delete-tag.bat
-copy-to-metro4.bat
+copy.bat
 final.bat
 dev.bat
 Dev.js
