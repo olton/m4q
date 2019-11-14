@@ -40,7 +40,7 @@ $.ajax = function(p){
         } else if (isPlainObject(p.data)) {
             var _data = [];
             $.each(p.data, function(k, v){
-                _data.push(k+"="+JSON.stringify(v));
+                _data.push(k+"=" + (isPlainObject(v) ? JSON.stringify(v) : v));
             });
             data = _data.join("&");
         } else if (p.data instanceof FormData) {
