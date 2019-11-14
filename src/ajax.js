@@ -70,7 +70,15 @@ $.ajax = function(p){
 
         xhr.addEventListener("load", function(e){
             if (xhr.readyState === 4 && xhr.status < 300) {
-                var _return = p.returnValue && p.returnValue === 'xhr' ? xhr : p.parseJson ? JSON.parse(xhr.response) : xhr.response;
+                // var _return = p.returnValue && p.returnValue === 'xhr' ? xhr : p.parseJson ? JSON.parse(xhr.response) : xhr.response;
+                var _return = p.returnValue && p.returnValue === 'xhr' ? xhr : xhr.response;
+                if (p.parseJson) {
+                    try {
+                        _return = JSON.parse(_return);
+                    } catch (e) {
+                        _return = {};
+                    }
+                }
                 exec(resolve, [_return]);
                 exec(p['onSuccess'], [e, xhr]);
             } else {

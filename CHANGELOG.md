@@ -5,6 +5,7 @@
 + [x] Clone: now support cloning `data` if second argument `withData`is `true` - `$(el).clone(true, true)`
 + [x] Events: nwo you can define event name with `hyphen` or in `camelCase` notation. Example: `mouse-down`, `accordionCreate`
 + [x] Ajax: fixed handler for sending data
++ [x] Ajax: fixed `$.json` if returned value can't be parsed
 
 ### 1.0.3
 + [x] Events: add `$(document).ready(...)`
