@@ -6,6 +6,7 @@
 + [x] Events: nwo you can define event name with `hyphen` or in `camelCase` notation. Example: `mouse-down`, `accordionCreate`
 + [x] Ajax: fixed handler for sending data
 + [x] Ajax: fixed `$.json` if returned value can't be parsed
++ [x] Ajax: fixed `post` for `object`
 
 ### 1.0.3
 + [x] Events: add `$(document).ready(...)`
