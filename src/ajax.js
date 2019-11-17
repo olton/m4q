@@ -12,6 +12,10 @@ $.ajax = function(p){
             }
         };
 
+        var isGetMethod = function(method){
+            return ["GET", "JSON"].indexOf(method) !== -1;
+        };
+
         if (p.data instanceof HTMLFormElement) {
             var _action = p.data.getAttribute("action");
             var _method = p.data.getAttribute("method");
@@ -52,7 +56,7 @@ $.ajax = function(p){
             data.append("_data", JSON.stringify(p.data));
         }
 
-        if (method !== "POST") {
+        if (isGetMethod(method)) {
             url += (typeof data === "string" ? "?"+data : isEmptyObject(data) ? "" : "?"+JSON.stringify(data));
         }
 
@@ -63,7 +67,7 @@ $.ajax = function(p){
                 headers.push(k);
             });
         }
-        if (method === "POST") {
+        if (!isGetMethod(method)) {
             if (headers.indexOf("Content-type") === -1) {
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             }

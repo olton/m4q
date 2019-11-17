@@ -547,7 +547,7 @@ function normalizeEventName(name) {
 
 // Source: src/core.js
 
-var m4qVersion = "v1.0.4. Built at 14/11/2019 23:46:29";
+var m4qVersion = "v1.0.4. Built at 17/11/2019 12:21:13";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1911,6 +1911,10 @@ $.ajax = function(p){
             }
         };
 
+        var isGetMethod = function(method){
+            return ["GET", "JSON"].indexOf(method) !== -1;
+        };
+
         if (p.data instanceof HTMLFormElement) {
             var _action = p.data.getAttribute("action");
             var _method = p.data.getAttribute("method");
@@ -1951,7 +1955,7 @@ $.ajax = function(p){
             data.append("_data", JSON.stringify(p.data));
         }
 
-        if (method !== "POST") {
+        if (isGetMethod(method)) {
             url += (typeof data === "string" ? "?"+data : isEmptyObject(data) ? "" : "?"+JSON.stringify(data));
         }
 
@@ -1962,7 +1966,7 @@ $.ajax = function(p){
                 headers.push(k);
             });
         }
-        if (method === "POST") {
+        if (!isGetMethod(method)) {
             if (headers.indexOf("Content-type") === -1) {
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             }
