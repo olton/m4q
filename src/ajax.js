@@ -12,8 +12,17 @@ $.ajax = function(p){
             }
         };
 
-        var isGetMethod = function(method){
+        var isGet = function(method){
             return ["GET", "JSON"].indexOf(method) !== -1;
+        };
+
+        var plainObjectToData = function(obj){
+            var _data = [];
+            $.each(p.data, function(k, v){
+                var _v = isSimple(v) ? v : JSON.stringify(v);
+                _data.push(k+"=" + _v);
+            });
+            return _data.join("&");
         };
 
         if (p.data instanceof HTMLFormElement) {
@@ -34,7 +43,7 @@ $.ajax = function(p){
         }
 
         if (p.data instanceof HTMLFormElement) {
-            data = new FormData(p.data);
+            data = $.serialize(p.data);
         } else if (p.data instanceof HTMLElement && p.data.getAttribute("type").toLowerCase() === "file") {
             var _name = p.data.getAttribute("name");
             data = new FormData();
@@ -42,13 +51,7 @@ $.ajax = function(p){
                 data.append(_name, p.data.files[i]);
             }
         } else if (isPlainObject(p.data)) {
-            var _data = [];
-            $.each(p.data, function(k, v){
-                // _data.push(k+"=" + (isPlainObject(v) ? JSON.stringify(v) : v));
-                var _v = (typeof v !== "string" && typeof v !== "boolean" && typeof v !== "number" ? JSON.stringify(v) : v);
-                _data.push(k+"=" + _v);
-            });
-            data = _data.join("&");
+            data = plainObjectToData(p.data);
         } else if (p.data instanceof FormData) {
             data = p.data;
         } else {
@@ -56,7 +59,7 @@ $.ajax = function(p){
             data.append("_data", JSON.stringify(p.data));
         }
 
-        if (isGetMethod(method)) {
+        if (isGet(method)) {
             url += (typeof data === "string" ? "?"+data : isEmptyObject(data) ? "" : "?"+JSON.stringify(data));
         }
 
@@ -67,7 +70,7 @@ $.ajax = function(p){
                 headers.push(k);
             });
         }
-        if (!isGetMethod(method)) {
+        if (!isGet(method)) {
             if (headers.indexOf("Content-type") === -1) {
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             }

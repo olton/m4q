@@ -10,10 +10,29 @@
 <button onclick="sendGet2()">Send GET</button>
 <button onclick="sendPost()">Send POST</button>
 
+<br>
+<br>
+<br>
+<br>
+<form action="javascript:" onsubmit="_submit(this)">
+    <input type="hidden" name="hidden" value="1">
+    <input type="text" name="text" value="text">
+    <input type="checkbox" name="ch[]" value="1">
+    <input type="checkbox" name="ch[]" value="2">
+    <input type="checkbox" name="ch[]" value="3">
+    <button>Submit</button>
+</form>
+
 <script src="../build/m4q.js"></script>
 
 <script>
     var target = "http://poligon.local";
+
+    function _submit(f){
+        console.log(f);
+        $.post(target, f);
+    }
+
     function sendGet() {
         $.get(target)
     }

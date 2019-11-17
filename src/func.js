@@ -1,5 +1,9 @@
 var numProps = ['opacity', 'zIndex'];
 
+function isSimple(v){
+    return typeof v === "string" || typeof v === "boolean" || typeof v === "number";
+}
+
 function isVisible(elem) {
     return !!( elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length );
 }
