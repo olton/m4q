@@ -7,6 +7,7 @@
 + [x] Ajax: fixed handler for sending data
 + [x] Ajax: fixed `$.json` if returned value can't be parsed
 + [x] Ajax: fixed `post` for `object`
++ [x] $: add $.serializeToArray(form), $serialize(form)
 
 ### 1.0.3
 + [x] Events: add `$(document).ready(...)`

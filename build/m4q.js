@@ -552,7 +552,7 @@ function normalizeEventName(name) {
 
 // Source: src/core.js
 
-var m4qVersion = "v1.0.4. Built at 17/11/2019 13:56:04";
+var m4qVersion = "v1.0.4. Built at 17/11/2019 14:03:03";
 var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
 var matches = Element.prototype.matches
@@ -1520,51 +1520,53 @@ $.extend({
     matches: function(el, s) {return matches.call(el, s);},
 
     serializeToArray: function(form){
-        if (!form || form.nodeName !== "FORM") {
+        var _form = $(form)[0];
+        if (!_form || _form.nodeName !== "FORM") {
+            console.warn("Element is not a HTMLFromElement");
             return;
         }
         var i, j, q = [];
-        for (i = form.elements.length - 1; i >= 0; i = i - 1) {
-            if (form.elements[i].name === "") {
+        for (i = _form.elements.length - 1; i >= 0; i = i - 1) {
+            if (_form.elements[i].name === "") {
                 continue;
             }
-            switch (form.elements[i].nodeName) {
+            switch (_form.elements[i].nodeName) {
                 case 'INPUT':
-                    switch (form.elements[i].type) {
+                    switch (_form.elements[i].type) {
                         case 'checkbox':
                         case 'radio':
-                            if (form.elements[i].checked) {
-                                q.push(form.elements[i].name + "=" + encodeURIComponent(form.elements[i].value));
+                            if (_form.elements[i].checked) {
+                                q.push(_form.elements[i].name + "=" + encodeURIComponent(_form.elements[i].value));
                             }
                             break;
                         case 'file':
                             break;
-                        default: q.push(form.elements[i].name + "=" + encodeURIComponent(form.elements[i].value));
+                        default: q.push(_form.elements[i].name + "=" + encodeURIComponent(_form.elements[i].value));
                     }
                     break;
                 case 'TEXTAREA':
-                    q.push(form.elements[i].name + "=" + encodeURIComponent(form.elements[i].value));
+                    q.push(_form.elements[i].name + "=" + encodeURIComponent(_form.elements[i].value));
                     break;
                 case 'SELECT':
-                    switch (form.elements[i].type) {
+                    switch (_form.elements[i].type) {
                         case 'select-one':
-                            q.push(form.elements[i].name + "=" + encodeURIComponent(form.elements[i].value));
+                            q.push(_form.elements[i].name + "=" + encodeURIComponent(_form.elements[i].value));
                             break;
                         case 'select-multiple':
-                            for (j = form.elements[i].options.length - 1; j >= 0; j = j - 1) {
-                                if (form.elements[i].options[j].selected) {
-                                    q.push(form.elements[i].name + "=" + encodeURIComponent(form.elements[i].options[j].value));
+                            for (j = _form.elements[i].options.length - 1; j >= 0; j = j - 1) {
+                                if (_form.elements[i].options[j].selected) {
+                                    q.push(_form.elements[i].name + "=" + encodeURIComponent(_form.elements[i].options[j].value));
                                 }
                             }
                             break;
                     }
                     break;
                 case 'BUTTON':
-                    switch (form.elements[i].type) {
+                    switch (_form.elements[i].type) {
                         case 'reset':
                         case 'submit':
                         case 'button':
-                            q.push(form.elements[i].name + "=" + encodeURIComponent(form.elements[i].value));
+                            q.push(_form.elements[i].name + "=" + encodeURIComponent(_form.elements[i].value));
                             break;
                     }
                     break;
