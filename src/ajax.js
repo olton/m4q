@@ -44,7 +44,7 @@ $.ajax = function(p){
 
         if (p.data instanceof HTMLFormElement) {
             data = $.serialize(p.data);
-        } else if (p.data instanceof HTMLElement && p.data.getAttribute("type").toLowerCase() === "file") {
+        } else if (p.data instanceof HTMLElement && p.data.getAttribute("type") && p.data.getAttribute("type").toLowerCase() === "file") {
             var _name = p.data.getAttribute("name");
             data = new FormData();
             for (var i = 0; i < p.data.files.length; i++) {
@@ -53,6 +53,8 @@ $.ajax = function(p){
         } else if (isPlainObject(p.data)) {
             data = plainObjectToData(p.data);
         } else if (p.data instanceof FormData) {
+            data = p.data;
+        } else if (typeof p.data === "string") {
             data = p.data;
         } else {
             data = new FormData();
