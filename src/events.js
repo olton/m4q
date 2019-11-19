@@ -79,7 +79,7 @@ $.extend({
 
     off: function(){
         $.each(this.events, function(){
-            this.element.removeEventListener(this.event, this.handler);
+            this.element.removeEventListener(this.event, this.handler, true);
         });
         this.events = [];
         return this;
@@ -234,7 +234,7 @@ $.fn.extend({
                 $.each($.events, function(){
                     var e = this;
                     if (e.element === el) {
-                        el.removeEventListener(e.event, e.handler);
+                        el.removeEventListener(e.event, e.handler, true);
                         e.handler = null;
                         $(el).origin("event-"+name+(e.selector ? ":"+e.selector:"")+(e.ns ? ":"+e.ns:""), null);
                     }
@@ -254,7 +254,7 @@ $.fn.extend({
                 index = $(el).origin(originEvent);
 
                 if (index !== undefined && $.events[index].handler) {
-                    el.removeEventListener(name, $.events[index].handler);
+                    el.removeEventListener(name, $.events[index].handler, true);
                     $.events[index].handler = null;
                 }
 
@@ -325,8 +325,8 @@ $.fn.extend( {
     }
 });
 
-$.ready = function(fn){
-    document.addEventListener('DOMContentLoaded', fn);
+$.ready = function(fn, options){
+    document.addEventListener('DOMContentLoaded', fn, (options || false));
 };
 
 $.load = function(fn){

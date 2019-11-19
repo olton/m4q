@@ -8,6 +8,7 @@
 + [x] Ajax: fixed `$.json` if returned value can't be parsed
 + [x] Ajax: fixed `post` for `object`
 + [x] $: add $.serializeToArray(form), $serialize(form)
++ [x] Events: fixed `removeEventListener`
 
 ### 1.0.3
 + [x] Events: add `$(document).ready(...)`
