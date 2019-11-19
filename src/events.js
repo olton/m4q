@@ -219,6 +219,8 @@ $.fn.extend({
     },
 
     off: function(eventsList, sel, options){
+        var isIE11 = !!window.MSInputMethodContext && !!document.documentMode;
+
         if (!isPlainObject(options)) {
             options = {};
         }
@@ -234,7 +236,7 @@ $.fn.extend({
                 $.each($.events, function(){
                     var e = this;
                     if (e.element === el) {
-                        el.removeEventListener(e.event, e.handler, true);
+                        el.removeEventListener(e.event, e.handler, isIE11);
                         e.handler = null;
                         $(el).origin("event-"+name+(e.selector ? ":"+e.selector:"")+(e.ns ? ":"+e.ns:""), null);
                     }
@@ -254,7 +256,7 @@ $.fn.extend({
                 index = $(el).origin(originEvent);
 
                 if (index !== undefined && $.events[index].handler) {
-                    el.removeEventListener(name, $.events[index].handler, true);
+                    el.removeEventListener(name, $.events[index].handler, isIE11);
                     $.events[index].handler = null;
                 }
 
