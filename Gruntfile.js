@@ -94,6 +94,16 @@ module.exports = function(grunt) {
             }
         },
 
+        removelogging: {
+            dist: {
+                src: "build/js/*.js",
+
+                options: {
+                    methods: ["log"]
+                }
+            }
+        },
+
         uglify: {
             options: {
                 sourceMap: true,
@@ -141,7 +151,7 @@ module.exports = function(grunt) {
         }
     });
 
-    tasks = ['clean', 'concat', 'uglify', 'replace'];
+    tasks = ['clean', 'concat', 'removelogging', 'uglify', 'replace'];
 
     if (watching) {
         tasks.push('watch');

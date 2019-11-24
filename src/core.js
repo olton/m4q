@@ -52,4 +52,4 @@ $.extend = $.fn.extend = function(){
     return target;
 };
 
-if (typeof window["hideM4QVersion"] === "undefined") console.log("m4q "+$.version);
+if (typeof window["hideM4QVersion"] === "undefined") console.info("m4q "+$.version);

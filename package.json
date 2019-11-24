@@ -44,6 +44,7 @@
     "grunt-contrib-uglify": "^4.0.1",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-ftp-push": "^1.2.1",
+    "grunt-remove-logging": "^0.2.0",
     "grunt-replace": "^1.0.1",
     "grunt-shell": "^3.0.1",
     "load-grunt-tasks": "^5.0.0",

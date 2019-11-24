@@ -258,7 +258,6 @@ $.fn.extend({
 
                 if (index !== undefined && $.events[index].handler) {
                     el.removeEventListener(name, $.events[index].handler, $.events[index].options);
-                    console.log($.events[index]);
                     $.events[index].handler = null;
                 }
 
