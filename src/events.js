@@ -267,24 +267,7 @@ $.fn.extend({
     },
 
     trigger: function(name, data){
-        var _name;
-
-        if (this.length === 0) {
-            return ;
-        }
-
-        _name = normalizeEventName(name);
-
-        if (['focus', 'blur'].indexOf(_name) > -1) {
-            this[0][_name]();
-            return this;
-        }
-
-        var e = new CustomEvent(_name, data || {});
-
-        return this.each(function(){
-            this.dispatchEvent(e);
-        });
+        return this.fire(name, data);
     },
 
     fire: function(name, data){
@@ -318,7 +301,7 @@ $.fn.extend({
         $.fn[ name ] = function( sel, fn, opt ) {
             return arguments.length > 0 ?
                 this.on( name, sel, fn, opt ) :
-                this.trigger( name );
+                this.fire( name );
         };
 });
 

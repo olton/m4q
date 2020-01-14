@@ -74,5 +74,9 @@ $.fn.extend({
         return this.each(function(){
             if (typeof this.innerHTML !== "undefined") this.innerHTML = "";
         });
+    },
+
+    clear: function(){
+        return this.empty();
     }
 });
