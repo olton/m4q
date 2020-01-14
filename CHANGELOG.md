@@ -1,3 +1,5 @@
+### 1.0.6
+
 ### 1.0.5
 + [x] Events: fix firing events, Metro 4 issue 1476
 + [x] Events: optimize method `trigger`, now this is a synonym of `fire`
