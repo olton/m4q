@@ -73,7 +73,7 @@ $.ajax = function(p){
             });
         }
         if (!isGet(method)) {
-            if (headers.indexOf("Content-type") === -1) {
+            if (headers.indexOf("Content-type") === -1 && p.contentType !== false) {
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             }
         }

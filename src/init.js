@@ -76,10 +76,15 @@ $.init = function(sel, ctx){
         }
     }
 
-    if (ctx !== undefined && (ctx instanceof $ || ctx instanceof HTMLElement)) {
-        this.each(function(){
-            $(ctx).append($(this))
-        });
+    if (ctx !== undefined) {
+        var that = this;
+        if (ctx instanceof $) {
+            this.each(function () {
+                $(ctx).append(that)
+            });
+        } else if (ctx instanceof HTMLElement) {
+            $(ctx).append(that);
+        }
     }
 
     return this;
