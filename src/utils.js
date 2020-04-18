@@ -79,6 +79,7 @@ $.extend({
     isVisible: function(elem) {return isVisible(elem)},
     isHidden: function(elem) {return isHidden(elem)},
     matches: function(el, s) {return matches.call(el, s);},
+    random: function(from, to) {return Math.floor(Math.random()*(to-from+1)+from);},
 
     serializeToArray: function(form){
         var _form = $(form)[0];

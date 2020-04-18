@@ -44,7 +44,7 @@ $.extend = $.fn.extend = function(){
     for ( ; i < length; i++ ) {
         if ( ( options = arguments[ i ] ) != null ) {
             for ( name in options ) {
-                if (options.hasOwnProperty(name)) target[ name ] = options[ name ];
+                if (options.hasOwnProperty(name) && !not(options[name])) target[ name ] = options[ name ];
             }
         }
     }
