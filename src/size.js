@@ -1,3 +1,5 @@
+/* global $, not */
+
 $.fn.extend({
     _size: function(prop, val){
         if (this.length === 0) return ;

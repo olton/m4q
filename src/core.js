@@ -1,6 +1,8 @@
-var m4qVersion = "v@@VERSION. Built at @@TIME";
-var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
+/* global hasProp */
 
+var m4qVersion = "v@@VERSION. Built at @@TIME";
+
+/* eslint-disable-next-line */
 var matches = Element.prototype.matches
     || Element.prototype.matchesSelector
     || Element.prototype.webkitMatchesSelector
@@ -44,7 +46,8 @@ $.extend = $.fn.extend = function(){
     for ( ; i < length; i++ ) {
         if ( ( options = arguments[ i ] ) != null ) {
             for ( name in options ) {
-                if (options.hasOwnProperty(name)) target[ name ] = options[ name ];
+                if (hasProp(options, name))
+                    target[ name ] = options[ name ];
             }
         }
     }
@@ -70,7 +73,8 @@ $.assign = function(){
     for ( ; i < length; i++ ) {
         if ( ( options = arguments[ i ] ) != null ) {
             for ( name in options ) {
-                if (options.hasOwnProperty(name) && options[name] !== undefined) target[ name ] = options[ name ];
+                if (hasProp(options, name) && options[name] !== undefined)
+                    target[ name ] = options[ name ];
             }
         }
     }
@@ -78,4 +82,4 @@ $.assign = function(){
     return target;
 };
 
-if (typeof window.hideM4QVersion === "undefined") console.info("m4q "+$.version);
+if (typeof window["hideM4QVersion"] === "undefined") console.info("m4q " + $.version);

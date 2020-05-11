@@ -1,5 +1,4 @@
-var DEFAULT_DURATION = 1000;
-var DEFAULT_EASING = "linear";
+/* global $, not, isVisible */
 
 $.extend({
     fx: {

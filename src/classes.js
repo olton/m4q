@@ -1,3 +1,5 @@
+/* global $, not */
+
 $.fn.extend({
     addClass: function(){},
     removeClass: function(){},

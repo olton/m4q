@@ -1,3 +1,6 @@
+/* global dataSet */
+/* exported isSimple, isHidden, isPlainObject, isEmptyObject, isArrayLike, str2arr, parseUnit, getUnit, setStyleProp, acceptData, dataAttr, normName, strip */
+
 var numProps = ['opacity', 'zIndex'];
 
 function isSimple(v){
@@ -37,7 +40,7 @@ function isPlainObject( obj ) {
 
 function isEmptyObject( obj ) {
     for (var name in obj ) {
-        if (obj.hasOwnProperty(name)) return false;
+        if (hasProp(obj, name)) return false;
     }
     return true;
 }
@@ -61,6 +64,11 @@ function parseUnit(str, out) {
     out[0] = parseFloat(str);
     out[1] = str.match(/[\d.\-+]*\s*(.*)/)[1] || '';
     return out;
+}
+
+function getUnit(val, und){
+    var split = /[+-]?\d*\.?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?(%|px|pt|em|rem|in|cm|mm|ex|ch|pc|vw|vh|vmin|vmax|deg|rad|turn)?$/.exec(val);
+    return typeof split[1] !== "undefined" ? split[1] : und;
 }
 
 function setStyleProp(el, key, val){
@@ -93,10 +101,7 @@ function dataAttr(elem, key, data){
         data = elem.getAttribute( name );
 
         if ( typeof data === "string" ) {
-            try {
-                data = getData( data );
-            } catch ( e ) {}
-
+            data = getData( data );
             dataSet.set( elem, key, data );
         } else {
             data = undefined;
@@ -108,6 +113,11 @@ function dataAttr(elem, key, data){
 function normName(name) {
     return typeof name !== "string" ? undefined : name.replace(/-/g, "").toLowerCase();
 }
+
 function strip(name, what) {
     return typeof name !== "string" ? undefined : name.replace(what, "");
+}
+
+function hasProp(obj, prop){
+    return Object.prototype.hasOwnProperty.call(obj, prop);
 }

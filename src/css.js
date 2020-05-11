@@ -1,3 +1,5 @@
+/* global $, not, setStyleProp */
+
 $.fn.extend({
 
     style: function(name, pseudo){
@@ -50,8 +52,6 @@ $.fn.extend({
     },
 
     css: function(key, val){
-        var that = this;
-
         key = key || 'all';
 
         if (typeof key === "string" && not(val)) {

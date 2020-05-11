@@ -1,3 +1,5 @@
+/* global $, not, camelCase, isPlainObject, isEmptyObject, isArrayLike, acceptData, parseUnit, getUnit, isVisible, isHidden, matches, strip, normName, hasProp */
+
 $.extend({
     uniqueId: function (prefix) {
         var d = new Date().getTime();
@@ -49,6 +51,7 @@ $.extend({
 
     sleep: function(ms) {
         ms += new Date().getTime();
+        /* eslint-disable-next-line */
         while (new Date() < ms){}
     },
 
@@ -78,7 +81,7 @@ $.extend({
     acceptData: function(owner){return acceptData(owner);},
     not: function(val){return not(val);},
     parseUnit: function(str, out){return parseUnit(str, out);},
-    getUnit: function(str, und){return _getUnit(str, und);},
+    getUnit: function(str, und){return getUnit(str, und);},
     unit: function(str, out){return parseUnit(str, out);},
     isVisible: function(elem) {return isVisible(elem);},
     isHidden: function(elem) {return isHidden(elem);},
@@ -91,6 +94,7 @@ $.extend({
     },
     strip: function(val, what){return strip(val, what);},
     normName: function(val){return normName(val);},
+    hasProp: function(obj, prop){return hasProp(obj, prop);},
 
     serializeToArray: function(form){
         var _form = $(form)[0];

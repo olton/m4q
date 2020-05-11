@@ -1,3 +1,5 @@
+/* global $, not */
+
 function createScript(script){
     var s = document.createElement('script');
     s.type = 'text/javascript';

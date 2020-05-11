@@ -1,5 +1,9 @@
+/* global $, isPlainObject, hasProp */
+
 $.parseHTML = function(data, context){
     var base, singleTag, result = [], ctx, _context;
+    /* eslint-disable-next-line */
+    var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
     if (typeof data !== "string") {
         return [];
@@ -28,7 +32,7 @@ $.parseHTML = function(data, context){
         $.each(result,function(){
             var el = this;
             for(var name in context) {
-                if (context.hasOwnProperty(name))
+                if (hasProp(context, name))
                     el.setAttribute(name, context[name]);
             }
         });

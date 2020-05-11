@@ -1,3 +1,5 @@
+/* global $, not */
+
 $.fn.extend({
     offset: function(val){
         var rect;
@@ -37,10 +39,8 @@ $.fn.extend({
     position: function(margin){
         var ml = 0, mt = 0, el, style;
 
-        if (not(margin)) {
+        if (not(margin) || typeof margin !== "boolean") {
             margin = false;
-        } else {
-            margin = getData(margin);
         }
 
         if (this.length === 0) {

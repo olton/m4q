@@ -1,12 +1,15 @@
+/* global $, not, camelCase, parseUnit, Promise, getUnit */
+
 $.extend({
     animation: {
         duration: 1000,
-        ease: "linear"
+        ease: "linear",
+        elements: {}
     }
 });
 
-if (typeof window.setupAnimation === 'object') {
-    $.each(window.setupAnimation, function(key, val){
+if (typeof window["setupAnimation"] === 'object') {
+    $.each(window["setupAnimation"], function(key, val){
         if (typeof $.animation[key] !== "undefined" && !not(val))
             $.animation[key] = val;
     });
@@ -24,17 +27,6 @@ function _validElement(el) {
 
 /**
  *
- * @param val
- * @param und
- * @returns {any}
- */
-function _getUnit(val, und){
-    var split = /[+-]?\d*\.?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?(%|px|pt|em|rem|in|cm|mm|ex|ch|pc|vw|vh|vmin|vmax|deg|rad|turn)?$/.exec(val);
-    return typeof split[1] !== "undefined" ? split[1] : und;
-}
-
-/**
- *
  * @param to
  * @param from
  * @returns {*}
@@ -43,7 +35,7 @@ function _getUnit(val, und){
 function _getRelativeValue (to, from) {
     var operator = /^(\*=|\+=|-=)/.exec(to);
     if (!operator) return to;
-    var u = _getUnit(to) || 0;
+    var u = getUnit(to) || 0;
     var x = parseFloat(from);
     var y = parseFloat(to.replace(operator[0], ''));
     switch (operator[0][0]) {
@@ -135,6 +127,7 @@ function _getElementTransforms (el) {
     var m;
 
     /* jshint ignore:start */
+    // eslint-disable-next-line
     while (m = reg.exec(str))
         transforms[m[1]] = m[2];
     /* jshint ignore:end */
@@ -364,6 +357,7 @@ var eases = {
     Bounce: function(){
         return function(t){
             var pow2, b = 4;
+            // eslint-disable-next-line
             while (t < (( pow2 = Math.pow(2, --b)) - 1) / 11) {}
             return 1 / Math.pow(4, 3 - b) - 7.5625 * Math.pow(( pow2 * 3 - 2 ) / 22 - t, 2);
         };
@@ -422,10 +416,6 @@ var defaultProps = {
     onDone: function(){}
 };
 
-var Animation = {
-    elements: {}
-};
-
 function animate(args){
     return new Promise(function(resolve){
         var that = this, start;
@@ -468,7 +458,7 @@ function animate(args){
             easeFn = Easing.linear;
         }
 
-        Animation.elements[animationID] = {
+        $.animation.elements[animationID] = {
             element: el,
             id: null,
             stop: 0,
@@ -481,13 +471,13 @@ function animate(args){
                 map = createAnimationMap(el, draw, direction);
             }
             start = performance.now();
-            Animation.elements[animationID].loop += 1;
-            Animation.elements[animationID].id = requestAnimationFrame(animate);
+            $.animation.elements[animationID].loop += 1;
+            $.animation.elements[animationID].id = requestAnimationFrame(animate);
         };
 
         var done = function() {
-            cancelAnimationFrame(Animation.elements[animationID].id);
-            delete Animation.elements[id];
+            cancelAnimationFrame($.animation.elements[animationID].id);
+            delete $.animation.elements[id];
 
             if (typeof onDone === "function") {
                 onDone.apply(el);
@@ -498,7 +488,7 @@ function animate(args){
 
         var animate = function(time) {
             var p, t;
-            var stop = Animation.elements[animationID].stop;
+            var stop = $.animation.elements[animationID].stop;
 
             if ( stop > 0) {
                 if (stop === 2) {
@@ -538,7 +528,7 @@ function animate(args){
             }
 
             if (t < 1) {
-                Animation.elements[animationID].id = requestAnimationFrame(animate);
+                $.animation.elements[animationID].id = requestAnimationFrame(animate);
             }
 
             if (parseInt(t) === 1) {
@@ -552,7 +542,7 @@ function animate(args){
                             play();
                         }, pause);
                     } else {
-                        if (loop > Animation.elements[animationID].loop) {
+                        if (loop > $.animation.elements[animationID].loop) {
                             setTimeout(function () {
                                 play();
                             }, pause);
@@ -581,12 +571,14 @@ function animate(args){
     });
 }
 
+/* eslint-disable */
 function stop(id, done){
     if (not(done)) {
         done = true;
     }
-    Animation.elements[id].stop = done === true ? 2 : 1;
+    $.animation.elements[id].stop = done === true ? 2 : 1;
 }
+/* eslint-enable */
 
 function chain(arr, loop){
     if (not(loop)) loop = false;
@@ -741,7 +733,7 @@ $.fn.extend({
      * @returns {this}
      */
     stop: function(done){
-        var elements = Animation.elements;
+        var elements = $.animation.elements;
         return this.each(function(){
             var el = this;
             $.each(elements, function(k, o){

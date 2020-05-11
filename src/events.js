@@ -1,3 +1,5 @@
+/* global $, not, camelCase, str2arr, normName, matches, isEmptyObject, isPlainObject */
+
 (function () {
     if ( typeof window.CustomEvent === "function" ) return false;
 
@@ -120,7 +122,8 @@ $.extend({
             this.eventHooks = {};
         } else {
             $.each(str2arr(event), function(){
-                delete that.eventHooks[camelCase(type+"-"+this)];
+                delete that.eventHooks[camelCase("before-"+this)];
+                delete that.eventHooks[camelCase("after-"+this)];
             });
         }
         return this;

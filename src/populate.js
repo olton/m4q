@@ -1,23 +1,23 @@
-var _$ = global.$,
-    _m4q = global.m4q;
+/* global Promise, $ */
+
+var _$ = window.$;
 
 $.Promise = Promise;
 
-global.m4q = $;
+window.m4q = $;
 
-if (typeof global.$ === "undefined") {
-    global.$ = $;
+if (typeof window.$ === "undefined") {
+    window.$ = $;
 }
 
-m4q.global = function(){
-    _$ = global.$;
-    _m4q = global.m4q;
-    global.$ = $;
+$.global = function(){
+    _$ = window.$;
+    window.$ = $;
 };
 
-m4q.noConflict = function() {
-    if ( global.$ === $ ) {
-        global.$ = _$;
+$.noConflict = function() {
+    if ( window.$ === $ ) {
+        window.$ = _$;
     }
 
     return $;

@@ -1,3 +1,5 @@
+/* global $, not, matches, isArrayLike, isVisible */
+
 $.fn.extend({
     index: function(sel){
         var el, _index = -1;
@@ -59,6 +61,12 @@ $.fn.extend({
         if (s === ":checked") {
             this.each(function(){
                 if (this.checked) result = true;
+            });
+        } else
+
+        if (s === ":visible") {
+            this.each(function(){
+                if (isVisible(this)) result = true;
             });
         } else
 

@@ -14,6 +14,9 @@
 
 // Source: src/func.js
 
+/* global dataSet */
+/* exported isSimple, isHidden, isPlainObject, isEmptyObject, isArrayLike, str2arr, parseUnit, getUnit, setStyleProp, acceptData, dataAttr, normName, strip */
+
 var numProps = ['opacity', 'zIndex'];
 
 function isSimple(v){
@@ -53,7 +56,7 @@ function isPlainObject( obj ) {
 
 function isEmptyObject( obj ) {
     for (var name in obj ) {
-        if (obj.hasOwnProperty(name)) return false;
+        if (hasProp(obj, name)) return false;
     }
     return true;
 }
@@ -77,6 +80,11 @@ function parseUnit(str, out) {
     out[0] = parseFloat(str);
     out[1] = str.match(/[\d.\-+]*\s*(.*)/)[1] || '';
     return out;
+}
+
+function getUnit(val, und){
+    var split = /[+-]?\d*\.?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?(%|px|pt|em|rem|in|cm|mm|ex|ch|pc|vw|vh|vmin|vmax|deg|rad|turn)?$/.exec(val);
+    return typeof split[1] !== "undefined" ? split[1] : und;
 }
 
 function setStyleProp(el, key, val){
@@ -109,10 +117,7 @@ function dataAttr(elem, key, data){
         data = elem.getAttribute( name );
 
         if ( typeof data === "string" ) {
-            try {
-                data = getData( data );
-            } catch ( e ) {}
-
+            data = getData( data );
             dataSet.set( elem, key, data );
         } else {
             data = undefined;
@@ -124,10 +129,14 @@ function dataAttr(elem, key, data){
 function normName(name) {
     return typeof name !== "string" ? undefined : name.replace(/-/g, "").toLowerCase();
 }
+
 function strip(name, what) {
     return typeof name !== "string" ? undefined : name.replace(what, "");
 }
 
+function hasProp(obj, prop){
+    return Object.prototype.hasOwnProperty.call(obj, prop);
+}
 
 // Source: src/setimmediate.js
 
@@ -138,7 +147,7 @@ function strip(name, what) {
  * Copyright (c) 2016 Yuzu (https://github.com/YuzuJS)
  * Licensed under MIT
  */
-(function (global, undefined) {
+(function (global) {
 
     if (global.setImmediate) {
         return;
@@ -235,6 +244,8 @@ function strip(name, what) {
 
 // Source: src/promise.js
 
+/* global setImmediate */
+
 /*
  * Promise polyfill
  * Version 1.2.0
@@ -242,7 +253,7 @@ function strip(name, what) {
  * Copyright (c) 2014 Roman Dvornov
  * Licensed under MIT
  */
-(function (global, undefined) {
+(function (global) {
 
     if (global.Promise) {
         return;
@@ -553,9 +564,11 @@ function strip(name, what) {
 
 // Source: src/core.js
 
-var m4qVersion = "v1.0.6. Built at 11/05/2020 12:15:01";
-var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
+/* global hasProp */
 
+var m4qVersion = "v1.0.6. Built at 11/05/2020 14:53:59";
+
+/* eslint-disable-next-line */
 var matches = Element.prototype.matches
     || Element.prototype.matchesSelector
     || Element.prototype.webkitMatchesSelector
@@ -599,7 +612,8 @@ $.extend = $.fn.extend = function(){
     for ( ; i < length; i++ ) {
         if ( ( options = arguments[ i ] ) != null ) {
             for ( name in options ) {
-                if (options.hasOwnProperty(name)) target[ name ] = options[ name ];
+                if (hasProp(options, name))
+                    target[ name ] = options[ name ];
             }
         }
     }
@@ -625,7 +639,8 @@ $.assign = function(){
     for ( ; i < length; i++ ) {
         if ( ( options = arguments[ i ] ) != null ) {
             for ( name in options ) {
-                if (options.hasOwnProperty(name) && options[name] !== undefined) target[ name ] = options[ name ];
+                if (hasProp(options, name) && options[name] !== undefined)
+                    target[ name ] = options[ name ];
             }
         }
     }
@@ -633,9 +648,11 @@ $.assign = function(){
     return target;
 };
 
-if (typeof window.hideM4QVersion === "undefined") console.info("m4q "+$.version);
+if (typeof window["hideM4QVersion"] === "undefined") console.info("m4q " + $.version);
 
 // Source: src/interval.js
+
+/* global $ */
 
 var now = function(){
     return Date.now();
@@ -707,6 +724,8 @@ $.extend({
 
 // Source: src/contains.js
 
+/* global $, not, matches, isArrayLike, isVisible */
+
 $.fn.extend({
     index: function(sel){
         var el, _index = -1;
@@ -768,6 +787,12 @@ $.fn.extend({
         if (s === ":checked") {
             this.each(function(){
                 if (this.checked) result = true;
+            });
+        } else
+
+        if (s === ":visible") {
+            this.each(function(){
+                if (isVisible(this)) result = true;
             });
         } else
 
@@ -1113,6 +1138,8 @@ $.fn.extend({
 
 // Source: src/script.js
 
+/* global $, not */
+
 function createScript(script){
     var s = document.createElement('script');
     s.type = 'text/javascript';
@@ -1160,6 +1187,8 @@ $.fn.extend({
 });
 
 // Source: src/prop.js
+
+/* global $, not */
 
 $.fn.extend({
     _prop: function(prop, value){
@@ -1246,6 +1275,8 @@ $.fn.extend({
 
 // Source: src/each.js
 
+/* global $, isArrayLike, hasProp */
+
 $.each = function(ctx, cb){
     var index = 0;
     if (isArrayLike(ctx)) {
@@ -1254,7 +1285,7 @@ $.each = function(ctx, cb){
         });
     } else {
         for(var key in ctx) {
-            if (ctx.hasOwnProperty(key))
+            if (hasProp(ctx, key))
                 cb.apply(ctx[key], [key, ctx[key],  index++]);
         }
     }
@@ -1270,6 +1301,8 @@ $.fn.extend({
 
 
 // Source: src/data.js
+
+/* global acceptData, camelCase, $, not, dataAttr, isEmptyObject, hasProp */
 
 /*
  * Data routines
@@ -1310,7 +1343,7 @@ Data.prototype = {
             cache[camelCase(data)] = value;
         } else {
             for (prop in data) {
-                if (data.hasOwnProperty(prop))
+                if (hasProp(data, prop))
                     cache[camelCase(prop)] = data[prop];
             }
         }
@@ -1467,6 +1500,8 @@ $.fn.extend({
 
 // Source: src/utils.js
 
+/* global $, not, camelCase, isPlainObject, isEmptyObject, isArrayLike, acceptData, parseUnit, getUnit, isVisible, isHidden, matches, strip, normName, hasProp */
+
 $.extend({
     uniqueId: function (prefix) {
         var d = new Date().getTime();
@@ -1518,6 +1553,7 @@ $.extend({
 
     sleep: function(ms) {
         ms += new Date().getTime();
+        /* eslint-disable-next-line */
         while (new Date() < ms){}
     },
 
@@ -1547,7 +1583,7 @@ $.extend({
     acceptData: function(owner){return acceptData(owner);},
     not: function(val){return not(val);},
     parseUnit: function(str, out){return parseUnit(str, out);},
-    getUnit: function(str, und){return _getUnit(str, und);},
+    getUnit: function(str, und){return getUnit(str, und);},
     unit: function(str, out){return parseUnit(str, out);},
     isVisible: function(elem) {return isVisible(elem);},
     isHidden: function(elem) {return isHidden(elem);},
@@ -1560,6 +1596,7 @@ $.extend({
     },
     strip: function(val, what){return strip(val, what);},
     normName: function(val){return normName(val);},
+    hasProp: function(obj, prop){return hasProp(obj, prop);},
 
     serializeToArray: function(form){
         var _form = $(form)[0];
@@ -1628,6 +1665,8 @@ $.fn.extend({
 });
 
 // Source: src/events.js
+
+/* global $, not, camelCase, str2arr, normName, matches, isEmptyObject, isPlainObject */
 
 (function () {
     if ( typeof window.CustomEvent === "function" ) return false;
@@ -1751,7 +1790,8 @@ $.extend({
             this.eventHooks = {};
         } else {
             $.each(str2arr(event), function(){
-                delete that.eventHooks[camelCase(type+"-"+this)];
+                delete that.eventHooks[camelCase("before-"+this)];
+                delete that.eventHooks[camelCase("after-"+this)];
             });
         }
         return this;
@@ -1987,6 +2027,8 @@ $.fn.extend({
 
 // Source: src/ajax.js
 
+/* global $, Promise, not, isSimple, isPlainObject, isEmptyObject, camelCase */
+
 $.ajax = function(p){
     return new Promise(function(resolve, reject){
         var xhr = new XMLHttpRequest(), data;
@@ -2127,6 +2169,8 @@ $.fn.extend({
 
 // Source: src/css.js
 
+/* global $, not, setStyleProp */
+
 $.fn.extend({
 
     style: function(name, pseudo){
@@ -2179,8 +2223,6 @@ $.fn.extend({
     },
 
     css: function(key, val){
-        var that = this;
-
         key = key || 'all';
 
         if (typeof key === "string" && not(val)) {
@@ -2221,6 +2263,8 @@ $.fn.extend({
 
 
 // Source: src/classes.js
+
+/* global $, not */
 
 $.fn.extend({
     addClass: function(){},
@@ -2283,8 +2327,12 @@ $.fn.extend({
 
 // Source: src/parser.js
 
+/* global $, isPlainObject, hasProp */
+
 $.parseHTML = function(data, context){
     var base, singleTag, result = [], ctx, _context;
+    /* eslint-disable-next-line */
+    var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
     if (typeof data !== "string") {
         return [];
@@ -2313,7 +2361,7 @@ $.parseHTML = function(data, context){
         $.each(result,function(){
             var el = this;
             for(var name in context) {
-                if (context.hasOwnProperty(name))
+                if (hasProp(context, name))
                     el.setAttribute(name, context[name]);
             }
         });
@@ -2324,6 +2372,8 @@ $.parseHTML = function(data, context){
 
 
 // Source: src/size.js
+
+/* global $, not */
 
 $.fn.extend({
     _size: function(prop, val){
@@ -2430,6 +2480,8 @@ $.fn.extend({
 
 // Source: src/position.js
 
+/* global $, not */
+
 $.fn.extend({
     offset: function(val){
         var rect;
@@ -2469,10 +2521,8 @@ $.fn.extend({
     position: function(margin){
         var ml = 0, mt = 0, el, style;
 
-        if (not(margin)) {
+        if (not(margin) || typeof margin !== "boolean") {
             margin = false;
-        } else {
-            margin = getData(margin);
         }
 
         if (this.length === 0) {
@@ -2539,6 +2589,8 @@ $.fn.extend({
 });
 
 // Source: src/attr.js
+
+/* global $, not, isPlainObject */
 
 $.fn.extend({
     attr: function(name, val){
@@ -2658,6 +2710,8 @@ $.extend({
 
 // Source: src/proxy.js
 
+/* global $ */
+
 $.extend({
     proxy: function(fn, ctx){
         return typeof fn !== "function" ? undefined : fn.bind(ctx);
@@ -2671,10 +2725,12 @@ $.extend({
 
 // Source: src/manipulation.js
 
+/* global $, isArrayLike, not, matches, hasProp */
+
 (function (arr) {
     arr.forEach(function (item) {
         ['append', 'prepend'].forEach(function(where){
-            if (item.hasOwnProperty(where)) {
+            if (hasProp(item, where)) {
                 return;
             }
             Object.defineProperty(item, where, {
@@ -2877,15 +2933,18 @@ $.fn.extend({
 
 // Source: src/animation.js
 
+/* global $, not, camelCase, parseUnit, Promise, getUnit */
+
 $.extend({
     animation: {
         duration: 1000,
-        ease: "linear"
+        ease: "linear",
+        elements: {}
     }
 });
 
-if (typeof window.setupAnimation === 'object') {
-    $.each(window.setupAnimation, function(key, val){
+if (typeof window["setupAnimation"] === 'object') {
+    $.each(window["setupAnimation"], function(key, val){
         if (typeof $.animation[key] !== "undefined" && !not(val))
             $.animation[key] = val;
     });
@@ -2903,17 +2962,6 @@ function _validElement(el) {
 
 /**
  *
- * @param val
- * @param und
- * @returns {any}
- */
-function _getUnit(val, und){
-    var split = /[+-]?\d*\.?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?(%|px|pt|em|rem|in|cm|mm|ex|ch|pc|vw|vh|vmin|vmax|deg|rad|turn)?$/.exec(val);
-    return typeof split[1] !== "undefined" ? split[1] : und;
-}
-
-/**
- *
  * @param to
  * @param from
  * @returns {*}
@@ -2922,7 +2970,7 @@ function _getUnit(val, und){
 function _getRelativeValue (to, from) {
     var operator = /^(\*=|\+=|-=)/.exec(to);
     if (!operator) return to;
-    var u = _getUnit(to) || 0;
+    var u = getUnit(to) || 0;
     var x = parseFloat(from);
     var y = parseFloat(to.replace(operator[0], ''));
     switch (operator[0][0]) {
@@ -3014,6 +3062,7 @@ function _getElementTransforms (el) {
     var m;
 
     /* jshint ignore:start */
+    // eslint-disable-next-line
     while (m = reg.exec(str))
         transforms[m[1]] = m[2];
     /* jshint ignore:end */
@@ -3243,6 +3292,7 @@ var eases = {
     Bounce: function(){
         return function(t){
             var pow2, b = 4;
+            // eslint-disable-next-line
             while (t < (( pow2 = Math.pow(2, --b)) - 1) / 11) {}
             return 1 / Math.pow(4, 3 - b) - 7.5625 * Math.pow(( pow2 * 3 - 2 ) / 22 - t, 2);
         };
@@ -3301,10 +3351,6 @@ var defaultProps = {
     onDone: function(){}
 };
 
-var Animation = {
-    elements: {}
-};
-
 function animate(args){
     return new Promise(function(resolve){
         var that = this, start;
@@ -3347,7 +3393,7 @@ function animate(args){
             easeFn = Easing.linear;
         }
 
-        Animation.elements[animationID] = {
+        $.animation.elements[animationID] = {
             element: el,
             id: null,
             stop: 0,
@@ -3360,13 +3406,13 @@ function animate(args){
                 map = createAnimationMap(el, draw, direction);
             }
             start = performance.now();
-            Animation.elements[animationID].loop += 1;
-            Animation.elements[animationID].id = requestAnimationFrame(animate);
+            $.animation.elements[animationID].loop += 1;
+            $.animation.elements[animationID].id = requestAnimationFrame(animate);
         };
 
         var done = function() {
-            cancelAnimationFrame(Animation.elements[animationID].id);
-            delete Animation.elements[id];
+            cancelAnimationFrame($.animation.elements[animationID].id);
+            delete $.animation.elements[id];
 
             if (typeof onDone === "function") {
                 onDone.apply(el);
@@ -3377,7 +3423,7 @@ function animate(args){
 
         var animate = function(time) {
             var p, t;
-            var stop = Animation.elements[animationID].stop;
+            var stop = $.animation.elements[animationID].stop;
 
             if ( stop > 0) {
                 if (stop === 2) {
@@ -3417,7 +3463,7 @@ function animate(args){
             }
 
             if (t < 1) {
-                Animation.elements[animationID].id = requestAnimationFrame(animate);
+                $.animation.elements[animationID].id = requestAnimationFrame(animate);
             }
 
             if (parseInt(t) === 1) {
@@ -3431,7 +3477,7 @@ function animate(args){
                             play();
                         }, pause);
                     } else {
-                        if (loop > Animation.elements[animationID].loop) {
+                        if (loop > $.animation.elements[animationID].loop) {
                             setTimeout(function () {
                                 play();
                             }, pause);
@@ -3460,12 +3506,14 @@ function animate(args){
     });
 }
 
+/* eslint-disable */
 function stop(id, done){
     if (not(done)) {
         done = true;
     }
-    Animation.elements[id].stop = done === true ? 2 : 1;
+    $.animation.elements[id].stop = done === true ? 2 : 1;
 }
+/* eslint-enable */
 
 function chain(arr, loop){
     if (not(loop)) loop = false;
@@ -3620,7 +3668,7 @@ $.fn.extend({
      * @returns {this}
      */
     stop: function(done){
-        var elements = Animation.elements;
+        var elements = $.animation.elements;
         return this.each(function(){
             var el = this;
             $.each(elements, function(k, o){
@@ -3634,6 +3682,8 @@ $.fn.extend({
 
 
 // Source: src/visibility.js
+
+/* global $ */
 
 $.extend({
     hidden: function(el, val, cb){
@@ -3660,7 +3710,8 @@ $.extend({
 
     hide: function(el, cb){
         var $el = $(el);
-        if (!!el.style.display) {
+
+        if (el.style.display) {
             $el.origin('display', (el.style.display ? el.style.display : getComputedStyle(el, null).display));
         }
         el.style.display = 'none';
@@ -3703,7 +3754,7 @@ $.extend({
 });
 
 $.fn.extend({
-    hide: function(cb){
+    hide: function(){
         var callback;
 
         $.each(arguments, function(){
@@ -3717,7 +3768,7 @@ $.fn.extend({
         });
     },
 
-    show: function(cb){
+    show: function(){
         var callback;
 
         $.each(arguments, function(){
@@ -3754,8 +3805,7 @@ $.fn.extend({
 
 // Source: src/effects.js
 
-var DEFAULT_DURATION = 1000;
-var DEFAULT_EASING = "linear";
+/* global $, not, isVisible */
 
 $.extend({
     fx: {
@@ -4059,6 +4109,8 @@ $.fn.extend({
 
 // Source: src/init.js
 
+/* global $, isArrayLike */
+
 $.init = function(sel, ctx){
     var parsed, r;
 
@@ -4070,10 +4122,6 @@ $.init = function(sel, ctx){
 
     if (typeof sel === "function") {
         return $.ready(sel);
-    }
-
-    if (typeof sel === "object" && typeof jQuery !== "undefined" && sel instanceof jQuery) {
-        return $.import(sel);
     }
 
     if (typeof sel === 'string' && sel === "document") {
@@ -4106,7 +4154,7 @@ $.init = function(sel, ctx){
         return r;
     }
 
-    if (Array.isArray(sel)) {
+    if (isArrayLike(sel)) {
         r = $();
         $.each(sel, function(){
             $(this).each(function(){
@@ -4156,26 +4204,26 @@ $.init.prototype = $.fn;
 
 // Source: src/populate.js
 
-var _$ = global.$,
-    _m4q = global.m4q;
+/* global Promise, $ */
+
+var _$ = window.$;
 
 $.Promise = Promise;
 
-global.m4q = $;
+window.m4q = $;
 
-if (typeof global.$ === "undefined") {
-    global.$ = $;
+if (typeof window.$ === "undefined") {
+    window.$ = $;
 }
 
-m4q.global = function(){
-    _$ = global.$;
-    _m4q = global.m4q;
-    global.$ = $;
+$.global = function(){
+    _$ = window.$;
+    window.$ = $;
 };
 
-m4q.noConflict = function() {
-    if ( global.$ === $ ) {
-        global.$ = _$;
+$.noConflict = function() {
+    if ( window.$ === $ ) {
+        window.$ = _$;
     }
 
     return $;

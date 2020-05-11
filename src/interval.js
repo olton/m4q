@@ -1,3 +1,5 @@
+/* global $ */
+
 var now = function(){
     return Date.now();
 };

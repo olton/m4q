@@ -1,3 +1,5 @@
+/* global acceptData, camelCase, $, not, dataAttr, isEmptyObject, hasProp */
+
 /*
  * Data routines
  * Url: https://jquery.com
@@ -37,7 +39,7 @@ Data.prototype = {
             cache[camelCase(data)] = value;
         } else {
             for (prop in data) {
-                if (data.hasOwnProperty(prop))
+                if (hasProp(data, prop))
                     cache[camelCase(prop)] = data[prop];
             }
         }

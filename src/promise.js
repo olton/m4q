@@ -1,3 +1,5 @@
+/* global setImmediate */
+
 /*
  * Promise polyfill
  * Version 1.2.0
@@ -5,7 +7,7 @@
  * Copyright (c) 2014 Roman Dvornov
  * Licensed under MIT
  */
-(function (global, undefined) {
+(function (global) {
 
     if (global.Promise) {
         return;

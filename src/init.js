@@ -1,3 +1,5 @@
+/* global $, isArrayLike */
+
 $.init = function(sel, ctx){
     var parsed, r;
 
@@ -9,10 +11,6 @@ $.init = function(sel, ctx){
 
     if (typeof sel === "function") {
         return $.ready(sel);
-    }
-
-    if (typeof sel === "object" && typeof jQuery !== "undefined" && sel instanceof jQuery) {
-        return $.import(sel);
     }
 
     if (typeof sel === 'string' && sel === "document") {
@@ -45,7 +43,7 @@ $.init = function(sel, ctx){
         return r;
     }
 
-    if (Array.isArray(sel)) {
+    if (isArrayLike(sel)) {
         r = $();
         $.each(sel, function(){
             $(this).each(function(){

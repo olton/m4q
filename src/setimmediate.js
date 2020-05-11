@@ -5,7 +5,7 @@
  * Copyright (c) 2016 Yuzu (https://github.com/YuzuJS)
  * Licensed under MIT
  */
-(function (global, undefined) {
+(function (global) {
 
     if (global.setImmediate) {
         return;

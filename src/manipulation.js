@@ -1,7 +1,9 @@
+/* global $, isArrayLike, not, matches, hasProp */
+
 (function (arr) {
     arr.forEach(function (item) {
         ['append', 'prepend'].forEach(function(where){
-            if (item.hasOwnProperty(where)) {
+            if (hasProp(item, where)) {
                 return;
             }
             Object.defineProperty(item, where, {

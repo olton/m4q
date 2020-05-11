@@ -1,3 +1,5 @@
+/* global $, isArrayLike, hasProp */
+
 $.each = function(ctx, cb){
     var index = 0;
     if (isArrayLike(ctx)) {
@@ -6,7 +8,7 @@ $.each = function(ctx, cb){
         });
     } else {
         for(var key in ctx) {
-            if (ctx.hasOwnProperty(key))
+            if (hasProp(ctx, key))
                 cb.apply(ctx[key], [key, ctx[key],  index++]);
         }
     }

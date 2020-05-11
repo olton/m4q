@@ -1,3 +1,5 @@
+/* global $ */
+
 $.extend({
     hidden: function(el, val, cb){
         el = $(el)[0];
@@ -23,7 +25,8 @@ $.extend({
 
     hide: function(el, cb){
         var $el = $(el);
-        if (!!el.style.display) {
+
+        if (el.style.display) {
             $el.origin('display', (el.style.display ? el.style.display : getComputedStyle(el, null).display));
         }
         el.style.display = 'none';
@@ -66,7 +69,7 @@ $.extend({
 });
 
 $.fn.extend({
-    hide: function(cb){
+    hide: function(){
         var callback;
 
         $.each(arguments, function(){
@@ -80,7 +83,7 @@ $.fn.extend({
         });
     },
 
-    show: function(cb){
+    show: function(){
         var callback;
 
         $.each(arguments, function(){
