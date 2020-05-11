@@ -10,7 +10,7 @@ function isVisible(elem) {
 
 function isHidden(elem) {
     var s = getComputedStyle(elem);
-    return !isVisible(elem) || +s['opacity'] === 0 || elem.hidden || s['visibility'] === "hidden";
+    return !isVisible(elem) || +s.opacity === 0 || elem.hidden || s.visibility === "hidden";
 }
 
 function not(value){
@@ -52,7 +52,7 @@ function str2arr (str, sep) {
         return  (""+el).trim();
     }).filter(function(el){
         return el !== "";
-    })
+    });
 }
 
 function parseUnit(str, out) {
@@ -74,7 +74,7 @@ function setStyleProp(el, key, val){
 }
 
 function acceptData(owner){
-    return owner.nodeType === 1 || owner.nodeType === 9 || !( +owner.nodeType );
+    return typeof owner.nodeType !== "undefined" && (owner.nodeType === 1 || owner.nodeType === 9);
 }
 
 function getData(data){
@@ -105,6 +105,9 @@ function dataAttr(elem, key, data){
     return data;
 }
 
-function normalizeEventName(name) {
-    return typeof name !== "string" ? undefined : name.replace(/\-/g, "").toLowerCase();
+function normName(name) {
+    return typeof name !== "string" ? undefined : name.replace(/-/g, "").toLowerCase();
+}
+function strip(name, what) {
+    return typeof name !== "string" ? undefined : name.replace(what, "");
 }

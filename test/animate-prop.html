@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>Test index</title>
+    <style>
+        body {
+            height: 100vh;
+        }
+        .box {
+            border: 1px solid red;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="input">
+    <div class="box"></div>
+
+    <script src="../build/m4q.js"></script>
+    <script>
+        $("#input").animate({
+            draw: {
+                value: 200
+            },
+            dur: 5000
+        })
+        $(".box").animate({
+            draw: {
+                innerHTML: [200]
+            },
+            dur: 5000
+        })
+    </script>
+</body>

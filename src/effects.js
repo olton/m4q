@@ -20,15 +20,15 @@ $.fn.extend({
 
             if (not(dur) && not(easing) && not(cb)) {
                 cb = null;
-                dur = DEFAULT_DURATION;
+                dur = $.animation.duration;
             } else if (typeof dur === "function") {
                 cb = dur;
-                dur = DEFAULT_DURATION;
+                dur = $.animation.duration;
             }
 
             if (typeof easing === "function") {
                 cb = easing;
-                easing = DEFAULT_EASING;
+                easing = $.animation.ease;
             }
 
             if ($.fx.off) {
@@ -52,8 +52,8 @@ $.fn.extend({
                         $.proxy(cb, this)();
                     }
                 }
-            })
-        })
+            });
+        });
     },
 
     fadeOut: function(dur, easing, cb){
@@ -65,15 +65,15 @@ $.fn.extend({
 
             if (not(dur) && not(easing) && not(cb)) {
                 cb = null;
-                dur = DEFAULT_DURATION;
+                dur = $.animation.duration;
             } else
             if (typeof dur === "function") {
                 cb = dur;
-                dur = DEFAULT_DURATION;
+                dur = $.animation.duration;
             }
             if (typeof easing === "function") {
                 cb = easing;
-                easing = DEFAULT_EASING;
+                easing = $.animation.ease;
             }
 
             $el.origin("display", $el.style('display'));
@@ -92,8 +92,8 @@ $.fn.extend({
                         $.proxy(cb, this)();
                     }
                 }
-            })
-        })
+            });
+        });
     },
 
     slideUp: function(dur, easing, cb){
@@ -106,15 +106,15 @@ $.fn.extend({
 
             if (not(dur) && not(easing) && not(cb)) {
                 cb = null;
-                dur = DEFAULT_DURATION;
+                dur = $.animation.duration;
             } else
             if (typeof dur === "function") {
                 cb = dur;
-                dur = DEFAULT_DURATION;
+                dur = $.animation.duration;
             }
             if (typeof easing === "function") {
                 cb = easing;
-                easing = DEFAULT_EASING;
+                easing = $.animation.ease;
             }
 
             currHeight = $el.height();
@@ -138,8 +138,8 @@ $.fn.extend({
                         $.proxy(cb, this)();
                     }
                 }
-            })
-        })
+            });
+        });
     },
 
     slideDown: function(dur, easing, cb){
@@ -150,15 +150,15 @@ $.fn.extend({
 
             if (not(dur) && not(easing) && not(cb)) {
                 cb = null;
-                dur = DEFAULT_DURATION;
+                dur = $.animation.duration;
             } else
             if (typeof dur === "function") {
                 cb = dur;
-                dur = DEFAULT_DURATION;
+                dur = $.animation.duration;
             }
             if (typeof easing === "function") {
                 cb = easing;
-                easing = DEFAULT_EASING;
+                easing = $.animation.ease;
             }
 
             $el.show().visible(false);
@@ -187,25 +187,25 @@ $.fn.extend({
                         $.proxy(cb, this)();
                     }
                 }
-            })
-        })
+            });
+        });
     },
 
     moveTo: function(x, y, dur, easing, cb){
         var draw = {
             top: y,
             left: x
-        }
+        };
 
         if (typeof dur === "function") {
             cb = dur;
-            dur = DEFAULT_DURATION;
-            easing = DEFAULT_EASING;
+            dur = $.animation.duration;
+            easing = $.animation.ease;
         }
 
         if (typeof easing === "function") {
             cb = easing;
-            easing = DEFAULT_EASING;
+            easing = $.animation.ease;
         }
 
         return this.each(function(){
@@ -215,20 +215,20 @@ $.fn.extend({
                 dur: dur,
                 ease: easing,
                 onDone: cb
-            })
-        })
+            });
+        });
     },
 
     centerTo: function(x, y, dur, easing, cb){
         if (typeof dur === "function") {
             cb = dur;
-            dur = DEFAULT_DURATION;
-            easing = DEFAULT_EASING;
+            dur = $.animation.duration;
+            easing = $.animation.ease;
         }
 
         if (typeof easing === "function") {
             cb = easing;
-            easing = DEFAULT_EASING;
+            easing = $.animation.ease;
         }
 
         return this.each(function(){
@@ -242,24 +242,24 @@ $.fn.extend({
                 dur: dur,
                 ease: easing,
                 onDone: cb
-            })
-        })
+            });
+        });
     },
 
     colorTo: function(color, dur, easing, cb){
         var draw = {
             color: color
-        }
+        };
 
         if (typeof dur === "function") {
             cb = dur;
-            dur = DEFAULT_DURATION;
-            easing = DEFAULT_EASING;
+            dur = $.animation.duration;
+            easing = $.animation.ease;
         }
 
         if (typeof easing === "function") {
             cb = easing;
-            easing = DEFAULT_EASING;
+            easing = $.animation.ease;
         }
 
         return this.each(function(){
@@ -269,24 +269,24 @@ $.fn.extend({
                 dur: dur,
                 ease: easing,
                 onDone: cb
-            })
-        })
+            });
+        });
     },
 
     backgroundTo: function(color, dur, easing, cb){
         var draw = {
             backgroundColor: color
-        }
+        };
 
         if (typeof dur === "function") {
             cb = dur;
-            dur = DEFAULT_DURATION;
-            easing = DEFAULT_EASING;
+            dur = $.animation.duration;
+            easing = $.animation.ease;
         }
 
         if (typeof easing === "function") {
             cb = easing;
-            easing = DEFAULT_EASING;
+            easing = $.animation.ease;
         }
 
         return this.each(function(){
@@ -296,7 +296,7 @@ $.fn.extend({
                 dur: dur,
                 ease: easing,
                 onDone: cb
-            })
-        })
+            });
+        });
     }
 });

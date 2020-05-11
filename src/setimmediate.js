@@ -18,6 +18,7 @@
 
     function setImmediate(callback) {
         if (typeof callback !== "function") {
+            /* jshint -W054 */
             callback = new Function("" + callback);
         }
         var args = new Array(arguments.length - 1);

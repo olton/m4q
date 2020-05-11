@@ -1,9 +1,26 @@
+$.extend({
+    animation: {
+        duration: 1000,
+        ease: "linear"
+    }
+});
+
+if (typeof window.setupAnimation === 'object') {
+    $.each(window.setupAnimation, function(key, val){
+        if (typeof $.animation[key] !== "undefined" && !not(val))
+            $.animation[key] = val;
+    });
+}
+
 var transformProps = ['translateX', 'translateY', 'translateZ', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'scale', 'scaleX', 'scaleY', 'scaleZ', 'skew', 'skewX', 'skewY'];
 var numberProps = ['opacity', 'zIndex'];
 var floatProps = ['opacity', 'volume'];
 var scrollProps = ["scrollLeft", "scrollTop"];
-var colorProps = ["backgroundColor", "color"];
-var reverseProps = ["opacity"];
+var reverseProps = ["opacity", "volume"];
+
+function _validElement(el) {
+    return el instanceof HTMLElement || el instanceof SVGElement;
+}
 
 /**
  *
@@ -50,11 +67,12 @@ function _getRelativeValue (to, from) {
 function _getStyle (el, prop, pseudo){
     if (typeof el[prop] !== "undefined") {
         if (scrollProps.indexOf(prop) > -1) {
-            return prop === "scrollLeft" ? el === window ? pageXOffset : el.scrollLeft : el === window ? pageYOffset : el.scrollTop
+            return prop === "scrollLeft" ? el === window ? pageXOffset : el.scrollLeft : el === window ? pageYOffset : el.scrollTop;
         } else {
             return el[prop] || 0;
         }
     }
+
     return el.style[prop] || getComputedStyle(el, pseudo)[prop];
 }
 
@@ -79,7 +97,7 @@ function _setStyle (el, key, val, unit, toInt) {
         val  = parseInt(val);
     }
 
-    if (el instanceof HTMLElement) {
+    if (_validElement(el)) {
         if (typeof el[key] !== "undefined") {
             el[key] = val;
         } else {
@@ -100,7 +118,7 @@ function _setStyle (el, key, val, unit, toInt) {
 function _applyStyles (el, mapProps, p) {
     $.each(mapProps, function (key, val) {
         _setStyle(el, key, val[0] + (val[2] * p), val[3], val[4]);
-    })
+    });
 }
 
 /**
@@ -110,14 +128,16 @@ function _applyStyles (el, mapProps, p) {
  * @private
  */
 function _getElementTransforms (el) {
-    if (!el instanceof HTMLElement) return;
+    if (!_validElement(el)) return {};
     var str = el.style.transform || '';
     var reg = /(\w+)\(([^)]*)\)/g;
     var transforms = {};
     var m;
 
+    /* jshint ignore:start */
     while (m = reg.exec(str))
         transforms[m[1]] = m[2];
+    /* jshint ignore:end */
 
     return transforms;
 }
@@ -131,8 +151,8 @@ function _getElementTransforms (el) {
 function _getColorArrayFromHex (val){
     var a = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(val ? val : "#000000");
     return a.slice(1).map(function(v) {
-            return parseInt(v, 16)
-    })
+            return parseInt(v, 16);
+    });
 }
 
 /**
@@ -144,7 +164,7 @@ function _getColorArrayFromHex (val){
  */
 function _getColorArrayFromElement (el, key) {
     return getComputedStyle(el)[key].replace(/[^\d.,]/g, '').split(',').map(function(v) {
-        return parseInt(v)
+        return parseInt(v);
     });
 }
 
@@ -165,10 +185,14 @@ function _applyTransform (el, mapProps, p) {
 
         if ( key.indexOf("rotate") > -1 || key.indexOf("skew") > -1) {
             if (unit === "") unit = "deg";
-        } else if (key.indexOf("scale")) {
-            unit = "";
-        } else {
-            unit = "px";
+        }
+
+        if (key.indexOf('scale') > -1) {
+            unit = '';
+        }
+
+        if (key.indexOf('translate') > -1 && unit === '') {
+            unit = 'px';
         }
 
         if (unit === "turn") {
@@ -182,9 +206,9 @@ function _applyTransform (el, mapProps, p) {
         if (mapProps[key] === undefined) {
             t.push(key+"("+val+")");
         }
-    })
+    });
 
-    _setStyle(el, "transform", t.join(" "));
+    el.style.transform = t.join(" ");
 }
 
 /**
@@ -201,8 +225,8 @@ function _applyColors (el, mapProps, p) {
             result[i] = Math.floor(val[0][i] + (val[2][i] * p));
         }
         v = "rgb("+(result.join(","))+")";
-        _setStyle(el, key, v);
-    })
+        el.style[key] = v;
+    });
 }
 
 /**
@@ -257,7 +281,7 @@ function createAnimationMap (el, draw, dir) {
 
         var isTransformProp = transformProps.indexOf(""+key) > -1;
         var isNumProp = numberProps.indexOf(""+key) > -1;
-        var isColorProp = colorProps.indexOf(""+key) > -1;
+        var isColorProp = (""+key).toLowerCase().indexOf("color") > -1;
 
         if (Array.isArray(val) && val.length === 1) {
             val = val[0];
@@ -316,8 +340,8 @@ function minMax(val, min, max) {
 }
 
 var Easing = {
-    linear: function(){return function(t) {return t}}
-}
+    linear: function(){return function(t) {return t;};}
+};
 
 Easing.default = Easing.linear;
 
@@ -325,24 +349,24 @@ var eases = {
     Sine: function(){
         return function(t){
             return 1 - Math.cos(t * Math.PI / 2);
-        }
+        };
     },
     Circ: function(){
         return function(t){
             return 1 - Math.sqrt(1 - t * t);
-        }
+        };
     },
     Back: function(){
         return function(t){
             return t * t * (3 * t - 2);
-        }
+        };
     },
     Bounce: function(){
         return function(t){
             var pow2, b = 4;
             while (t < (( pow2 = Math.pow(2, --b)) - 1) / 11) {}
-            return 1 / Math.pow(4, 3 - b) - 7.5625 * Math.pow(( pow2 * 3 - 2 ) / 22 - t, 2)
-        }
+            return 1 / Math.pow(4, 3 - b) - 7.5625 * Math.pow(( pow2 * 3 - 2 ) / 22 - t, 2);
+        };
     },
     Elastic: function(amplitude, period){
         if (not(amplitude)) {
@@ -350,14 +374,14 @@ var eases = {
         }
 
         if (not(period)) {
-            period = .5;
+            period = 0.5;
         }
         var a = minMax(amplitude, 1, 10);
-        var p = minMax(period, .1, 2);
+        var p = minMax(period, 0.1, 2);
         return function(t){
             return (t === 0 || t === 1) ? t :
                 -a * Math.pow(2, 10 * (t - 1)) * Math.sin((((t - 1) - (p / (Math.PI * 2) * Math.asin(1 / a))) * (Math.PI * 2)) / p);
-        }
+        };
     }
 };
 
@@ -365,8 +389,8 @@ var eases = {
     eases[name] = function(){
         return function(t){
             return Math.pow(t, i + 2);
-        }
-    }
+        };
+    };
 });
 
 Object.keys(eases).forEach(function(name) {
@@ -375,28 +399,28 @@ Object.keys(eases).forEach(function(name) {
     Easing['easeOut' + name] = function(a, b){
         return function(t){
             return 1 - easeIn(a, b)(1 - t);
-        }
-    }
+        };
+    };
     Easing['easeInOut' + name] = function(a, b){
         return function(t){
             return t < 0.5 ? easeIn(a, b)(t * 2) / 2 : 1 - easeIn(a, b)(t * -2 + 2) / 2;
-        }
-    }
+        };
+    };
 });
 
 var defaultProps = {
     id: null,
     el: null,
     draw: {},
-    dur: 1000,
-    ease: "linear",
+    dur: $.animation.duration,
+    ease: $.animation.ease,
     loop: 0,
     pause: 0,
     dir: "normal",
     defer: 0,
     onFrame: function(){},
     onDone: function(){}
-}
+};
 
 var Animation = {
     elements: {}
@@ -405,7 +429,7 @@ var Animation = {
 function animate(args){
     return new Promise(function(resolve){
         var that = this, start;
-        var props = $.extend({}, defaultProps, args);
+        var props = $.assign({}, defaultProps, args);
         var id = props.id, el = props.el, draw = props.draw, dur = props.dur, ease = props.ease, loop = props.loop, onFrame = props.onFrame, onDone = props.onDone, pause = props.pause, dir = props.dir, defer = props.defer;
         var map = {};
         var easeName = "linear", easeArgs = [], easeFn = Easing.linear, matchArgs;
@@ -436,8 +460,8 @@ function animate(args){
         if (typeof ease === "string") {
             matchArgs = /\(([^)]+)\)/.exec(ease);
             easeName = ease.split("(")[0];
-            easeArgs = matchArgs ? matchArgs[1].split(',').map(function(p){return parseFloat(p)}) : [];
-            easeFn = Easing[easeName];
+            easeArgs = matchArgs ? matchArgs[1].split(',').map(function(p){return parseFloat(p);}) : [];
+            easeFn = Easing[easeName] || Easing.linear;
         } else if (typeof ease === "function") {
             easeFn = ease;
         } else {
@@ -573,9 +597,9 @@ function chain(arr, loop){
 
     var reducer = function(acc, item){
         return acc.then(function(){
-            return animate(item)
+            return animate(item);
         });
-    }
+    };
 
     arr.reduce(reducer, Promise.resolve()).then(function(){
         if (loop) {
@@ -594,10 +618,41 @@ $.easing = {};
 $.extend($.easing, Easing);
 
 $.extend({
-    animate: animate,
+    animate: function(args){
+        var el, draw, dur, ease, cb;
+
+        if (arguments.length > 1) {
+            el = $(arguments[0])[0];
+            draw = arguments[1];
+            dur = arguments[2] || $.animation.duration;
+            ease = arguments[3] || $.animation.ease;
+            cb = arguments[4];
+
+            if (typeof dur === 'function') {
+                cb = dur;
+                ease = $.animation.ease;
+                dur = $.animation.duration;
+            }
+
+            if (typeof ease === 'function') {
+                cb = ease;
+                ease = $.animation.ease;
+            }
+
+            return animate({
+                el: el,
+                draw: draw,
+                dur: dur,
+                ease: ease,
+                onDone: cb
+            });
+        }
+
+        return animate(args);
+    },
     stop: stop,
     chain: chain
-})
+});
 
 $.fn.extend({
     /**
@@ -619,34 +674,65 @@ $.fn.extend({
      */
     animate: function(args){
         var that = this;
+        var draw, dur, easing, cb;
+        var a = args;
+        var compatibilityMode;
+
+        compatibilityMode = !Array.isArray(args) && (arguments.length > 1 || (arguments.length === 1 && typeof arguments[0].draw === 'undefined'));
+
+        if ( compatibilityMode ) {
+            draw = arguments[0];
+            dur = arguments[1] || $.animation.duration;
+            easing = arguments[2] || $.animation.ease;
+            cb = arguments[3];
+
+            if (typeof dur === 'function') {
+                cb = dur;
+                dur = $.animation.duration;
+                easing = $.animation.ease;
+            }
+
+            if (typeof easing === 'function') {
+                cb = easing;
+                easing = $.animation.ease;
+            }
+
+            return this.each(function(){
+                return $.animate({
+                    el: this,
+                    draw: draw,
+                    dur: dur,
+                    ease: easing,
+                    onDone: cb
+                });
+            });
+        }
+
         if (Array.isArray(args)) {
             $.each(args, function(){
                 var a = this;
                 that.each(function(){
-                    a['el'] = this;
-                    console.log(a);
+                    a.el = this;
                     $.animate(a);
-                })
-            })
+                });
+            });
             return this;
         }
 
-        var a = args;
         return this.each(function(){
-            a['el'] = this;
-            console.log(a);
+            a.el = this;
             $.animate(a);
-        })
+        });
     },
 
     chain: function(arr, loop){
         return this.each(function(){
             var el = this;
             $.each(arr, function(){
-                this['el'] = el;
+                this.el = el;
             });
             $.chain(arr, loop);
-        })
+        });
     },
 
     /**
@@ -659,12 +745,10 @@ $.fn.extend({
         return this.each(function(){
             var el = this;
             $.each(elements, function(k, o){
-                if (o['element'] === el) {
+                if (o.element === el) {
                     stop(k, done);
                 }
-            })
+            });
         });
     }
-})
-
-// Переделать effects
+});

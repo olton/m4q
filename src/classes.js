@@ -53,5 +53,5 @@ $.fn.extend({
                 if (hasClassList) el.classList[method](this);
             });
         });
-    }
+    };
 });

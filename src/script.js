@@ -40,6 +40,6 @@ $.fn.extend({
     script: function(){
         return this.each(function(){
             $.script(this);
-        })
+        });
     }
 });

@@ -148,7 +148,7 @@ $.fn.extend({
             $.each(str2arr(eventsList), function(){
                 var h, ev = this,
                     event = ev.split("."),
-                    name = normalizeEventName(event[0]),
+                    name = normName(event[0]),
                     ns = options.ns ? options.ns : event[1],
                     index, originEvent;
 
@@ -217,7 +217,7 @@ $.fn.extend({
 
         options.once = true;
 
-        return this["on"].apply(this, [events, sel, handler, options]);
+        return this.on.apply(this, [events, sel, handler, options]);
     },
 
     off: function(eventsList, sel, options){
@@ -241,7 +241,7 @@ $.fn.extend({
                         e.handler = null;
                         $(el).origin("event-"+name+(e.selector ? ":"+e.selector:"")+(e.ns ? ":"+e.ns:""), null);
                     }
-                })
+                });
             });
         }
 
@@ -249,7 +249,7 @@ $.fn.extend({
             var el = this;
             $.each(str2arr(eventsList), function(){
                 var evMap = this.split("."),
-                    name = normalizeEventName(evMap[0]),
+                    name = normName(evMap[0]),
                     ns = options.ns ? options.ns : evMap[1],
                     originEvent, index;
 
@@ -277,7 +277,7 @@ $.fn.extend({
             return ;
         }
 
-        _name = normalizeEventName(name);
+        _name = normName(name);
 
         if (['focus', 'blur'].indexOf(_name) > -1) {
             this[0][_name]();
@@ -325,7 +325,7 @@ $.unload = function(fn){
 
 $.fn.extend({
     unload: function(fn){
-        return (this.length === 0 || this[0]['self'] !== window) ? undefined : $.unload(fn);
+        return (this.length === 0 || this[0].self !== window) ? undefined : $.unload(fn);
     }
 });
 
@@ -342,7 +342,7 @@ $.beforeunload = function(fn){
 
 $.fn.extend({
     beforeunload: function(fn){
-        return (this.length === 0 || this[0]['self'] !== window) ? undefined : $.beforeunload(fn);
+        return (this.length === 0 || this[0].self !== window) ? undefined : $.beforeunload(fn);
     }
 });
 

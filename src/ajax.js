@@ -18,7 +18,7 @@ $.ajax = function(p){
 
         var plainObjectToData = function(obj){
             var _data = [];
-            $.each(p.data, function(k, v){
+            $.each(obj, function(k, v){
                 var _v = isSimple(v) ? v : JSON.stringify(v);
                 _data.push(k+"=" + _v);
             });
@@ -81,22 +81,21 @@ $.ajax = function(p){
 
         xhr.addEventListener("load", function(e){
             if (xhr.readyState === 4 && xhr.status < 300) {
-                // var _return = p.returnValue && p.returnValue === 'xhr' ? xhr : p.parseJson ? JSON.parse(xhr.response) : xhr.response;
                 var _return = p.returnValue && p.returnValue === 'xhr' ? xhr : xhr.response;
                 if (p.parseJson) {
                     try {
                         _return = JSON.parse(_return);
-                    } catch (e) {
+                    } catch (ex) {
                         _return = {};
                     }
                 }
                 exec(resolve, [_return]);
-                exec(p['onSuccess'], [e, xhr]);
+                exec(p.onSuccess, [e, xhr]);
             } else {
                 exec(reject, [xhr]);
-                exec(p['onFail'], [e, xhr]);
+                exec(p.onFail, [e, xhr]);
             }
-            exec(p['onLoad'], [e, xhr]);
+            exec(p.onLoad, [e, xhr]);
         });
 
         $.each(["readystatechange", "error", "timeout", "progress", "loadstart", "loadend", "abort"], function(){
@@ -118,14 +117,14 @@ $.ajax = function(p){
             parseJson: _method === 'JSON'
         };
         return $.ajax($.extend({}, _options, options));
-    }
+    };
 });
 
 $.fn.extend({
     load: function(url, data, options){
         var that = this;
 
-        if (this[0]['self'] === window ) {
+        if (this.length && this[0].self === window ) {
             return $.load(url);
         }
 

@@ -28,7 +28,7 @@
 })([Element.prototype, Document.prototype, DocumentFragment.prototype]);
 
 var normalizeElements = function(s){
-    var result = undefined;
+    var result;
     if (typeof s === "string") result = $.isSelector(s) ? $(s) : $.parseHTML(s);
     else if (s instanceof HTMLElement) result = [s];
     else if (isArrayLike(s)) result = s;
@@ -46,7 +46,7 @@ $.fn.extend({
                 $.script(child);
                 if (child.tagName && child.tagName !== "SCRIPT") el.append(child);
             });
-        })
+        });
     },
 
     appendTo: function(elements){
@@ -58,7 +58,7 @@ $.fn.extend({
                 if (el === this) return ;
                 parent.append(parIndex === 0 ? el : el.cloneNode(true));
             });
-        })
+        });
     },
 
     prepend: function(elements){
@@ -71,7 +71,7 @@ $.fn.extend({
                 $.script(child);
                 if (child.tagName && child.tagName !== "SCRIPT") el.prepend(child);
             });
-        })
+        });
     },
 
     prependTo: function(elements){
@@ -82,8 +82,8 @@ $.fn.extend({
             $.each(_elements, function(parIndex, parent){
                 if (el === this) return ;
                 $(parent).prepend(parIndex === 0 ? el : el.cloneNode(true));
-            })
-        })
+            });
+        });
     },
 
     insertBefore: function(elements){
@@ -98,7 +98,7 @@ $.fn.extend({
                     parent.insertBefore(elIndex === 0 ? el : el.cloneNode(true), this);
                 }
             });
-        })
+        });
     },
 
     insertAfter: function(elements){
@@ -124,7 +124,7 @@ $.fn.extend({
             } else {
                 $(html).insertAfter(el);
             }
-        })
+        });
     },
 
     before: function(html){
@@ -154,7 +154,7 @@ $.fn.extend({
                 data = $(this).data();
                 $.each(data, function(k, v){
                     $el.data(k, v);
-                })
+                });
             }
             res.push(el);
         });

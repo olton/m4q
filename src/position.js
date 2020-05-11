@@ -8,14 +8,14 @@ $.fn.extend({
             return {
                 top: rect.top + pageYOffset,
                 left: rect.left + pageXOffset
-            }
+            };
         }
 
         return this.each(function(){ //?
             var el = $(this),
                 top = val.top,
                 left = val.left,
-                position = getComputedStyle(this)['position'],
+                position = getComputedStyle(this).position,
                 offset = el.offset();
 
             if (position === "static") {
@@ -30,7 +30,7 @@ $.fn.extend({
             el.css({
                 top: top,
                 left: left
-            })
+            });
         });
     },
 
@@ -58,7 +58,7 @@ $.fn.extend({
         return {
             left: el.offsetLeft - ml,
             top: el.offsetTop - mt
-        }
+        };
     },
 
     left: function(val, margin){
@@ -73,7 +73,7 @@ $.fn.extend({
         return this.each(function(){
             $(this).css({
                 left: val
-            })
+            });
         });
     },
 
@@ -89,7 +89,7 @@ $.fn.extend({
         return this.each(function(){
             $(this).css({
                 top: val
-            })
+            });
         });
     },
 
@@ -102,6 +102,6 @@ $.fn.extend({
         return {
             top: parseInt($(this[0]).style("top")),
             left: parseInt($(this[0]).style("left"))
-        }
+        };
     }
 });

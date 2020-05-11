@@ -7,10 +7,10 @@ $.fn.extend({
             var el = this[0];
 
             if (prop === 'height') {
-                return el === window ? window.innerHeight : el === document ? el.body.clientHeight : parseInt(getComputedStyle(el)["height"]);
+                return el === window ? window.innerHeight : el === document ? el.body.clientHeight : parseInt(getComputedStyle(el).height);
             }
             if (prop === 'width') {
-                return el === window ? window.innerWidth : el === document ? el.body.clientWidth : parseInt(getComputedStyle(el)["width"]);
+                return el === window ? window.innerWidth : el === document ? el.body.clientWidth : parseInt(getComputedStyle(el).width);
             }
         }
 
@@ -73,7 +73,7 @@ $.fn.extend({
             right: parseInt(s["padding-right"]),
             bottom: parseInt(s["padding-bottom"]),
             left: parseInt(s["padding-left"])
-        }
+        };
     },
 
     margin: function(p){
@@ -85,7 +85,7 @@ $.fn.extend({
             right: parseInt(s["margin-right"]),
             bottom: parseInt(s["margin-bottom"]),
             left: parseInt(s["margin-left"])
-        }
+        };
     },
 
     border: function(p){
@@ -97,6 +97,6 @@ $.fn.extend({
             right: parseInt(s["border-right-width"]),
             bottom: parseInt(s["border-bottom-width"]),
             left: parseInt(s["border-left-width"])
-        }
+        };
     }
 });

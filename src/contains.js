@@ -67,10 +67,10 @@ $.fn.extend({
                 var styles = getComputedStyle(this);
                 if (
                     this.getAttribute('type') === 'hidden'
-                    || this.hidden
-                    || styles['display'] === 'none'
-                    || styles['visibility'] === 'hidden'
-                    || parseInt(styles['opacity']) === 0
+                        || this.hidden
+                        || styles.display === 'none'
+                        || styles.visibility === 'hidden'
+                        || parseInt(styles.opacity) === 0
                 ) result = true;
             });
         } else
@@ -91,7 +91,7 @@ $.fn.extend({
                     if (el === sel) {
                         result = true;
                     }
-                })
+                });
             });
         } else
 
@@ -100,7 +100,7 @@ $.fn.extend({
                 if  (this === s) {
                     result = true;
                 }
-            })
+            });
         }
 
         return result;
@@ -259,7 +259,7 @@ $.fn.extend({
             var el = this;
             if (el.parentNode) {
                 $.each(el.parentNode.children, function(){
-                    if (el !== this) res.push(this)
+                    if (el !== this) res.push(this);
                 });
             }
         });
@@ -267,7 +267,7 @@ $.fn.extend({
         if (s) {
             res = res.filter(function(el){
                 return matches.call(el, s);
-            })
+            });
         }
 
         return $.extend($.merge($(), res), {_prevObj: this});
@@ -294,7 +294,7 @@ $.fn.extend({
         if (s) {
             res = res.filter(function(el){
                 return matches.call(el, s);
-            })
+            });
         }
 
         return $.extend($.merge($(), res), {_prevObj: this});
@@ -319,7 +319,7 @@ $.fn.extend({
         if (s) {
             res = res.filter(function(el){
                 return matches.call(el, s);
-            })
+            });
         }
 
         return $.extend($.merge($(), res), {_prevObj: this});

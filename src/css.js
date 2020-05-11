@@ -76,7 +76,7 @@ $.fn.extend({
         }
         return this.each(function(){
             this.scrollTop = val;
-        })
+        });
     },
 
     scrollLeft: function(val){
@@ -85,7 +85,7 @@ $.fn.extend({
         }
         return this.each(function(){
             this.scrollLeft = val;
-        })
+        });
     }
 });
 

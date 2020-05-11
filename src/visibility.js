@@ -24,7 +24,7 @@ $.extend({
     hide: function(el, cb){
         var $el = $(el);
         if (!!el.style.display) {
-            $el.origin('display', (el.style.display ? el.style.display : getComputedStyle(el, null)['display']));
+            $el.origin('display', (el.style.display ? el.style.display : getComputedStyle(el, null).display));
         }
         el.style.display = 'none';
         if (typeof cb === "function") {
@@ -60,19 +60,14 @@ $.extend({
     },
 
     toggle: function(el, cb){
-        var func;
-        if ( getComputedStyle(el, null)['display'] !== 'none') {
-            func = 'hide';
-        } else {
-            func = 'show';
-        }
+        var func = getComputedStyle(el, null).display !== 'none' ? 'hide' : 'show';
         return $[func](el, cb);
     }
 });
 
 $.fn.extend({
     hide: function(cb){
-        var callback = undefined;
+        var callback;
 
         $.each(arguments, function(){
             if (typeof this === 'function') {
@@ -86,7 +81,7 @@ $.fn.extend({
     },
 
     show: function(cb){
-        var callback = undefined;
+        var callback;
 
         $.each(arguments, function(){
             if (typeof this === 'function') {
@@ -108,13 +103,13 @@ $.fn.extend({
     toggle: function(cb){
         return this.each(function(){
             $.toggle(this, cb);
-        })
+        });
     },
 
     hidden: function(val, cb){
         return this.each(function(){
             $.hidden(this, val, cb);
-        })
+        });
     }
 });
 

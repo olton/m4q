@@ -1,7 +1,10 @@
 $.extend({
-    uniqueId: function () {
+    uniqueId: function (prefix) {
         var d = new Date().getTime();
-        return 'm4q-xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        if (not(prefix)) {
+            prefix = 'm4q';
+        }
+        return (prefix !== '' ? prefix + '-' : '') + 'xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
             var r = (d + Math.random() * 16) % 16 | 0;
             d = Math.floor(d / 16);
             return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
@@ -73,13 +76,21 @@ $.extend({
     isEmptyObject: function(obj){return isEmptyObject(obj);},
     isArrayLike: function(obj){return isArrayLike(obj);},
     acceptData: function(owner){return acceptData(owner);},
-    not: function(val){return not(val)},
-    parseUnit: function(str, out){return parseUnit(str, out)},
-    unit: function(str, out){return parseUnit(str, out)},
-    isVisible: function(elem) {return isVisible(elem)},
-    isHidden: function(elem) {return isHidden(elem)},
+    not: function(val){return not(val);},
+    parseUnit: function(str, out){return parseUnit(str, out);},
+    getUnit: function(str, und){return _getUnit(str, und);},
+    unit: function(str, out){return parseUnit(str, out);},
+    isVisible: function(elem) {return isVisible(elem);},
+    isHidden: function(elem) {return isHidden(elem);},
     matches: function(el, s) {return matches.call(el, s);},
-    random: function(from, to) {return Math.floor(Math.random()*(to-from+1)+from);},
+    random: function(from, to) {
+        if (arguments.length === 1 && isArrayLike(from)) {
+            return from[Math.floor(Math.random()*(from.length))];
+        }
+        return Math.floor(Math.random()*(to-from+1)+from);
+    },
+    strip: function(val, what){return strip(val, what);},
+    normName: function(val){return normName(val);},
 
     serializeToArray: function(form){
         var _form = $(form)[0];

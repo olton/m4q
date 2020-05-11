@@ -80,7 +80,7 @@ $.init = function(sel, ctx){
         var that = this;
         if (ctx instanceof $) {
             this.each(function () {
-                $(ctx).append(that)
+                $(ctx).append(that);
             });
         } else if (ctx instanceof HTMLElement) {
             $(ctx).append(that);

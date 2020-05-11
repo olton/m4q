@@ -29,9 +29,9 @@ describe("M$Q DataSet", function(){
     it("Check if element has data", () => {
         cy.visit("/test/data.html");
         cy.window().then(win => {
-            const div = win.$("#div").data("test", "value");
+            const div = win.$("#div2").data("cypress", "test");
             assert.equal(win.$.hasData(div[0]),true);
-            assert.isObject(div.removeData("test"));
+            assert.isObject(div.removeData("cypress"));
             assert.equal(win.$.hasData(div[0]),false);
         });
     });

@@ -77,6 +77,13 @@ module.exports = function(grunt) {
             build: ['build']
         },
 
+        jshint: {
+            files: ['Gruntfile.js', 'src/**/*.js'],
+            options: {
+                laxbreak: true
+            }
+        },
+
         concat: {
             global: {
                 options: {
@@ -146,12 +153,12 @@ module.exports = function(grunt) {
         watch: {
             scripts: {
                 files: ['src/*.js', 'Gruntfile.js'],
-                tasks: ['clean',  'concat', 'uglify', 'replace']
+                tasks: ['clean', 'jshint',  'concat', 'uglify', 'replace']
             }
         }
     });
 
-    tasks = ['clean', 'concat', 'removelogging', 'uglify', 'replace'];
+    tasks = ['clean', 'jshint', 'concat', 'removelogging', 'uglify', 'replace'];
 
     if (watching) {
         tasks.push('watch');

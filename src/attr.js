@@ -38,7 +38,7 @@ $.fn.extend({
                 var el = this;
                 $.each(this.attributes, function(){
                     el.removeAttribute(this);
-                })
+                });
             });
         }
 
@@ -108,7 +108,7 @@ $.extend({
     charset: function(val){
         var meta = $("meta[charset]");
         if (val) {
-            meta.attr("charset", val)
+            meta.attr("charset", val);
         }
         return meta.attr("charset");
     }
