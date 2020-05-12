@@ -31,6 +31,7 @@
 </head>
 <body>
 <div>
+    <button>Off</button>
     <ul>
         <li>Item 1 <span class="drag-item-marker">span 1</span></li>
     </ul>
@@ -39,11 +40,18 @@
 <script src="../build/m4q.js"></script>
 
 <script>
-    var useDraw = true;
-    $("ul").on("mouseDown", (useDraw ? ".drag-item-marker" : "li"), function(e){
-        console.log("span");
-        e.preventDefault();
-        e.stopPropagation();
-    });
+    $("span").on("click", function(){
+        console.log("span clicked!");
+    }, {ns: "123-456"});
+
+    $("button").on("click", function(){
+        $("span").off("click", {ns: "123-456"});
+    })
+    // var useDraw = true;
+    // $("ul").on("mouseDown", (useDraw ? ".drag-item-marker" : "li"), function(e){
+    //     console.log("span");
+    //     e.preventDefault();
+    //     e.stopPropagation();
+    // }, {ns: "123-456"});
 </script>
 </body>

@@ -3,6 +3,10 @@
 + [x] Ajax: add parameter `contentType`. If this param has value `false`, `Content-type` can't be defined.
 + [x] Animation: a new engine for animation. The `animate` function changed. Now function receives one argument.
 + [x] Contains: add checks with `:visible` to method `is`. Example: `$(...).is(':visible')`
++ [x] Utils: add method `$.random(array | a, b)` 
++ [x] Utils: add method `$.getUnit(a)` 
++ [x] Utils: add method `$.strip(where, what)` 
++ [x] Utils: add method `$.hasProp(obj, prop)` 
 
 ### 1.0.5
 + [x] Events: fix firing events, Metro 4 issue 1476

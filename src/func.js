@@ -82,7 +82,7 @@ function setStyleProp(el, key, val){
 }
 
 function acceptData(owner){
-    return typeof owner.nodeType !== "undefined" && (owner.nodeType === 1 || owner.nodeType === 9);
+    return owner.nodeType === 1 || owner.nodeType === 9 || !( +owner.nodeType );
 }
 
 function getData(data){

@@ -118,7 +118,8 @@ module.exports = function(grunt) {
         uglify: {
             options: {
                 sourceMap: true,
-                preserveComments: true
+                preserveComments: true,
+                compress: true
             },
             global: {
                 src: 'build/m4q.js',
