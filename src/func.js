@@ -1,5 +1,5 @@
 /* global dataSet */
-/* exported isSimple, isHidden, isPlainObject, isEmptyObject, isArrayLike, str2arr, parseUnit, getUnit, setStyleProp, acceptData, dataAttr, normName, strip */
+/* exported isSimple, isHidden, isPlainObject, isEmptyObject, isArrayLike, str2arr, parseUnit, getUnit, setStyleProp, acceptData, dataAttr, normName, strip, dashedName */
 
 var numProps = ['opacity', 'zIndex'];
 
@@ -24,6 +24,10 @@ function camelCase(string){
     return string.replace( /-([a-z])/g, function(all, letter){
         return letter.toUpperCase();
     });
+}
+
+function dashedName(str){
+    return str.replace(/([A-Z])/g, function(u) { return "-" + u.toLowerCase(); });
 }
 
 function isPlainObject( obj ) {

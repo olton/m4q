@@ -40,6 +40,19 @@ $.fn.extend({
 
     cls: function(array){
         return this.length === 0 ? undefined : array ? this[0].className.split(" ") : this[0].className;
+    },
+
+    removeClassBy: function(mask){
+        return this.each(function(){
+            var el = $(this);
+            var classes = el.cls(true);
+            $.each(classes, function(){
+                var elClass = this;
+                if (elClass.indexOf(mask) > -1) {
+                    el.removeClass(elClass);
+                }
+            });
+        });
     }
 });
 

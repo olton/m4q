@@ -1,4 +1,4 @@
-/* global $, not, camelCase, isPlainObject, isEmptyObject, isArrayLike, acceptData, parseUnit, getUnit, isVisible, isHidden, matches, strip, normName, hasProp */
+/* global $, not, camelCase, dashedName, isPlainObject, isEmptyObject, isArrayLike, acceptData, parseUnit, getUnit, isVisible, isHidden, matches, strip, normName, hasProp */
 
 $.extend({
     uniqueId: function (prefix) {
@@ -75,6 +75,7 @@ $.extend({
     },
 
     camelCase: function(string){return camelCase(string);},
+    dashedName: function(str){return dashedName(str);},
     isPlainObject: function(obj){return isPlainObject(obj);},
     isEmptyObject: function(obj){return isEmptyObject(obj);},
     isArrayLike: function(obj){return isArrayLike(obj);},

@@ -7,6 +7,7 @@
 + [x] Utils: add method `$.getUnit(a)` 
 + [x] Utils: add method `$.strip(where, what)` 
 + [x] Utils: add method `$.hasProp(obj, prop)` 
++ [x] Classes: add method `$(...).removeClassBy(mask)`
 
 ### 1.0.5
 + [x] Events: fix firing events, Metro 4 issue 1476

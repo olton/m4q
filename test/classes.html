@@ -7,13 +7,21 @@
     <title>Classes Test</title>
 </head>
 <body>
-<h1>Test classes routines</h1>
-<div class="my-class" id="my-div" style="display: block">
-    Test block
-</div>
+    <h1>Test classes routines</h1>
+    <div class="my-class" id="my-div" style="display: block">
+        Test block
+    </div>
+    <div class="my-class class-for-remove other-class class-for-remove-2" id="my-div-2">
+        Test block
+    </div>
 <script src="../build/m4q.js"></script>
 <script>
     var div  = $('<div>').addClass("slider").addClass("disabled").text("ku");
     $("#my-div").append(div);
+
+    var div2 = $("#my-div-2");
+    div2.removeClassBy("for-remove");
+    console.log(div2.cls());
+
 </script>
 </body>
