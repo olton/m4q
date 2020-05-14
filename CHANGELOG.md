@@ -7,6 +7,7 @@
 + [x] Utils: add method `$.getUnit(a)` 
 + [x] Utils: add method `$.strip(where, what)` 
 + [x] Utils: add method `$.hasProp(obj, prop)` 
++ [x] Utils: add method `$.dashedName(val)` 
 + [x] Classes: add method `$(...).removeClassBy(mask)`
 
 ### 1.0.5
