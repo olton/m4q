@@ -25,7 +25,8 @@ $.fn = $.prototype = {
     push: [].push,
     sort: [].sort,
     splice: [].splice,
-    indexOf: [].indexOf
+    indexOf: [].indexOf,
+    reverse: [].reverse
 };
 
 $.extend = $.fn.extend = function(){

@@ -570,7 +570,7 @@ function hasProp(obj, prop){
 
 /* global hasProp */
 
-var m4qVersion = "v1.0.6. Built at 13/05/2020 22:32:16";
+var m4qVersion = "v1.0.6. Built at 17/05/2020 10:25:07";
 
 /* eslint-disable-next-line */
 var matches = Element.prototype.matches
@@ -595,7 +595,8 @@ $.fn = $.prototype = {
     push: [].push,
     sort: [].sort,
     splice: [].splice,
-    indexOf: [].indexOf
+    indexOf: [].indexOf,
+    reverse: [].reverse
 };
 
 $.extend = $.fn.extend = function(){
