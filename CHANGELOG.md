@@ -1,3 +1,6 @@
+### 1.0.7
++ [x] Animation: fixed using String.includes for IE11. Change to String.indexOF.
+
 ### 1.0.6
 + [x] Init: fix minor bug for creating elements in context
 + [x] Ajax: add parameter `contentType`. If this param has value `false`, `Content-type` can't be defined.
