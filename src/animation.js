@@ -45,6 +45,8 @@ function _getRelativeValue (to, from) {
             return x - y + u;
         case '*':
             return x * y + u;
+        case '/':
+            return x / y + u;
     }
 }
 

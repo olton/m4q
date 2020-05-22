@@ -1,5 +1,6 @@
 ### 1.0.7
 + [x] Animation: fixed using String.includes for IE11. Change to String.indexOF.
++ [x] Animation: add operator `/` to `_getRelativeValue()`.
 
 ### 1.0.6
 + [x] Init: fix minor bug for creating elements in context
