@@ -201,5 +201,23 @@ $.fn.extend({
         }
 
         return $.merge($(), res);
+    },
+
+    wrap: function( el ){
+        if (this.length === 0) {
+            return ;
+        }
+
+        var wrapper = $(normalizeElements(el)).eq(0);
+        var element = $(this[0]);
+
+        if (!wrapper.length) {
+            return ;
+        }
+
+        wrapper.insertBefore(element);
+        element.appendTo(wrapper);
+
+        return wrapper;
     }
 });

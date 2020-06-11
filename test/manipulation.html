@@ -8,6 +8,10 @@
 <body>
 <div id="target">
     <span>target</span>
+
+    <br>
+
+    <input type="checkbox" id="check">
 </div>
 
 <script src="../build/m4q.js"></script>
@@ -21,10 +25,12 @@
     var body = $.body();
 
     console.log(head);
-    script.appendTo(body);
+    // script.appendTo(body);
 
     console.log($.window());
     console.log($.document());
 
+    // console.log($("#check").wrap("<label>"));
+    $("#check").wrap("span");
 </script>
 </body>

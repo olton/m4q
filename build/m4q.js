@@ -570,7 +570,7 @@ function hasProp(obj, prop){
 
 /* global hasProp */
 
-var m4qVersion = "v1.0.7. Built at 22/05/2020 16:11:40";
+var m4qVersion = "v1.0.7. Built at 11/06/2020 12:41:37";
 
 /* eslint-disable-next-line */
 var matches = Element.prototype.matches
@@ -653,7 +653,7 @@ $.assign = function(){
     return target;
 };
 
-if (typeof window["hideM4QVersion"] === "undefined") console.info("m4q " + $.version);
+// if (typeof window["hideM4QVersion"] === "undefined") console.info("m4q " + $.version);
 
 // Source: src/interval.js
 
@@ -1948,7 +1948,7 @@ $.fn.extend({
     },
 
     fire: function(name, data){
-        var _name;
+        var _name, e;
 
         if (this.length === 0) {
             return ;
@@ -1961,9 +1961,17 @@ $.fn.extend({
             return this;
         }
 
-        var e = document.createEvent('Events');
-        e.detail = data;
-        e.initEvent(_name, true, false);
+        if (typeof CustomEvent !== "undefined") {
+            e = new CustomEvent(_name, {
+                bubbles: true,
+                cancelable: true,
+                detail: data
+            });
+        } else {
+            e = document.createEvent('Events');
+            e.detail = data;
+            e.initEvent(_name, true, true);
+        }
 
         return this.each(function(){
             this.dispatchEvent(e);
@@ -2947,6 +2955,24 @@ $.fn.extend({
         }
 
         return $.merge($(), res);
+    },
+
+    wrap: function( el ){
+        if (this.length === 0) {
+            return ;
+        }
+
+        var wrapper = $(normalizeElements(el)).eq(0);
+        var element = $(this[0]);
+
+        if (!wrapper.length) {
+            return ;
+        }
+
+        wrapper.insertBefore(element);
+        element.appendTo(wrapper);
+
+        return wrapper;
     }
 });
 

@@ -274,7 +274,7 @@ $.fn.extend({
     },
 
     fire: function(name, data){
-        var _name;
+        var _name, e;
 
         if (this.length === 0) {
             return ;
@@ -287,9 +287,17 @@ $.fn.extend({
             return this;
         }
 
-        var e = document.createEvent('Events');
-        e.detail = data;
-        e.initEvent(_name, true, false);
+        if (typeof CustomEvent !== "undefined") {
+            e = new CustomEvent(_name, {
+                bubbles: true,
+                cancelable: true,
+                detail: data
+            });
+        } else {
+            e = document.createEvent('Events');
+            e.detail = data;
+            e.initEvent(_name, true, true);
+        }
 
         return this.each(function(){
             this.dispatchEvent(e);
