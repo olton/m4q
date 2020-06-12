@@ -570,7 +570,7 @@ function hasProp(obj, prop){
 
 /* global hasProp */
 
-var m4qVersion = "v1.0.7. Built at 11/06/2020 12:41:37";
+var m4qVersion = "v1.0.7. Built at 12/06/2020 12:28:58";
 
 /* eslint-disable-next-line */
 var matches = Element.prototype.matches
@@ -2962,17 +2962,58 @@ $.fn.extend({
             return ;
         }
 
-        var wrapper = $(normalizeElements(el)).eq(0);
-        var element = $(this[0]);
+        var wrapper = $(normalizeElements(el));
 
         if (!wrapper.length) {
             return ;
         }
 
-        wrapper.insertBefore(element);
-        element.appendTo(wrapper);
+        var res = [];
 
-        return wrapper;
+        this.each(function(){
+            var _target, _wrapper;
+
+            _wrapper = wrapper.clone(true, true);
+            _wrapper.insertBefore(this);
+
+            _target = _wrapper;
+            while (_target.children().length) {
+                _target = _target.children().eq(0);
+            }
+            _target.append(this);
+
+            res.push(_wrapper);
+        });
+
+        return $(res);
+    },
+
+    wrapAll: function( el ){
+        var _wrapper, _target;
+
+        if (this.length === 0) {
+            return ;
+        }
+
+        var wrapper = $(normalizeElements(el));
+
+        if (!wrapper.length) {
+            return ;
+        }
+
+        _wrapper = wrapper.clone(true, true);
+        _wrapper.insertBefore(this[0]);
+
+        _target = _wrapper;
+        while (_target.children().length) {
+            _target = _target.children().eq(0);
+        }
+
+        this.each(function(){
+            _target.append(this);
+        })
+
+        return _wrapper;
     }
 });
 

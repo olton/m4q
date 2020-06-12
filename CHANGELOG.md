@@ -2,7 +2,7 @@
 + [x] Animation: fixed using String.includes for IE11. Change to String.indexOF.
 + [x] Animation: add operator `/` to `_getRelativeValue()`.
 + [x] Events: fix `fire`. Now main is constructor `CustonEvent`, for old - `createEvent`
-+ [x] Manipulation: add method `wrap`. The method puts the first element of the set inside the wrapper.
++ [x] Manipulation: add method `wrap`, `wrapAll`. The method puts elements inside the wrapper. 
 
 ### 1.0.6
 + [x] Init: fix minor bug for creating elements in context

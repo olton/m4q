@@ -208,16 +208,57 @@ $.fn.extend({
             return ;
         }
 
-        var wrapper = $(normalizeElements(el)).eq(0);
-        var element = $(this[0]);
+        var wrapper = $(normalizeElements(el));
 
         if (!wrapper.length) {
             return ;
         }
 
-        wrapper.insertBefore(element);
-        element.appendTo(wrapper);
+        var res = [];
 
-        return wrapper;
+        this.each(function(){
+            var _target, _wrapper;
+
+            _wrapper = wrapper.clone(true, true);
+            _wrapper.insertBefore(this);
+
+            _target = _wrapper;
+            while (_target.children().length) {
+                _target = _target.children().eq(0);
+            }
+            _target.append(this);
+
+            res.push(_wrapper);
+        });
+
+        return $(res);
+    },
+
+    wrapAll: function( el ){
+        var _wrapper, _target;
+
+        if (this.length === 0) {
+            return ;
+        }
+
+        var wrapper = $(normalizeElements(el));
+
+        if (!wrapper.length) {
+            return ;
+        }
+
+        _wrapper = wrapper.clone(true, true);
+        _wrapper.insertBefore(this[0]);
+
+        _target = _wrapper;
+        while (_target.children().length) {
+            _target = _target.children().eq(0);
+        }
+
+        this.each(function(){
+            _target.append(this);
+        })
+
+        return _wrapper;
     }
 });

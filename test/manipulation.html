@@ -6,31 +6,41 @@
     <title>Test manipulation</title>
 </head>
 <body>
-<div id="target">
-    <span>target</span>
 
-    <br>
+    <div id="e1"></div>
+    <span id="t1">target</span>
 
-    <input type="checkbox" id="check">
-</div>
+    <hr>
+
+    <input type="checkbox">
+
+    <hr>
+
+    <div class="container">
+        <div class="inner">Hello</div>
+        <div class="inner">Goodbye</div>
+    </div>
+
+    <div class="container2">
+        <div class="inner">Hello</div>
+        <div class="inner">Goodbye</div>
+    </div>
+
+    <hr>
+
+    <div id="e3">
+        <span>Span Text</span>
+        <strong>What about me?</strong>
+        <span>Another One</span>
+    </div>
 
 <script src="../build/m4q.js"></script>
 
 <script>
-    var target = $('#target');
-    var div1 = $("<div>").html("prepend");
-    var div2 = $("<div>").html("append");
-    var script = $.script().text("alert('ku')");
-    var head = $.head();
-    var body = $.body();
-
-    console.log(head);
-    // script.appendTo(body);
-
-    console.log($.window());
-    console.log($.document());
-
-    // console.log($("#check").wrap("<label>"));
-    $("#check").wrap("span");
+    $("#t1").wrap( $("#e1") );
+    $("input[type=checkbox]").wrap("<label>");
+    $( ".container .inner" ).wrap( "<div class='new'></div>" );
+    $( ".container2 .inner" ).wrapAll( "<div class='new'><em  style='color: blue'></em></div>" );
+    $("#e3 > span").wrap("<div><div><p><em><b style='color: red'></b></em></p></div></div>")
 </script>
 </body>
