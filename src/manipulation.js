@@ -235,13 +235,13 @@ $.fn.extend({
     },
 
     wrapAll: function( el ){
-        var _wrapper, _target;
+        var wrapper, _wrapper, _target;
 
         if (this.length === 0) {
             return ;
         }
 
-        var wrapper = $(normalizeElements(el));
+        wrapper = $(normalizeElements(el));
 
         if (!wrapper.length) {
             return ;
@@ -260,5 +260,24 @@ $.fn.extend({
         })
 
         return _wrapper;
+    },
+
+    wrapInner: function( el ){
+        if (this.length === 0) {
+            return ;
+        }
+
+        var wrapper = $(normalizeElements(el));
+
+        if (!wrapper.length) {
+            return ;
+        }
+
+        return this.each(function(){
+            var elem = $(this);
+            var html = elem.html();
+            var wrp = wrapper.clone(true, true);
+            elem.html(wrp.html(html));
+        });
     }
 });

@@ -34,6 +34,15 @@
         <span>Another One</span>
     </div>
 
+    <ul id="e4">
+        <li><div>Item</div></li>
+        <li>Item</li>
+        <li>Item</li>
+        <li>Item</li>
+    </ul>
+
+
+
 <script src="../build/m4q.js"></script>
 
 <script>
@@ -42,5 +51,6 @@
     $( ".container .inner" ).wrap( "<div class='new'></div>" );
     $( ".container2 .inner" ).wrapAll( "<div class='new'><em  style='color: blue'></em></div>" );
     $("#e3 > span").wrap("<div><div><p><em><b style='color: red'></b></em></p></div></div>")
+    $("#e4 > li").wrapInner("<em>");
 </script>
 </body>
