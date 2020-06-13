@@ -62,7 +62,8 @@ $.init = function(sel, ctx){
         sel = sel.trim();
 
         if (sel === "#" || sel === ".") {
-            throw new Error("sel can't be # or .") ;
+            console.warn("Selector can't be # or .") ;
+            return this;
         }
 
         parsed = $.parseHTML(sel, ctx);

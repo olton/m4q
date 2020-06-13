@@ -273,11 +273,16 @@ $.fn.extend({
             return ;
         }
 
-        return this.each(function(){
+        var res = [];
+
+        this.each(function(){
             var elem = $(this);
             var html = elem.html();
             var wrp = wrapper.clone(true, true);
             elem.html(wrp.html(html));
+            res.push(wrp);
         });
+
+        return $(res);
     }
 });

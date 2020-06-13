@@ -570,7 +570,7 @@ function hasProp(obj, prop){
 
 /* global hasProp */
 
-var m4qVersion = "v1.0.7. Built at 12/06/2020 20:00:50";
+var m4qVersion = "v1.0.7. Built at 13/06/2020 12:02:32";
 
 /* eslint-disable-next-line */
 var matches = Element.prototype.matches
@@ -2358,8 +2358,7 @@ $.fn.extend({
 
 $.parseHTML = function(data, context){
     var base, singleTag, result = [], ctx, _context;
-    /* eslint-disable-next-line */
-    var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
+    var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i; // eslint-disable-line
 
     if (typeof data !== "string") {
         return [];
@@ -3027,12 +3026,17 @@ $.fn.extend({
             return ;
         }
 
-        return this.each(function(){
+        var res = [];
+
+        this.each(function(){
             var elem = $(this);
             var html = elem.html();
             var wrp = wrapper.clone(true, true);
             elem.html(wrp.html(html));
+            res.push(wrp);
         });
+
+        return $(res);
     }
 });
 
@@ -4280,7 +4284,8 @@ $.init = function(sel, ctx){
         sel = sel.trim();
 
         if (sel === "#" || sel === ".") {
-            throw new Error("sel can't be # or .") ;
+            console.warn("Selector can't be # or .") ;
+            return this;
         }
 
         parsed = $.parseHTML(sel, ctx);

@@ -2,8 +2,7 @@
 
 $.parseHTML = function(data, context){
     var base, singleTag, result = [], ctx, _context;
-    /* eslint-disable-next-line */
-    var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
+    var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i; // eslint-disable-line
 
     if (typeof data !== "string") {
         return [];
