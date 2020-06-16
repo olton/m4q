@@ -1,3 +1,4 @@
+/* global global */
 /*
  * setImmediate polyfill
  * Version 1.0.5
@@ -73,6 +74,27 @@
         }
     }
 
+    // global.process
+    function installNextTickImplementation() {
+        registerImmediate = function(handle) {
+            global.process.nextTick(function () { runIfPresent(handle); });
+        };
+    }
+
+    // web workers
+    function installMessageChannelImplementation() {
+        var channel = new MessageChannel();
+        channel.port1.onmessage = function(event) {
+            var handle = event.data;
+            runIfPresent(handle);
+        };
+
+        registerImmediate = function(handle) {
+            channel.port2.postMessage(handle);
+        };
+    }
+
+    // Browsers
     function installPostMessageImplementation() {
         var messagePrefix = "setImmediate$" + Math.random() + "$";
         var onGlobalMessage = function(event) {
@@ -93,9 +115,21 @@
     var attachTo = Object.getPrototypeOf && Object.getPrototypeOf(global);
     attachTo = attachTo && attachTo.setTimeout ? attachTo : global;
 
-    installPostMessageImplementation();
+    if ({}.toString.call(global.process) === "[object process]") {
+
+        installNextTickImplementation();
+
+    } else if (global.MessageChannel) {
+
+        installMessageChannelImplementation();
+
+    } else {
+
+        installPostMessageImplementation();
+
+    }
 
     attachTo.setImmediate = setImmediate;
     attachTo.clearImmediate = clearImmediate;
 
-}(window));
+}(typeof self === "undefined" ? typeof global === "undefined" ? window : global : self));
