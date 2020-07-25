@@ -7,6 +7,8 @@
 </head>
 <body>
 
+<div id="div1"></div>
+<div data-role="role1, role2">data-role 1</div>
 
 <script src="../build/m4q.js"></script>
 
@@ -15,7 +17,11 @@
     // var div2 = $("<div>");
     //
     // console.log($([div1, div2]));
-    console.log($("string"));
-    console.log($("#"));
+    // console.log($("string"));
+    // console.log($("#"));
+
+    console.log($("@role1"));
+    console.log($("@role2"));
+    console.log($("@role"));
 </script>
 </body>

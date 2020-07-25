@@ -2,6 +2,7 @@
 
 $.init = function(sel, ctx){
     var parsed, r;
+    var that = this;
 
     this.uid = $.uniqueId();
 
@@ -59,24 +60,37 @@ $.init = function(sel, ctx){
 
     if (typeof sel === "string") {
 
-        sel = sel.trim();
+        if (sel[0] === "@") {
 
-        if (sel === "#" || sel === ".") {
-            console.warn("Selector can't be # or .") ;
-            return this;
-        }
+            $("[data-role]").each(function(){
+                var roles = $(this).attr("data-role").split(",").map(function(v){
+                    return (""+v).trim();
+                });
+                if (roles.indexOf(sel.slice(1)) > -1) {
+                    that.push(this);
+                }
+            });
 
-        parsed = $.parseHTML(sel, ctx);
-
-        if (parsed.length === 1 && parsed[0].nodeType === 3) { // Must be a text node -> css sel
-            [].push.apply(this, document.querySelectorAll(sel));
         } else {
-            $.merge(this, parsed);
+            sel = sel.trim();
+
+            if (sel === "#" || sel === ".") {
+                console.warn("Selector can't be # or .") ;
+                return this;
+            }
+
+            parsed = $.parseHTML(sel, ctx);
+
+            if (parsed.length === 1 && parsed[0].nodeType === 3) { // Must be a text node -> css sel
+                [].push.apply(this, document.querySelectorAll(sel));
+            } else {
+                $.merge(this, parsed);
+            }
         }
+
     }
 
     if (ctx !== undefined) {
-        var that = this;
         if (ctx instanceof $) {
             this.each(function () {
                 $(ctx).append(that);

@@ -1,3 +1,6 @@
+### 1.0.8
++ [x] Constructor: add short-tag for selecting by `data-role` with `@role` 
+
 ### 1.0.7
 + [x] Animation: fixed using String.includes for IE11. Change to String.indexOF.
 + [x] Animation: add operator `/` to `_getRelativeValue()`.
