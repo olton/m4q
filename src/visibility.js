@@ -26,14 +26,14 @@ $.extend({
     hide: function(el, cb){
         var $el = $(el);
 
-        if (el.style.display) {
-            $el.origin('display', (el.style.display ? el.style.display : getComputedStyle(el, null).display));
-        }
+        $el.origin('display', (el.style.display ? el.style.display : getComputedStyle(el, null).display));
         el.style.display = 'none';
+
         if (typeof cb === "function") {
             $.bind(cb, el);
             cb.call(el, arguments);
         }
+
         return this;
     },
 
