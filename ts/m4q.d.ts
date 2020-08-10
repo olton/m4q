@@ -1033,7 +1033,7 @@ declare module M4Q {
 
         top(): number;
 
-        crood(): DOMRect | undefined;
+        coord(): DOMRect | undefined;
 
         pos(): Position | undefined;
 
