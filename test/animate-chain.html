@@ -63,34 +63,29 @@
         //     }
         // ], loop);
 
+        $.animation.duration = 2000;
+        $.animation.ease = "easeOutBounce";
         ball.chain([
             {
                 draw: {
                     top: [h - ball.height()]
                 },
-                dur: 2000,
-                ease: "easeOutBounce"
+                ease: "linear"
             },
             {
                 draw: {
                     left: [w - ball.width()]
-                },
-                dur: 2000,
-                ease: "easeOutBounce"
+                }
             },
             {
                 draw: {
                     top: 0
-                },
-                dur: 2000,
-                ease: "easeOutBounce"
+                }
             },
             {
                 draw: {
                     left: 0
-                },
-                dur: 2000,
-                ease: "easeOutBounce"
+                }
             }
         ], loop);
     </script>

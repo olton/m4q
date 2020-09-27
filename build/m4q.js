@@ -604,7 +604,7 @@ function hasProp(obj, prop){
 
 /* global hasProp */
 
-var m4qVersion = "v1.0.8. Built at 06/08/2020 18:05:15";
+var m4qVersion = "v1.0.8. Built at 18/09/2020 13:46:29";
 
 /* eslint-disable-next-line */
 var matches = Element.prototype.matches
@@ -1542,6 +1542,9 @@ $.fn.extend({
 /* global $, not, camelCase, dashedName, isPlainObject, isEmptyObject, isArrayLike, acceptData, parseUnit, getUnit, isVisible, isHidden, matches, strip, normName, hasProp */
 
 $.extend({
+
+    device: (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase())),
+
     uniqueId: function (prefix) {
         var d = new Date().getTime();
         if (not(prefix)) {
@@ -1597,14 +1600,11 @@ $.extend({
     },
 
     isSelector: function(selector){
-        if (typeof(selector) !== 'string') {
-            return false;
-        }
-        if (selector.indexOf("<") !== -1) {
+        if (typeof selector !== 'string') {
             return false;
         }
         try {
-            $(selector);
+            document.querySelector(selector);
         } catch(error) {
             return false;
         }
@@ -2291,6 +2291,7 @@ $.fn.extend({
 
     scrollTop: function(val){
         if (not(val)) {
+            console.log(this.length);
             return this.length === 0 ? undefined : this[0] === window ? pageYOffset : this[0].scrollTop;
         }
         return this.each(function(){
@@ -2388,9 +2389,9 @@ $.fn.extend({
 
 // Source: src/parser.js
 
-/* global $, isPlainObject, hasProp */
+/* global $ */
 
-$.parseHTML = function(data, context){
+$.parseHTML = function(data){
     var base, singleTag, result = [], ctx, _context;
     var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i; // eslint-disable-line
 
@@ -2415,16 +2416,6 @@ $.parseHTML = function(data, context){
         for(var i = 0; i < _context.childNodes.length; i++) {
             result.push(_context.childNodes[i]);
         }
-    }
-
-    if (context && !(context instanceof $) && isPlainObject(context)) {
-        $.each(result,function(){
-            var el = this;
-            for(var name in context) {
-                if (hasProp(context, name))
-                    el.setAttribute(name, context[name]);
-            }
-        });
     }
 
     return result;
@@ -3482,7 +3473,7 @@ Object.keys(eases).forEach(function(name) {
     };
 });
 
-var defaultProps = {
+var defaultAnimationProps = {
     id: null,
     el: null,
     draw: {},
@@ -3499,7 +3490,7 @@ var defaultProps = {
 function animate(args){
     return new Promise(function(resolve){
         var that = this, start;
-        var props = $.assign({}, defaultProps, args);
+        var props = $.assign({}, defaultAnimationProps, {dur: $.animation.duration, ease: $.animation.ease}, args);
         var id = props.id, el = props.el, draw = props.draw, dur = props.dur, ease = props.ease, loop = props.loop, onFrame = props.onFrame, onDone = props.onDone, pause = props.pause, dir = props.dir, defer = props.defer;
         var map = {};
         var easeName = "linear", easeArgs = [], easeFn = Easing.linear, matchArgs;
@@ -4254,11 +4245,15 @@ $.fn.extend({
 
 // Source: src/init.js
 
-/* global $, isArrayLike */
+/* global $, isArrayLike, isPlainObject, hasProp, str2arr */
 
 $.init = function(sel, ctx){
-    var parsed, r;
+    var parsed;
     var that = this;
+
+    if (typeof sel === "string") {
+        sel = sel.trim();
+    }
 
     this.uid = $.uniqueId();
 
@@ -4270,80 +4265,68 @@ $.init = function(sel, ctx){
         return $.ready(sel);
     }
 
-    if (typeof sel === 'string' && sel === "document") {
-        sel = document;
-    }
-
-    if (typeof sel === 'string' && sel === "body") {
-        sel = document.body;
-    }
-
-    if (typeof sel === 'string' && sel === "html") {
-        sel = document.documentElement;
-    }
-
-    if (typeof sel === 'string' && sel === "doctype") {
-        sel = document.doctype;
-    }
-
-    if (sel && (sel.nodeType || sel.self === window)) {
-        this[0] = sel;
-        this.length = 1;
+    if (sel instanceof Element) {
+        this.push(sel);
         return this;
     }
 
     if (sel instanceof $) {
-        r = $();
         $.each(sel, function(){
-            r.push(this);
+            that.push(this);
         });
-        return r;
+        return this;
+    }
+
+    if (sel === "window") sel = window;
+    if (sel === "document") sel = document;
+    if (sel === "body") sel = document.body;
+    if (sel === "html") sel = document.documentElement;
+    if (sel === "doctype") sel = document.doctype;
+    if (sel && (sel.nodeType || sel.self === window)) {
+        this.push(sel);
+        return this;
     }
 
     if (isArrayLike(sel)) {
-        r = $();
         $.each(sel, function(){
             $(this).each(function(){
-                r.push(this);
+                that.push(this);
             });
         });
-        return r;
+        return this;
     }
 
-    if (typeof sel === "object") {
-        return sel;
+    if (typeof sel !== "string" && (sel.self && sel.self !== window)) {
+        return this;
     }
 
-    if (typeof sel === "string") {
+    if (sel === "#" || sel === ".") {
+        console.error("Selector can't be # or .") ;
+        return this;
+    }
 
-        if (sel[0] === "@") {
+    if (sel[0] === "@") {
 
-            $("[data-role]").each(function(){
-                var roles = $(this).attr("data-role").split(",").map(function(v){
-                    return (""+v).trim();
-                });
-                if (roles.indexOf(sel.slice(1)) > -1) {
-                    that.push(this);
-                }
-            });
-
-        } else {
-            sel = sel.trim();
-
-            if (sel === "#" || sel === ".") {
-                console.warn("Selector can't be # or .") ;
-                return this;
+        $("[data-role]").each(function(){
+            var roles = str2arr($(this).attr("data-role"), ",");
+            if (roles.indexOf(sel.slice(1)) > -1) {
+                that.push(this);
             }
+        });
 
-            parsed = $.parseHTML(sel, ctx);
+    } else {
 
-            if (parsed.length === 1 && parsed[0].nodeType === 3) { // Must be a text node -> css sel
+        parsed = $.parseHTML(sel);
+
+        if (parsed.length === 1 && parsed[0].nodeType === 3) { // Must be a text node -> css sel
+            try {
                 [].push.apply(this, document.querySelectorAll(sel));
-            } else {
-                $.merge(this, parsed);
+            } catch (e) {
+                console.error(sel + " is not a valid selector");
             }
+        } else {
+            $.merge(this, parsed);
         }
-
     }
 
     if (ctx !== undefined) {
@@ -4353,6 +4336,15 @@ $.init = function(sel, ctx){
             });
         } else if (ctx instanceof HTMLElement) {
             $(ctx).append(that);
+        } else {
+            if (isPlainObject(ctx)) {
+                $.each(this,function(){
+                    for(var name in ctx) {
+                        if (hasProp(ctx, name))
+                            this.setAttribute(name, ctx[name]);
+                    }
+                });
+            }
         }
     }
 

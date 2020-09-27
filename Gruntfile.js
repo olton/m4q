@@ -158,7 +158,10 @@ module.exports = function(grunt) {
         watch: {
             scripts: {
                 files: ['src/*.js', 'Gruntfile.js'],
-                tasks: ['clean', 'eslint',  'concat', 'uglify', 'replace']
+                tasks: ['clean', 'eslint',  'concat', 'uglify', 'replace'],
+                options: {
+                    spawn: false
+                }
             }
         }
     });

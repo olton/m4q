@@ -13,15 +13,23 @@
 <script src="../build/m4q.js"></script>
 
 <script>
-    // var div1 = $("<div>");
-    // var div2 = $("<div>");
-    //
-    // console.log($([div1, div2]));
-    // console.log($("string"));
-    // console.log($("#"));
+    var div1 = $("<div>", {
+        id: "div_id_1"
+    });
+    var div2 = $("<div>");
+    var div = $("#div1");
+
+    console.log(div);
+    console.log($(div));
+    console.log($([div1, div2]));
+    console.log($("string"));
+    console.log($("#"));
+    console.log($("123"));
 
     console.log($("@role1"));
     console.log($("@role2"));
     console.log($("@role"));
+
+    console.log($.device);
 </script>
 </body>

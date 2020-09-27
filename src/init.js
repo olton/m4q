@@ -1,8 +1,12 @@
-/* global $, isArrayLike */
+/* global $, isArrayLike, isPlainObject, hasProp, str2arr */
 
 $.init = function(sel, ctx){
-    var parsed, r;
+    var parsed;
     var that = this;
+
+    if (typeof sel === "string") {
+        sel = sel.trim();
+    }
 
     this.uid = $.uniqueId();
 
@@ -14,80 +18,68 @@ $.init = function(sel, ctx){
         return $.ready(sel);
     }
 
-    if (typeof sel === 'string' && sel === "document") {
-        sel = document;
-    }
-
-    if (typeof sel === 'string' && sel === "body") {
-        sel = document.body;
-    }
-
-    if (typeof sel === 'string' && sel === "html") {
-        sel = document.documentElement;
-    }
-
-    if (typeof sel === 'string' && sel === "doctype") {
-        sel = document.doctype;
-    }
-
-    if (sel && (sel.nodeType || sel.self === window)) {
-        this[0] = sel;
-        this.length = 1;
+    if (sel instanceof Element) {
+        this.push(sel);
         return this;
     }
 
     if (sel instanceof $) {
-        r = $();
         $.each(sel, function(){
-            r.push(this);
+            that.push(this);
         });
-        return r;
+        return this;
+    }
+
+    if (sel === "window") sel = window;
+    if (sel === "document") sel = document;
+    if (sel === "body") sel = document.body;
+    if (sel === "html") sel = document.documentElement;
+    if (sel === "doctype") sel = document.doctype;
+    if (sel && (sel.nodeType || sel.self === window)) {
+        this.push(sel);
+        return this;
     }
 
     if (isArrayLike(sel)) {
-        r = $();
         $.each(sel, function(){
             $(this).each(function(){
-                r.push(this);
+                that.push(this);
             });
         });
-        return r;
+        return this;
     }
 
-    if (typeof sel === "object") {
-        return sel;
+    if (typeof sel !== "string" && (sel.self && sel.self !== window)) {
+        return this;
     }
 
-    if (typeof sel === "string") {
+    if (sel === "#" || sel === ".") {
+        console.error("Selector can't be # or .") ;
+        return this;
+    }
 
-        if (sel[0] === "@") {
+    if (sel[0] === "@") {
 
-            $("[data-role]").each(function(){
-                var roles = $(this).attr("data-role").split(",").map(function(v){
-                    return (""+v).trim();
-                });
-                if (roles.indexOf(sel.slice(1)) > -1) {
-                    that.push(this);
-                }
-            });
-
-        } else {
-            sel = sel.trim();
-
-            if (sel === "#" || sel === ".") {
-                console.warn("Selector can't be # or .") ;
-                return this;
+        $("[data-role]").each(function(){
+            var roles = str2arr($(this).attr("data-role"), ",");
+            if (roles.indexOf(sel.slice(1)) > -1) {
+                that.push(this);
             }
+        });
 
-            parsed = $.parseHTML(sel, ctx);
+    } else {
 
-            if (parsed.length === 1 && parsed[0].nodeType === 3) { // Must be a text node -> css sel
+        parsed = $.parseHTML(sel);
+
+        if (parsed.length === 1 && parsed[0].nodeType === 3) { // Must be a text node -> css sel
+            try {
                 [].push.apply(this, document.querySelectorAll(sel));
-            } else {
-                $.merge(this, parsed);
+            } catch (e) {
+                console.error(sel + " is not a valid selector");
             }
+        } else {
+            $.merge(this, parsed);
         }
-
     }
 
     if (ctx !== undefined) {
@@ -97,6 +89,15 @@ $.init = function(sel, ctx){
             });
         } else if (ctx instanceof HTMLElement) {
             $(ctx).append(that);
+        } else {
+            if (isPlainObject(ctx)) {
+                $.each(this,function(){
+                    for(var name in ctx) {
+                        if (hasProp(ctx, name))
+                            this.setAttribute(name, ctx[name]);
+                    }
+                });
+            }
         }
     }
 

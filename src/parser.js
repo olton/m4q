@@ -1,6 +1,6 @@
-/* global $, isPlainObject, hasProp */
+/* global $ */
 
-$.parseHTML = function(data, context){
+$.parseHTML = function(data){
     var base, singleTag, result = [], ctx, _context;
     var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i; // eslint-disable-line
 
@@ -25,16 +25,6 @@ $.parseHTML = function(data, context){
         for(var i = 0; i < _context.childNodes.length; i++) {
             result.push(_context.childNodes[i]);
         }
-    }
-
-    if (context && !(context instanceof $) && isPlainObject(context)) {
-        $.each(result,function(){
-            var el = this;
-            for(var name in context) {
-                if (hasProp(context, name))
-                    el.setAttribute(name, context[name]);
-            }
-        });
     }
 
     return result;
