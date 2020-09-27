@@ -1,3 +1,5 @@
+### 1.0.9
+
 ### 1.0.8
 + [x] Constructor: add short-tag for selecting by `data-role` with `@role` 
 + [x] Visibility: fix method `hide` for detecting initial `display` value
