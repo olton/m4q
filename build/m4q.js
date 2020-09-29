@@ -1,5 +1,5 @@
 /*
- * m4q v1.0.8, (https://github.com/olton/m4q.git)
+ * m4q v1.0.9, (https://github.com/olton/m4q.git)
  * Copyright 2018 - 2020 by Sergey Pimenov
  * Helper for DOM manipulation, animation, and ajax routines.
  * Licensed under MIT
@@ -604,7 +604,7 @@ function hasProp(obj, prop){
 
 /* global hasProp */
 
-var m4qVersion = "v1.0.8. Built at 18/09/2020 13:46:29";
+var m4qVersion = "v1.0.9. Built at 27/09/2020 13:16:08";
 
 /* eslint-disable-next-line */
 var matches = Element.prototype.matches
