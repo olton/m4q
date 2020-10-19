@@ -41,7 +41,8 @@
         <li>Item</li>
     </ul>
 
-
+    <div id="append-text"></div>
+    <div id="prepend-text">prepend</div>
 
 <script src="../build/m4q.js"></script>
 
@@ -52,5 +53,10 @@
     $( ".container2 .inner" ).wrapAll( "<div class='new'><em  style='color: blue'></em></div>" );
     $("#e3 > span").wrap("<div><div><p><em><b style='color: red'></b></em></p></div></div>")
     console.log($("#e4 > li").wrapInner("<em>"));
+
+    $("#append-text").appendText("This is a text");
+    $("#append-text").appendText("<br>This is second text");
+    $("#append-text").appendText("<p>This is paragraph</p>");
+    $("#prepend-text").prependText("<p>This is prepended paragraph</p>");
 </script>
 </body>

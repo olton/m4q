@@ -1,8 +1,11 @@
-/* global $, not, camelCase, dashedName, isPlainObject, isEmptyObject, isArrayLike, acceptData, parseUnit, getUnit, isVisible, isHidden, matches, strip, normName, hasProp */
+/* global $, not, camelCase, dashedName, isPlainObject, isEmptyObject, isArrayLike, acceptData, parseUnit, getUnit, isVisible, isHidden, matches, strip, normName, hasProp, isLocalhost, isTouch */
 
 $.extend({
 
     device: (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase())),
+    localhost: isLocalhost(),
+    isLocalhost: isLocalhost,
+    touchable: isTouch(),
 
     uniqueId: function (prefix) {
         var d = new Date().getTime();
@@ -74,18 +77,18 @@ $.extend({
         return $(s).remove();
     },
 
-    camelCase: function(string){return camelCase(string);},
-    dashedName: function(str){return dashedName(str);},
-    isPlainObject: function(obj){return isPlainObject(obj);},
-    isEmptyObject: function(obj){return isEmptyObject(obj);},
-    isArrayLike: function(obj){return isArrayLike(obj);},
-    acceptData: function(owner){return acceptData(owner);},
-    not: function(val){return not(val);},
-    parseUnit: function(str, out){return parseUnit(str, out);},
-    getUnit: function(str, und){return getUnit(str, und);},
-    unit: function(str, out){return parseUnit(str, out);},
-    isVisible: function(elem) {return isVisible(elem);},
-    isHidden: function(elem) {return isHidden(elem);},
+    camelCase: camelCase,
+    dashedName: dashedName,
+    isPlainObject: isPlainObject,
+    isEmptyObject: isEmptyObject,
+    isArrayLike: isArrayLike,
+    acceptData: acceptData,
+    not: not,
+    parseUnit: parseUnit,
+    getUnit: getUnit,
+    unit: parseUnit,
+    isVisible: isVisible,
+    isHidden: isHidden,
     matches: function(el, s) {return matches.call(el, s);},
     random: function(from, to) {
         if (arguments.length === 1 && isArrayLike(from)) {
@@ -93,9 +96,9 @@ $.extend({
         }
         return Math.floor(Math.random()*(to-from+1)+from);
     },
-    strip: function(val, what){return strip(val, what);},
-    normName: function(val){return normName(val);},
-    hasProp: function(obj, prop){return hasProp(obj, prop);},
+    strip: strip,
+    normName: normName,
+    hasProp: hasProp,
 
     serializeToArray: function(form){
         var _form = $(form)[0];

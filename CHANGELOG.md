@@ -1,9 +1,14 @@
 ### 1.0.9
++ [x] Core: added function `$.isLocalhost([hostname])`, **true** if host is localhost.
++ [x] Core: added property `$.localhost`, **true** if current location is localhost.
++ [x] Core: added property `$.touchable`, **true** if device detected as touchable.
++ [x] Manipulation: added methods `appendText(...any_text...)`, `prependText(...any_text...)`. 
 
 ### 1.0.8
 + [x] Constructor: add short-tag for selecting by `data-role` with `@role` 
 + [x] Visibility: fix method `hide` for detecting initial `display` value
 + [x] Init: improve init method
++ [x] Core: added property `$.device`, **true** for mobile a device.
 
 ### 1.0.7
 + [x] Animation: fixed using String.includes for IE11. Change to String.indexOF.

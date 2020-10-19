@@ -1,5 +1,5 @@
 /* global dataSet */
-/* exported isSimple, isHidden, isPlainObject, isEmptyObject, isArrayLike, str2arr, parseUnit, getUnit, setStyleProp, acceptData, dataAttr, normName, strip, dashedName */
+/* exported isTouch, isSimple, isHidden, isPlainObject, isEmptyObject, isArrayLike, str2arr, parseUnit, getUnit, setStyleProp, acceptData, dataAttr, normName, strip, dashedName, isLocalhost */
 
 var numProps = ['opacity', 'zIndex'];
 
@@ -124,4 +124,21 @@ function strip(name, what) {
 
 function hasProp(obj, prop){
     return Object.prototype.hasOwnProperty.call(obj, prop);
+}
+
+function isLocalhost(host){
+    var hostname = host || window.location.hostname;
+    return (
+        hostname === "localhost" ||
+        hostname === "127.0.0.1" ||
+        hostname === "[::1]" ||
+        hostname === "" ||
+        hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/) !== null
+    );
+}
+
+function isTouch() {
+    return (('ontouchstart' in window)
+        || (navigator.maxTouchPoints > 0)
+        || (navigator.msMaxTouchPoints > 0));
 }

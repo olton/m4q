@@ -38,6 +38,19 @@ var normalizeElements = function(s){
 };
 
 $.fn.extend({
+
+    appendText: function(text){
+        return this.each(function(elIndex, el){
+            el.innerHTML += text;
+        });
+    },
+
+    prependText: function(text){
+        return this.each(function(elIndex, el){
+            el.innerHTML = text + el.innerHTML;
+        });
+    },
+
     append: function(elements){
         var _elements = normalizeElements(elements);
 
