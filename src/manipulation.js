@@ -6,11 +6,12 @@
             if (hasProp(item, where)) {
                 return;
             }
+
             Object.defineProperty(item, where, {
                 configurable: true,
                 enumerable: true,
                 writable: true,
-                value: function prepend() {
+                value: function () {
                     var argArr = Array.prototype.slice.call(arguments),
                         docFrag = document.createDocumentFragment();
 
@@ -31,6 +32,7 @@
 
 var normalizeElements = function(s){
     var result;
+
     if (typeof s === "string") result = $.isSelector(s) ? $(s) : $.parseHTML(s);
     else if (s instanceof HTMLElement) result = [s];
     else if (isArrayLike(s)) result = s;

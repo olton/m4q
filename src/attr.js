@@ -15,7 +15,7 @@ $.fn.extend({
             return attributes;
         }
 
-        if (typeof name === 'string' && val === undefined) {
+        if (arguments.length === 1) {
             return this.length && this[0].nodeType === 1 && this[0].hasAttribute(name) ? this[0].getAttribute(name) : undefined;
         }
 

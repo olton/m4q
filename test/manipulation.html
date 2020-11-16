@@ -41,22 +41,27 @@
         <li>Item</li>
     </ul>
 
-    <div id="append-text"></div>
+    <div id="append-text">append</div>
     <div id="prepend-text">prepend</div>
 
 <script src="../build/m4q.js"></script>
 
 <script>
-    $("#t1").wrap( $("#e1") );
-    $("input[type=checkbox]").wrap("<label>");
-    $( ".container .inner" ).wrap( "<div class='new'></div>" );
-    $( ".container2 .inner" ).wrapAll( "<div class='new'><em  style='color: blue'></em></div>" );
-    $("#e3 > span").wrap("<div><div><p><em><b style='color: red'></b></em></p></div></div>")
-    console.log($("#e4 > li").wrapInner("<em>"));
-
-    $("#append-text").appendText("This is a text");
+    // $("#t1").wrap( $("#e1") );
+    // $("input[type=checkbox]").wrap("<label>");
+    // $( ".container .inner" ).wrap( "<div class='new'></div>" );
+    // $( ".container2 .inner" ).wrapAll( "<div class='new'><em  style='color: blue'></em></div>" );
+    // $("#e3 > span").wrap("<div><div><p><em><b style='color: red'></b></em></p></div></div>")
+    // console.log($("#e4 > li").wrapInner("<em>"));
+    //
+    $("#append-text").append("This is a text");
+    // $("#append-text").append($("<div>123</div>"));
     $("#append-text").appendText("<br>This is second text");
-    $("#append-text").appendText("<p>This is paragraph</p>");
-    $("#prepend-text").prependText("<p>This is prepended paragraph</p>");
+    // $("#append-text").appendText("<p>This is paragraph</p>");
+    // $("#prepend-text").prepend("This is prepended paragraph");
+    // $("#prepend-text").prepend("<div>456</div>");
+    // console.log($.parseHTML("<p>This is prepended paragraph</p>"));
+    console.log($.parseHTML(".paragraph > span"));
+    console.log($.isSelector('This'));
 </script>
 </body>

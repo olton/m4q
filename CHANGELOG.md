@@ -1,3 +1,6 @@
+### 1.0.10
++ [x] Attributes: fixed method `attr` when user define one argument
+
 ### 1.0.9
 + [x] Core: added function `$.isLocalhost([hostname])`, **true** if host is localhost.
 + [x] Core: added property `$.localhost`, **true** if current location is localhost.
