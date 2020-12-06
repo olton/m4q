@@ -1,5 +1,6 @@
 ### 1.0.10
 + [x] Attributes: fixed method `attr` when user defining one argument
++ [x] Animation: added methods `stopAll()`, `pause(id)`, `pauseAll()`, `resume(id)`, `resumeAll()`
 
 ### 1.0.9
 + [x] Core: added function `$.isLocalhost([hostname])`, **true** if host is localhost.

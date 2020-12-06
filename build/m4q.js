@@ -621,7 +621,7 @@ function isTouch() {
 
 /* global hasProp */
 
-var m4qVersion = "v1.0.10. Built at 06/12/2020 16:33:26";
+var m4qVersion = "v1.0.10. Built at 06/12/2020 17:32:59";
 
 /* eslint-disable-next-line */
 var matches = Element.prototype.matches
@@ -3732,7 +3732,7 @@ function stopAnimationAll(done){
 }
 // end of stop
 
-// Pause animation
+// Pause and resume animation
 function pauseAnimation(id){
     var an = $.animation.elements[id];
 
@@ -3751,14 +3751,19 @@ function pauseAnimation(id){
 function pauseAnimationAll(filter){
     $.each($.animation.elements, function(k, v){
         if (filter) {
-            if (matches.call(v.element, filter)) pauseAnimation(k);
+            if (typeof filter === "string") {
+                if (matches.call(v.element, filter)) pauseAnimation(k);
+            } else if (filter.length) {
+                $.each(filter, function(){
+                    if (v.element === this) pauseAnimation(k);
+                });
+            }
         } else {
             pauseAnimation(k);
         }
     });
 }
-// end og pause
-
+// end of pause
 
 function resumeAnimation(id){
     var an = $.animation.elements[id];
@@ -3778,7 +3783,13 @@ function resumeAnimation(id){
 function resumeAnimationAll(filter){
     $.each($.animation.elements, function(k, v){
         if (filter) {
-            if (matches.call(v.element, filter)) resumeAnimation(k);
+            if (typeof filter === "string") {
+                if (matches.call(v.element, filter)) resumeAnimation(k);
+            } else if (filter.length) {
+                $.each(filter, function(){
+                    if (v.element === this) resumeAnimation(k);
+                });
+            }
         } else {
             resumeAnimation(k);
         }
