@@ -175,7 +175,10 @@ $.fn.extend({
         } else {
             this.each(function () {
                 var el = this;
-                if (typeof el.querySelectorAll !== "undefined") res = res.concat([].slice.call(el.querySelectorAll(s)));
+                if (typeof el.querySelectorAll === "undefined") {
+                    return ;
+                }
+                res = res.concat([].slice.call(el.querySelectorAll(s)));
             });
             result = $.merge($(), res);
         }

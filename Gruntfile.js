@@ -160,7 +160,8 @@ module.exports = function(grunt) {
                 files: ['src/*.js', 'Gruntfile.js'],
                 tasks: ['clean', 'eslint',  'concat', 'uglify', 'replace'],
                 options: {
-                    spawn: false
+                    spawn: false,
+                    reload: true
                 }
             }
         }

@@ -9,11 +9,15 @@
 
 <div id="div1" data-attr="123"></div>
 <div data-role="role1, role2">data-role 1</div>
+<input type="checkbox" checked id="check1">
+<input type="checkbox" id="check2">
 
 <script src="../build/m4q.js"></script>
 
 <script>
-    console.log($("#div1").attr('data-attr', 456))
+    console.log($(":checked"));
+    console.log($("body").find(":checked"));
+    // console.log($("#div1").attr('data-attr', 456))
     // var div1 = $("<div>", {
     //     id: "div_id_1"
     // });

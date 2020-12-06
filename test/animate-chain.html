@@ -26,67 +26,67 @@
         var field = document.querySelector("body");
         var w = field.clientWidth, h = field.clientHeight;
         var ball = $(".ball");
-        var loop = 1;
+        var loop = true;
 
-        // $.chain([
-        //     {
-        //         el: ball[0],
-        //         draw: {
-        //             top: [h - ball.height()]
-        //         },
-        //         dur: 2000,
-        //         ease: "easeOutBounce"
-        //     },
-        //     {
-        //         el: ball[0],
-        //         draw: {
-        //             left: [w - ball.width()]
-        //         },
-        //         dur: 2000,
-        //         ease: "easeOutBounce"
-        //     },
-        //     {
-        //         el: ball[0],
-        //         draw: {
-        //             top: 0
-        //         },
-        //         dur: 2000,
-        //         ease: "easeOutBounce"
-        //     },
-        //     {
-        //         el: ball[0],
-        //         draw: {
-        //             left: 0
-        //         },
-        //         dur: 2000,
-        //         ease: "easeOutBounce"
-        //     }
-        // ], loop);
-
-        $.animation.duration = 2000;
-        $.animation.ease = "easeOutBounce";
-        ball.chain([
+        $.chain([
             {
+                el: ball[0],
                 draw: {
                     top: [h - ball.height()]
                 },
-                ease: "linear"
+                dur: 2000,
+                ease: "easeOutBounce"
             },
             {
+                el: ball[0],
                 draw: {
                     left: [w - ball.width()]
-                }
+                },
+                dur: 2000,
+                ease: "easeOutBounce"
             },
             {
+                el: ball[0],
                 draw: {
                     top: 0
-                }
+                },
+                dur: 2000,
+                ease: "easeOutBounce"
             },
             {
+                el: ball[0],
                 draw: {
                     left: 0
-                }
+                },
+                dur: 2000,
+                ease: "easeOutBounce"
             }
         ], loop);
+
+        // $.animation.duration = 2000;
+        // $.animation.ease = "easeOutBounce";
+        // ball.chain([
+        //     {
+        //         draw: {
+        //             top: [h - ball.height()]
+        //         },
+        //         ease: "linear"
+        //     },
+        //     {
+        //         draw: {
+        //             left: [w - ball.width()]
+        //         }
+        //     },
+        //     {
+        //         draw: {
+        //             top: 0
+        //         }
+        //     },
+        //     {
+        //         draw: {
+        //             left: 0
+        //         }
+        //     }
+        // ], loop);
     </script>
 </body>

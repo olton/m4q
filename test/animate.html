@@ -7,11 +7,21 @@
     <style>
         body {
             height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .field {
+            width: 600px;
+            height: 400px;
+            position: relative;
+            border: 1px solid gray;
         }
 
         .ball {
-            width: 100px;
-            height: 100px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background-color: black;
             position: absolute;
@@ -19,11 +29,14 @@
     </style>
 </head>
 <body>
-    <img src="ball.svg" class="ball">
+
+    <div class="field">
+        <img src="ball.svg" class="ball">
+    </div>
 
     <script src="../build/m4q.js"></script>
     <script>
-        var field = document.querySelector("body");
+        var field = document.querySelector(".field");
         var w = field.clientWidth, h = field.clientHeight;
         var ball = $(".ball");
 
@@ -50,6 +63,18 @@
                 loop: true
             }
         ]);
+
+        field.addEventListener("mouseenter", function(){
+            $.pauseAll('.ball');
+        });
+
+        field.addEventListener("mouseleave", function(){
+            $.resumeAll('.ball');
+        });
+        //
+        // field.addEventListener("click", function(){
+        //     $.stopAll();
+        // });
 
         // ball.animate({
         //     draw: {left: w - ball.width()},
