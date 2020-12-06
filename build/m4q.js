@@ -621,7 +621,7 @@ function isTouch() {
 
 /* global hasProp */
 
-var m4qVersion = "v1.0.10. Built at 06/12/2020 17:32:59";
+var m4qVersion = "v1.0.10. Built at 06/12/2020 17:39:40";
 
 /* eslint-disable-next-line */
 var matches = Element.prototype.matches
@@ -3725,9 +3725,21 @@ function stopAnimation(id, done){
     }
 }
 
-function stopAnimationAll(done){
-    $.each($.animation.elements, function(k){
-        stopAnimation(k, done);
+function stopAnimationAll(done, filter){
+    $.each($.animation.elements, function(k, v){
+        if (filter) {
+            if (typeof filter === "string") {
+                if (matches.call(v.element, filter)) stopAnimation(k, done);
+            } else if (filter.length) {
+                $.each(filter, function(){
+                    if (v.element === this) stopAnimation(k, done);
+                });
+            } else if (filter instanceof Element) {
+                if (v.element === filter) stopAnimation(k, done);
+            }
+        } else {
+            stopAnimation(k, done);
+        }
     });
 }
 // end of stop
@@ -3757,6 +3769,8 @@ function pauseAnimationAll(filter){
                 $.each(filter, function(){
                     if (v.element === this) pauseAnimation(k);
                 });
+            } else if (filter instanceof Element) {
+                if (v.element === filter) pauseAnimation(k);
             }
         } else {
             pauseAnimation(k);
@@ -3789,6 +3803,8 @@ function resumeAnimationAll(filter){
                 $.each(filter, function(){
                     if (v.element === this) resumeAnimation(k);
                 });
+            } else if (filter instanceof Element) {
+                if (v.element === filter) resumeAnimation(k);
             }
         } else {
             resumeAnimation(k);

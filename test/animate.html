@@ -65,16 +65,16 @@
         ]);
 
         field.addEventListener("mouseenter", function(){
-            $.pauseAll($('.ball'));
+            $.pauseAll(document.querySelector('.ball'));
         });
 
         field.addEventListener("mouseleave", function(){
             $.resumeAll(document.querySelectorAll('.ball'));
         });
-        //
-        // field.addEventListener("click", function(){
-        //     $.stopAll();
-        // });
+
+        field.addEventListener("click", function(){
+            $.stopAll(true, '.ball');
+        });
 
         // ball.animate({
         //     draw: {left: w - ball.width()},
