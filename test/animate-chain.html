@@ -61,7 +61,8 @@
                 dur: 2000,
                 ease: "easeOutBounce"
             }
-        ], false, {
+        ], {
+            loop: loop,
             onChainItem: function(item){
                 console.log("Started", item);
             },

@@ -708,8 +708,20 @@ function resumeAnimationAll(filter){
 
 /* eslint-enable */
 
-function chain(arr, loop, opt){
-    if (not(loop)) loop = false;
+var defaultChainOptions = {
+    loop: false,
+    onChainItem: null,
+    onChainItemComplete: null,
+    onChainComplete: null
+}
+
+function chain(arr, opt){
+    var o = $.extend({}, defaultChainOptions, opt);
+
+    if (typeof o.loop !== "boolean") {
+        o.loop--;
+    }
+
     if (!Array.isArray(arr)) {
         console.warn("Chain array is not defined!");
         return false;
@@ -717,28 +729,24 @@ function chain(arr, loop, opt){
 
     var reducer = function(acc, item){
         return acc.then(function(){
-            if (opt && typeof opt["onChainItem"] === "function") {
-                opt["onChainItem"](item);
+            if (typeof o["onChainItem"] === "function") {
+                o["onChainItem"](item);
             }
             return animate(item).then(function(){
-                if (opt && typeof opt["onChainItemComplete"] === "function") {
-                    opt["onChainItemComplete"](item);
+                if (typeof o["onChainItemComplete"] === "function") {
+                    o["onChainItemComplete"](item);
                 }
             });
         });
     };
 
     arr.reduce(reducer, Promise.resolve()).then(function(){
-        if (opt && typeof opt["onChainComplete"] === "function") {
-            opt["onChainComplete"]();
+        if (typeof o["onChainComplete"] === "function") {
+            o["onChainComplete"]();
         }
-        if (loop) {
-            if (typeof loop === "boolean") {
-                chain(arr, loop, opt);
-            } else {
-                loop--;
-                chain(arr, loop, opt);
-            }
+
+        if (o.loop) {
+            chain(arr, o);
         }
     });
 }
