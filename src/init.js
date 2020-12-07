@@ -75,7 +75,7 @@ $.init = function(sel, ctx){
             try {
                 [].push.apply(this, document.querySelectorAll(sel));
             } catch (e) {
-                console.error(sel + " is not a valid selector");
+                //console.error(sel + " is not a valid selector");
             }
         } else {
             $.merge(this, parsed);

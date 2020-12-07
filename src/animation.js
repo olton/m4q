@@ -708,7 +708,7 @@ function resumeAnimationAll(filter){
 
 /* eslint-enable */
 
-function chain(arr, loop){
+function chain(arr, loop, opt){
     if (not(loop)) loop = false;
     if (!Array.isArray(arr)) {
         console.warn("Chain array is not defined!");
@@ -717,17 +717,27 @@ function chain(arr, loop){
 
     var reducer = function(acc, item){
         return acc.then(function(){
-            return animate(item);
+            if (opt && typeof opt["onChainItem"] === "function") {
+                opt["onChainItem"](item);
+            }
+            return animate(item).then(function(){
+                if (opt && typeof opt["onChainItemComplete"] === "function") {
+                    opt["onChainItemComplete"](item);
+                }
+            });
         });
     };
 
     arr.reduce(reducer, Promise.resolve()).then(function(){
+        if (opt && typeof opt["onChainComplete"] === "function") {
+            opt["onChainComplete"]();
+        }
         if (loop) {
             if (typeof loop === "boolean") {
-                chain(arr, loop);
+                chain(arr, loop, opt);
             } else {
                 loop--;
-                chain(arr, loop);
+                chain(arr, loop, opt);
             }
         }
     });

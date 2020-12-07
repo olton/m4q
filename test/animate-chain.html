@@ -61,7 +61,17 @@
                 dur: 2000,
                 ease: "easeOutBounce"
             }
-        ], loop);
+        ], false, {
+            onChainItem: function(item){
+                console.log("Started", item);
+            },
+            onChainItemComplete: function(item){
+                console.log("Complete", item);
+            },
+            onChainComplete: function(){
+                console.log("Chain complete");
+            }
+        });
 
         // $.animation.duration = 2000;
         // $.animation.ease = "easeOutBounce";
