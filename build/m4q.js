@@ -1,6 +1,6 @@
 /*
  * m4q v1.0.10, (https://github.com/olton/m4q.git)
- * Copyright 2018 - 2020 by Sergey Pimenov
+ * Copyright 2018 - 2021 by Sergey Pimenov
  * Helper for DOM manipulation, animation, and ajax routines.
  * Licensed under MIT
  */
@@ -621,7 +621,7 @@ function isTouch() {
 
 /* global hasProp */
 
-var m4qVersion = "v1.0.10. Built at 08/12/2020 00:01:48";
+var m4qVersion = "v1.0.10. Built at 08/01/2021 13:03:24";
 
 /* eslint-disable-next-line */
 var matches = Element.prototype.matches
