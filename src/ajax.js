@@ -1,5 +1,5 @@
 /* global $, Promise, not, isSimple, isPlainObject, isEmptyObject, camelCase */
-
+/* can be changed to fetch */
 $.ajax = function(p){
     return new Promise(function(resolve, reject){
         var xhr = new XMLHttpRequest(), data;

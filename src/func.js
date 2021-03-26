@@ -1,7 +1,7 @@
 /* global dataSet */
 /* exported isTouch, isSimple, isHidden, isPlainObject, isEmptyObject, isArrayLike, str2arr, parseUnit, getUnit, setStyleProp, acceptData, dataAttr, normName, strip, dashedName, isLocalhost */
 
-var numProps = ['opacity', 'zIndex'];
+var numProps = ['opacity', 'zIndex', "order", "zoom"];
 
 function isSimple(v){
     return typeof v === "string" || typeof v === "boolean" || typeof v === "number";

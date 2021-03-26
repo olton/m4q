@@ -1,3 +1,8 @@
+### 1.1.0
++ [x] Polyfills: remove polyfill for Promise
++ [x] Polyfills: remove polyfill for CustomEvent
++ [x] Fixed setting css number props `order`, `zoom` with method `css()`
+
 ### 1.0.10
 + [x] Attributes: fixed method `attr` when user defining one argument
 + [x] Animation: added methods `stopAll()`, `pause(id)`, `pauseAll()`, `resume(id)`, `resumeAll()`

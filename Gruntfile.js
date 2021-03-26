@@ -11,7 +11,6 @@ module.exports = function(grunt) {
         'src/func.js',
 
         'src/setimmediate.js',
-        'src/promise.js',
 
         'src/core.js',
         'src/interval.js',
