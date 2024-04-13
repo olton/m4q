@@ -166,7 +166,7 @@ declare module M4Q {
     interface EventObject {
         el: EventTarget;
         event: Event;
-        handler: EventHandlerNonNull;
+        handler: any;
         selector: string;
         ns: string;
         id: number;
@@ -356,20 +356,20 @@ declare module M4Q {
 
         //region src/events.js
         events: Event[];
-        eventHooks: { [hook: string]: EventHandlerNonNull };
+        eventHooks: { [hook: string]: any };
         eventUID: number;
 
         setEventHandler(obj: EventObject): number;
 
-        getEventHandler(index: number): EventHandlerNonNull | undefined;
+        getEventHandler(index: number): any | undefined;
 
         off();
 
         getEvents(): EventObject[];
 
-        getEventHooks(): { [hook: string]: EventHandlerNonNull };
+        getEventHooks(): { [hook: string]: any };
 
-        addEventHook(event: Event, handler: EventHandlerNonNull, type: 'before' | 'after'): M4Q;
+        addEventHook(event: Event, handler: any, type: 'before' | 'after'): M4Q;
 
         removeEventHook(event: Event, type: 'before' | 'after'): M4Q;
 

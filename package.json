@@ -2,8 +2,9 @@
   "name": "m4q",
   "title": "m4q",
   "description": "Helper for DOM manipulation, animation, and ajax routines.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "build/m4q.js",
+  "type": "module",
   "homepage": "https://metroui.org.ua/m4q-about.html",
   "author": {
     "name": "Sergey Pimenov",
@@ -26,31 +27,14 @@
     "url": "https://github.com/olton/m4q/issues"
   },
   "license": "MIT",
-  "dependencies": {},
   "scripts": {
-    "build": "npm install && grunt",
-    "cy:test": "cypress open",
-    "cy:run": "cypress run",
-    "start": "http-server ./ -c-1 -s",
-    "test": "start-server-and-test start http://localhost:8080 cy:run",
-    "manual-test": "start-server-and-test start http://localhost:8080 cy:test"
+    "build": "rollup -c",
+    "dev": "rollup -c -w"
   },
   "devDependencies": {
-    "cypress": "^3.6.0",
-    "eslint": "^7.0.0",
-    "grunt": "^1.0.4",
-    "grunt-build-number": "^1.0.0",
-    "grunt-contrib-clean": "^2.0.0",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-jshint": "^2.1.0",
-    "grunt-contrib-uglify": "^4.0.1",
-    "grunt-contrib-watch": "^1.1.0",
-    "grunt-eslint": "^22.0.0",
-    "grunt-ftp-push": "^1.2.1",
-    "grunt-remove-logging": "^0.2.0",
-    "grunt-replace": "^1.0.1",
-    "grunt-shell": "^3.0.1",
-    "load-grunt-tasks": "^5.0.0",
-    "start-server-and-test": "^1.9.1"
+    "@rollup/plugin-terser": "^0.4.4",
+    "rollup": "^4.14.2",
+    "rollup-plugin-concat": "^1.0.3",
+    "rollup-plugin-progress": "^1.1.2"
   }
 }

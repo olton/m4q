@@ -10,7 +10,7 @@ var matches = Element.prototype.matches
     || Element.prototype.msMatchesSelector
     || Element.prototype.oMatchesSelector;
 
-var $ = function(selector, context){
+globalThis.$ = function(selector, context){
     return new $.init(selector, context);
 };
 
