@@ -16,7 +16,13 @@
     </div>
 <script src="../build/m4q.js"></script>
 <script>
-    var div  = $('<div>').addClass("slider").addClass("disabled").text("ku");
+    var div  = $('<div>')
+        .addClass("slider")
+        .addClass("disabled")
+        .addClass("one two")
+        .addClass(["one1", "two1"])
+        .classNames("c1", "c2")
+        .text("ku");
     $("#my-div").append(div);
 
     var div2 = $("#my-div-2");

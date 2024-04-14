@@ -28,15 +28,9 @@
   "license": "MIT",
   "dependencies": {},
   "scripts": {
-    "build": "npm install && grunt",
-    "cy:test": "cypress open",
-    "cy:run": "cypress run",
-    "start": "http-server ./ -c-1 -s",
-    "test": "start-server-and-test start http://localhost:8080 cy:run",
-    "manual-test": "start-server-and-test start http://localhost:8080 cy:test"
+    "build": "npm install && grunt"
   },
   "devDependencies": {
-    "cypress": "^3.6.0",
     "eslint": "^7.0.0",
     "grunt": "^1.0.4",
     "grunt-build-number": "^1.0.0",
@@ -50,7 +44,6 @@
     "grunt-remove-logging": "^0.2.0",
     "grunt-replace": "^1.0.1",
     "grunt-shell": "^3.0.1",
-    "load-grunt-tasks": "^5.0.0",
-    "start-server-and-test": "^1.9.1"
+    "load-grunt-tasks": "^5.0.0"
   }
 }

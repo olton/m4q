@@ -3,6 +3,10 @@
 
 var numProps = ['opacity', 'zIndex'];
 
+function nothing(){
+
+}
+
 function isSimple(v){
     return typeof v === "string" || typeof v === "boolean" || typeof v === "number";
 }

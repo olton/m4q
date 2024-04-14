@@ -53,20 +53,45 @@ $.fn.extend({
                 }
             });
         });
+    },
+
+    classNames: function(){
+        var args = Array.prototype.slice.call(arguments, 0);
+        var classes = []
+        $.each(args, function(_, a){
+            if (typeof a === "string") {
+                classes.push(a)
+            } else if (isPlainObject(a)) {
+                $.each(a, function(k, v){
+                    if (v) {
+                        classes.push(k)
+                    }
+                })
+            } else {
+                nothing()
+            }
+        })
+        return this.each(function(){
+            this.className += ' ' + classes.join(' ');
+        })
     }
 });
 
 ['add', 'remove', 'toggle'].forEach(function (method) {
     $.fn[method + "Class"] = function(cls){
-        if (not(cls) || (""+cls).trim() === "") return this;
+        var _classes = Array.isArray(cls) ? cls : cls.split(" ").filter(function (v) { return !!v; })
+        if (!_classes.length) return this;
         return this.each(function(){
             var el = this;
             var hasClassList = typeof el.classList !== "undefined";
-            $.each(cls.split(" ").filter(function(v){
-                return (""+v).trim() !== "";
-            }), function(){
-                if (hasClassList) el.classList[method](this);
-            });
+
+            if (hasClassList) {
+                $.each(_classes, function(_, v){
+                    el.classList[method](v)
+                })
+            } else {
+                el.className += _classes.join(" ")
+            }
         });
     };
 });
