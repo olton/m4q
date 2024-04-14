@@ -1,3 +1,8 @@
+### 1.2.0
++ [x] Switched to rollup
++ [x] Improved methods addClass, removeClass, toggleClass
++ [x] Added method classNames
+
 ### 1.0.10
 + [x] Attributes: fixed method `attr` when user defining one argument
 + [x] Animation: added methods `stopAll()`, `pause(id)`, `pauseAll()`, `resume(id)`, `resumeAll()`
