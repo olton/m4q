@@ -4,7 +4,7 @@
 var numProps = ['opacity', 'zIndex'];
 
 function nothing(){
-
+    return null
 }
 
 function isSimple(v){
