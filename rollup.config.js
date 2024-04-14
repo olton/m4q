@@ -1,5 +1,6 @@
 import terser from '@rollup/plugin-terser'
 import progress from 'rollup-plugin-progress';
+import fs from 'node:fs'
 
 const production = !(process.env.ROLLUP_WATCH),
     sourcemap = !production
@@ -11,6 +12,46 @@ const banner = `
  * Licensed under MIT
  !*/
 `
+
+const source_files = [
+    'src/modules/mode.js',
+    'src/modules/func.js',
+
+    'src/modules/setimmediate.js',
+    'src/modules/promise.js',
+
+    'src/modules/core.js',
+    'src/modules/interval.js',
+    'src/modules/contains.js',
+    'src/modules/script.js',
+    'src/modules/prop.js',
+    'src/modules/each.js',
+    'src/modules/data.js',
+    'src/modules/utils.js',
+    'src/modules/events.js',
+    'src/modules/ajax.js',
+    'src/modules/css.js',
+    'src/modules/classes.js',
+    'src/modules/parser.js',
+    'src/modules/size.js',
+    'src/modules/position.js',
+    'src/modules/attr.js',
+    'src/modules/proxy.js',
+    'src/modules/manipulation.js',
+    'src/modules/animation.js',
+    'src/modules/visibility.js',
+    'src/modules/effects.js',
+    'src/modules/init.js',
+    'src/modules/populate.js'
+];
+
+let index = ``
+
+source_files.forEach(file => {
+    index += fs.readFileSync(file, 'utf8').toString() + "\n\n";
+})
+
+fs.writeFileSync('src/index.js', index, {flag: 'w+'});
 
 export default [
     {
