@@ -79,7 +79,11 @@ $.fn.extend({
 
 ['add', 'remove', 'toggle'].forEach(function (method) {
     $.fn[method + "Class"] = function(cls){
-        var _classes = Array.isArray(cls) ? cls : cls.split(" ").filter(function (v) { return !!v; })
+        var _classes = !cls
+            ? []
+            : Array.isArray(cls)
+                ? cls
+                : cls.split(" ").filter(function (v) { return !!v; })
         if (!_classes.length) return this;
         return this.each(function(){
             var el = this;

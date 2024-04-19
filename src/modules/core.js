@@ -1,6 +1,6 @@
 /* global hasProp */
 
-var m4qVersion = "v@@VERSION. Built at @@TIME";
+var m4qVersion = "@@VERSION";
 
 /* eslint-disable-next-line */
 var matches = Element.prototype.matches

@@ -607,7 +607,7 @@ function isTouch() {
 
 /* global hasProp */
 
-var m4qVersion = "v@@VERSION. Built at @@TIME";
+var m4qVersion = "v1.2.2";
 
 /* eslint-disable-next-line */
 var matches = Element.prototype.matches
@@ -2380,7 +2380,11 @@ $.fn.extend({
 
 ['add', 'remove', 'toggle'].forEach(function (method) {
     $.fn[method + "Class"] = function(cls){
-        var _classes = Array.isArray(cls) ? cls : cls.split(" ").filter(function (v) { return !!v; })
+        var _classes = !cls
+            ? []
+            : Array.isArray(cls)
+                ? cls
+                : cls.split(" ").filter(function (v) { return !!v; })
         if (!_classes.length) return this;
         return this.each(function(){
             var el = this;
@@ -4027,7 +4031,14 @@ $.extend({
     hide: function(el, cb){
         var $el = $(el);
 
-        $el.origin('display', (el.style.display ? el.style.display : getComputedStyle(el, null).display));
+        var display = el.style.display; el.style.display = ''
+        var cssDisplay = getComputedStyle(el, null).display
+
+        $el.origin('display', {
+            display,
+            cssDisplay
+        });
+
         el.style.display = 'none';
 
         if (typeof cb === "function") {
@@ -4039,15 +4050,32 @@ $.extend({
     },
 
     show: function(el, cb){
-        var display = $(el).origin('display', undefined, "block");
-        el.style.display = display ? display === 'none' ? 'block' : display : '';
+        var $el = $(el);
+        var display = $el.origin('display');
+
+        if (display) {
+            if (display.cssDisplay) {
+                $el.css({
+                    display: display.cssDisplay
+                })
+            }
+
+            if (!display.cssDisplay && display.display) {
+                el.style.display = display.display === 'none' ? 'block' : display.display
+            }
+        } else {
+            el.style.display = 'block'
+        }
+
         if (parseInt(el.style.opacity) === 0) {
             el.style.opacity = "1";
         }
+
         if (typeof cb === "function") {
             $.bind(cb, el);
             cb.call(el, arguments);
         }
+
         return this;
     },
 
@@ -4134,10 +4162,6 @@ $.fn.extend({
             var $el = $(el);
             var visible = !(!isVisible(el) || (isVisible(el) && +($el.style('opacity')) === 0));
 
-            if (visible) {
-                return this;
-            }
-
             if (not(dur) && not(easing) && not(cb)) {
                 cb = null;
                 dur = $.animation.duration;
@@ -4153,6 +4177,13 @@ $.fn.extend({
 
             if ($.fx.off) {
                 dur = 0;
+            }
+
+            if (visible) {
+                if (typeof cb === 'function') {
+                    $.proxy(cb, this)();
+                }
+                return this;
             }
 
             var originDisplay = $el.origin("display", undefined, 'block');
@@ -4181,8 +4212,6 @@ $.fn.extend({
             var el = this;
             var $el = $(el);
 
-            if ( !isVisible(el) ) return ;
-
             if (not(dur) && not(easing) && not(cb)) {
                 cb = null;
                 dur = $.animation.duration;
@@ -4197,6 +4226,13 @@ $.fn.extend({
             }
 
             $el.origin("display", $el.style('display'));
+
+            if ( !isVisible(el) ) {
+                if (typeof cb === 'function') {
+                    $.proxy(cb, this)();
+                }
+                return this;
+            }
 
             return $.animate({
                 el: el,

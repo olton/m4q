@@ -26,7 +26,14 @@ $.extend({
     hide: function(el, cb){
         var $el = $(el);
 
-        $el.origin('display', (el.style.display ? el.style.display : getComputedStyle(el, null).display));
+        var display = el.style.display; el.style.display = ''
+        var cssDisplay = getComputedStyle(el, null).display
+
+        $el.origin('display', {
+            display,
+            cssDisplay
+        });
+
         el.style.display = 'none';
 
         if (typeof cb === "function") {
@@ -38,15 +45,32 @@ $.extend({
     },
 
     show: function(el, cb){
-        var display = $(el).origin('display', undefined, "block");
-        el.style.display = display ? display === 'none' ? 'block' : display : '';
+        var $el = $(el);
+        var display = $el.origin('display');
+
+        if (display) {
+            if (display.cssDisplay) {
+                $el.css({
+                    display: display.cssDisplay
+                })
+            }
+
+            if (!display.cssDisplay && display.display) {
+                el.style.display = display.display === 'none' ? 'block' : display.display
+            }
+        } else {
+            el.style.display = 'block'
+        }
+
         if (parseInt(el.style.opacity) === 0) {
             el.style.opacity = "1";
         }
+
         if (typeof cb === "function") {
             $.bind(cb, el);
             cb.call(el, arguments);
         }
+
         return this;
     },
 

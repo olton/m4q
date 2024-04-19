@@ -1,5 +1,6 @@
 import terser from '@rollup/plugin-terser'
 import progress from 'rollup-plugin-progress';
+import pkg from './package.json' assert {type: "json"};
 import fs from 'node:fs'
 
 const production = !(process.env.ROLLUP_WATCH),
@@ -51,6 +52,8 @@ source_files.forEach(file => {
     index += fs.readFileSync(file, 'utf8').toString() + "\n\n";
 })
 
+index = index.replace('@@VERSION', "v"+pkg.version)
+
 fs.writeFileSync('src/index.js', index, {flag: 'w+'});
 
 export default [
@@ -63,10 +66,25 @@ export default [
             file: 'build/m4q.js',
             format: 'iife',
             name: 'm4q',
-            sourcemap,
+            sourcemap: false,
             banner,
             plugins: [
-                production && terser({
+            ]
+        }
+    },
+    {
+        input: 'src/index.js',
+        plugins: [
+            progress({clearLine: true})
+        ],
+        output: {
+            file: 'build/m4q.min.js',
+            format: 'iife',
+            name: 'm4q',
+            sourcemap: false,
+            banner,
+            plugins: [
+                terser({
                     keep_classnames: true,
                     keep_fnames: true,
                 })
