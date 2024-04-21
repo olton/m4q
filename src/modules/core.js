@@ -11,9 +11,10 @@ var $ = function(selector, context){
 
 $.version = "@@VERSION";
 $.build_time = "@@BUILD_TIME";
-$.info = () => console.info(`%c M4Q %c v${$.version} %c ${$.build_time} `, "color: pink; font-weight: bold; background: #800000", "color: white; background: darkgreen", "color: white; background: #0080fe;")
+$.info = () => console.info(`%c M4Q %c v${$.version} %c ${$.build_time} `, "color: white; font-weight: bold; background: #fd6a02", "color: white; background: darkgreen", "color: white; background: #0080fe;")
 
 $.fn = $.prototype = {
+    [Symbol.isConcatSpreadable]: true,
     constructor: $,
     length: 0,
     uid: "",
@@ -21,8 +22,16 @@ $.fn = $.prototype = {
     push: [].push,
     sort: [].sort,
     splice: [].splice,
+    slice: [].slice,
     indexOf: [].indexOf,
-    reverse: [].reverse
+    lastIndexOf: [].lastIndexOf,
+    reverse: [].reverse,
+    map: [].map,
+    pop: [].pop,
+    shift: [].shift,
+    unshift: [].unshift,
+    concat: [].concat,
+    includes: [].includes,
 };
 
 $.extend = $.fn.extend = function(){

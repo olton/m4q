@@ -4,3 +4,4 @@
 + [x] `dist/*` - for import usage
 + [x] timeout functions (`setTimeout`, `setInterval`, `setImmediate`) replaced by worker versions
 + [x] Removed Promise polyfill
++ [x] Extend arrays method for $ instance, now supports: `push`, `sort`, `splice`, `slice`, `indexOf`, `lastIndexOf`, `reverse`, `map`, `pop`, `shift`, `unshift`, `concat`, `includes` 

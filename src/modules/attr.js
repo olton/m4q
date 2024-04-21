@@ -68,7 +68,14 @@ $.fn.extend({
     },
 
     id: function(val){
-        return this.length ? $(this[0]).attr("id", val) : undefined;
+        if (typeof val === "undefined") {
+            return this.length === 1
+                ? $(this[0]).attr("id")
+                : this.map(el => $(el).attr("id"))
+        }
+        return this.each(function(){
+            $(this).attr("id", val);
+        });
     }
 });
 

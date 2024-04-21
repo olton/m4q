@@ -2,7 +2,7 @@
   "name": "m4q",
   "title": "m4q",
   "description": "Helper for DOM manipulation, animation, and ajax routines. JQuery replacer.",
-  "version": "2.0.0",
+  "version": "2.0.0-rc2",
   "main": "dist/m4q.cjs.js",
   "module": "dist/m4q.esm.js",
   "type": "module",
@@ -38,11 +38,14 @@
     "clean": "shx rm -rf dist/* lib/*",
     "build": "npm run clean && cross-env NODE_ENV=production rollup -c",
     "dev": "cross-env NODE_ENV=development rollup -c -w",
-    "pub": "npm publish --access public"
+    "pub": "npm publish --access public",
+    "deploy:dev": "node deploy-dev.cjs",
+    "deploy": "node deploy.cjs"
   },
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.4",
     "cross-env": "^7.0.3",
+    "ftp-deploy": "^2.4.7",
     "rollup": "^4.14.2",
     "rollup-plugin-concat": "^1.0.3",
     "rollup-plugin-progress": "^1.1.2",

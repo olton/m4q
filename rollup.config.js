@@ -54,7 +54,7 @@ let lib = ``, index = ``
 
 lib = lib.replace('@@VERSION', pkg.version)
 lib = lib.replace('@@BUILD_TIME', new Date().toLocaleString())
-index = index.replace('@@VERSION', "v"+pkg.version)
+index = index.replace('@@VERSION', pkg.version)
 index = index.replace('@@BUILD_TIME', new Date().toLocaleString())
 
 fs.writeFileSync('src/lib.js', lib, {encoding: 'utf8', flag: 'w+'});
