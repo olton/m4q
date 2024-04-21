@@ -1,4 +1,3 @@
-const $ = globalThis.$
 const m4q = $
 
 export {

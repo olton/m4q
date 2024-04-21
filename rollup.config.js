@@ -52,10 +52,13 @@ let lib = ``, index = ``
     index += fs.readFileSync(file, 'utf8').toString() + "\n\n";
 })
 
+lib = lib.replace('@@VERSION', pkg.version)
+lib = lib.replace('@@BUILD_TIME', new Date().toLocaleString())
 index = index.replace('@@VERSION', "v"+pkg.version)
+index = index.replace('@@BUILD_TIME', new Date().toLocaleString())
 
-fs.writeFileSync('src/lib.js', lib, {flag: 'w+'});
-fs.writeFileSync('src/index.js', index, {flag: 'w+'});
+fs.writeFileSync('src/lib.js', lib, {encoding: 'utf8', flag: 'w+'});
+fs.writeFileSync('src/index.js', index, {encoding: 'utf8', flag: 'w+'});
 
 const plugins = [
     progress({clearLine: true})

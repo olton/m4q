@@ -147,8 +147,6 @@ function isTouch() {
 }
 
 
-var m4qVersion = "v2.0.0";
-
 var matches = Element.prototype.matches
     || Element.prototype.matchesSelector
     || Element.prototype.webkitMatchesSelector
@@ -156,14 +154,15 @@ var matches = Element.prototype.matches
     || Element.prototype.msMatchesSelector
     || Element.prototype.oMatchesSelector;
 
-globalThis.$ = function(selector, context){
+var $ = function(selector, context){
     return new $.init(selector, context);
 };
 
-$.version = m4qVersion;
+$.version = "v2.0.0";
+$.build_time = "21.04.2024, 17:20:12";
+$.info = () => console.info(`%c M4Q %c v${$.version} %c ${$.build_time} `, "color: pink; font-weight: bold; background: #800000", "color: white; background: darkgreen", "color: white; background: #0080fe;")
 
 $.fn = $.prototype = {
-    version: m4qVersion,
     constructor: $,
     length: 0,
     uid: "",
@@ -4146,7 +4145,6 @@ $.init = function(sel, ctx){
 $.init.prototype = $.fn;
 
 
-const $ = globalThis.$
 const m4q = $
 
 export {

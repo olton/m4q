@@ -1,12 +1,7 @@
 var _$ = window.$;
 
-$.Promise = Promise;
-
 window.m4q = $;
-
-if (typeof window.$ === "undefined") {
-    window.$ = $;
-}
+window.$ = $;
 
 $.global = function(){
     _$ = window.$;
