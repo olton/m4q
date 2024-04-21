@@ -1,5 +1,3 @@
-/* global $, not, setStyleProp */
-
 $.fn.extend({
 
     style: function(name, pseudo){

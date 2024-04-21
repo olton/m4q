@@ -1,5 +1,3 @@
-/* global $, not, camelCase, parseUnit, Promise, getUnit, matches */
-
 $.extend({
     animation: {
         duration: 1000,

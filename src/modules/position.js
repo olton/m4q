@@ -1,5 +1,3 @@
-/* global $, not */
-
 $.fn.extend({
     offset: function(val){
         var rect;

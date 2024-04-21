@@ -1,5 +1,3 @@
-/* global $, isArrayLike, not, matches, hasProp */
-
 (function (arr) {
     arr.forEach(function (item) {
         ['append', 'prepend'].forEach(function(where){

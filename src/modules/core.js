@@ -1,8 +1,5 @@
-/* global hasProp */
-
 var m4qVersion = "@@VERSION";
 
-/* eslint-disable-next-line */
 var matches = Element.prototype.matches
     || Element.prototype.matchesSelector
     || Element.prototype.webkitMatchesSelector
@@ -82,5 +79,3 @@ $.assign = function(){
 
     return target;
 };
-
-// if (typeof window["hideM4QVersion"] === "undefined") console.info("m4q " + $.version);

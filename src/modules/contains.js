@@ -1,5 +1,3 @@
-/* global $, not, matches, isArrayLike, isVisible */
-
 $.fn.extend({
     index: function(sel){
         var el, _index = -1;

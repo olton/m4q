@@ -3,7 +3,7 @@ import progress from 'rollup-plugin-progress';
 import pkg from './package.json' assert {type: "json"};
 import fs from 'node:fs'
 
-const production = !(process.env.ROLLUP_WATCH),
+const production = process.env.NODE_ENV === 'production',
     sourcemap = !production
 
 const banner = `
@@ -16,10 +16,7 @@ const banner = `
 
 const source_files = [
     'src/modules/mode.js',
-    'src/modules/func.js',
-
-    'src/modules/setimmediate.js',
-    'src/modules/promise.js',
+    'src/modules/helpers.js',
 
     'src/modules/core.js',
     'src/modules/interval.js',
@@ -43,27 +40,38 @@ const source_files = [
     'src/modules/visibility.js',
     'src/modules/effects.js',
     'src/modules/init.js',
-    'src/modules/populate.js'
 ];
 
-let index = ``
+let lib = ``, index = ``
 
-source_files.forEach(file => {
+;[...source_files, 'src/modules/populate.js'].forEach(file => {
+    lib += fs.readFileSync(file, 'utf8').toString() + "\n\n";
+})
+
+;[...source_files, 'src/modules/export.js'].forEach(file => {
     index += fs.readFileSync(file, 'utf8').toString() + "\n\n";
 })
 
 index = index.replace('@@VERSION', "v"+pkg.version)
 
+fs.writeFileSync('src/lib.js', lib, {flag: 'w+'});
 fs.writeFileSync('src/index.js', index, {flag: 'w+'});
+
+const plugins = [
+    progress({clearLine: true})
+]
+
+const watch = {
+    clearScreen: false
+}
 
 export default [
     {
-        input: 'src/index.js',
-        plugins: [
-            progress({clearLine: true})
-        ],
+        input: 'src/lib.js',
+        watch,
+        plugins,
         output: {
-            file: 'build/m4q.js',
+            file: 'lib/m4q.js',
             format: 'iife',
             name: 'm4q',
             sourcemap: false,
@@ -73,15 +81,14 @@ export default [
         }
     },
     {
-        input: 'src/index.js',
-        plugins: [
-            progress({clearLine: true})
-        ],
+        input: 'src/lib.js',
+        watch,
+        plugins,
         output: {
-            file: 'build/m4q.min.js',
+            file: 'lib/m4q.min.js',
             format: 'iife',
             name: 'm4q',
-            sourcemap: false,
+            sourcemap,
             banner,
             plugins: [
                 terser({
@@ -89,6 +96,26 @@ export default [
                     keep_fnames: true,
                 })
             ]
+        }
+    },
+    {
+        input: 'src/index.js',
+        watch,
+        plugins,
+        output: {
+            file: 'dist/m4q.cjs.js',
+            format: 'cjs',
+            banner,
+        }
+    },
+    {
+        input: 'src/index.js',
+        watch,
+        plugins,
+        output: {
+            file: 'dist/m4q.esm.js',
+            format: 'esm',
+            banner,
         }
     },
 ]

@@ -1,5 +1,3 @@
-/* global $, not, isPlainObject */
-
 $.fn.extend({
     attr: function(name, val){
         var attributes = {};

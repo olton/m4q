@@ -1,5 +1,3 @@
-/* global $, not, isVisible */
-
 $.extend({
     fx: {
         off: false

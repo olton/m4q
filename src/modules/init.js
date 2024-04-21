@@ -1,5 +1,3 @@
-/* global $, isArrayLike, isPlainObject, hasProp, str2arr */
-
 $.init = function(sel, ctx){
     var parsed;
     var that = this;

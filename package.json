@@ -1,14 +1,20 @@
 {
   "name": "m4q",
   "title": "m4q",
-  "description": "Helper for DOM manipulation, animation, and ajax routines.",
-  "version": "1.2.2",
-  "main": "build/m4q.js",
+  "description": "Helper for DOM manipulation, animation, and ajax routines. JQuery replacer.",
+  "version": "2.0.0",
+  "main": "dist/m4q.cjs.js",
+  "module": "dist/m4q.esm.js",
   "type": "module",
+  "types": "ts/m4q.d.ts",
+  "files": [
+    "dist"
+  ],
   "homepage": "https://metroui.org.ua/m4q-about.html",
   "author": {
-    "name": "Sergey Pimenov",
-    "url": "https://pimenov.com.ua"
+    "name": "Serhii Pimenov",
+    "url": "https://pimenov.com.ua",
+    "email": "serhii@pimenov.com.ua"
   },
   "repository": {
     "type": "git",
@@ -21,20 +27,24 @@
     "browser",
     "library",
     "dom",
-    "animation"
+    "animation",
+    "jquery"
   ],
   "bugs": {
     "url": "https://github.com/olton/m4q/issues"
   },
   "license": "MIT",
   "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w"
+    "clean": "shx rm -rf dist/* lib/*",
+    "build": "npm run clean && cross-env NODE_ENV=production rollup -c",
+    "dev": "cross-env NODE_ENV=development rollup -c -w"
   },
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.4",
+    "cross-env": "^7.0.3",
     "rollup": "^4.14.2",
     "rollup-plugin-concat": "^1.0.3",
-    "rollup-plugin-progress": "^1.1.2"
+    "rollup-plugin-progress": "^1.1.2",
+    "shx": "^0.3.4"
   }
 }

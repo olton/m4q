@@ -1,5 +1,3 @@
-/* global $ */
-
 $.extend({
     proxy: function(fn, ctx){
         return typeof fn !== "function" ? undefined : fn.bind(ctx);

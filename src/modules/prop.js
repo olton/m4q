@@ -1,5 +1,3 @@
-/* global $, not */
-
 $.fn.extend({
     _prop: function(prop, value){
         if (arguments.length === 1) {

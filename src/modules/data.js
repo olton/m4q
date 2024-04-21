@@ -1,5 +1,3 @@
-/* global acceptData, camelCase, $, not, dataAttr, isEmptyObject, hasProp */
-
 /*
  * Data routines
  * Url: https://jquery.com

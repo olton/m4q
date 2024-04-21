@@ -1,5 +1,3 @@
-/* global $ */
-
 $.extend({
     hidden: function(el, val, cb){
         el = $(el)[0];

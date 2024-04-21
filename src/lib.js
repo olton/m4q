@@ -147,7 +147,7 @@ function isTouch() {
 }
 
 
-var m4qVersion = "v2.0.0";
+var m4qVersion = "@@VERSION";
 
 var matches = Element.prototype.matches
     || Element.prototype.matchesSelector
@@ -4146,12 +4146,28 @@ $.init = function(sel, ctx){
 $.init.prototype = $.fn;
 
 
-const $ = globalThis.$
-const m4q = $
+var _$ = window.$;
 
-export {
-    $,
-    m4q
+$.Promise = Promise;
+
+window.m4q = $;
+
+if (typeof window.$ === "undefined") {
+    window.$ = $;
 }
+
+$.global = function(){
+    _$ = window.$;
+    window.$ = $;
+};
+
+$.noConflict = function() {
+    if ( window.$ === $ ) {
+        window.$ = _$;
+    }
+
+    return $;
+};
+
 
 

@@ -1,5 +1,3 @@
-/* global $, not, camelCase, str2arr, normName, matches, isEmptyObject, isPlainObject */
-
 (function () {
     if ( typeof window.CustomEvent === "function" ) return false;
 

@@ -1,5 +1,3 @@
-/* global $, isArrayLike, hasProp */
-
 $.each = function(ctx, cb){
     var index = 0;
     if (isArrayLike(ctx)) {

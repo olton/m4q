@@ -1,5 +1,3 @@
-/* global Promise, $ */
-
 var _$ = window.$;
 
 $.Promise = Promise;

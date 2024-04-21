@@ -1,6 +1,3 @@
-/* global dataSet */
-/* exported isTouch, isSimple, isHidden, isPlainObject, isEmptyObject, isArrayLike, str2arr, parseUnit, getUnit, setStyleProp, acceptData, dataAttr, normName, strip, dashedName, isLocalhost */
-
 var numProps = ['opacity', 'zIndex'];
 
 function nothing(){
