@@ -37,7 +37,8 @@
   "scripts": {
     "clean": "shx rm -rf dist/* lib/*",
     "build": "npm run clean && cross-env NODE_ENV=production rollup -c",
-    "dev": "cross-env NODE_ENV=development rollup -c -w"
+    "dev": "cross-env NODE_ENV=development rollup -c -w",
+    "pub": "npm publish --access public"
   },
   "devDependencies": {
     "@rollup/plugin-terser": "^0.4.4",
