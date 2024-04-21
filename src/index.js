@@ -158,8 +158,8 @@ var $ = function(selector, context){
     return new $.init(selector, context);
 };
 
-$.version = "2.0.0-rc1";
-$.build_time = "21.04.2024, 19:59:41";
+$.version = "2.0.0-rc2";
+$.build_time = "21.04.2024, 20:00:46";
 $.info = () => console.info(`%c M4Q %c v${$.version} %c ${$.build_time} `, "color: white; font-weight: bold; background: #fd6a02", "color: white; background: darkgreen", "color: white; background: #0080fe;")
 
 $.fn = $.prototype = {
