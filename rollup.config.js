@@ -39,6 +39,7 @@ const source_files = [
     'src/modules/animation.js',
     'src/modules/visibility.js',
     'src/modules/effects.js',
+    'src/modules/state.js',
     'src/modules/init.js',
 ];
 

@@ -2,7 +2,7 @@
   "name": "m4q",
   "title": "m4q",
   "description": "Helper for DOM manipulation, animation, and ajax routines. JQuery replacer.",
-  "version": "2.0.0-rc2",
+  "version": "2.0.0-rc3",
   "main": "dist/m4q.cjs.js",
   "module": "dist/m4q.esm.js",
   "type": "module",
