@@ -28,6 +28,36 @@ $.fn.extend({
         return _index;
     },
 
+    indexOf: function(sel){
+        var el, _index = -1;
+
+        if (this.length === 0) {
+            return _index;
+        }
+
+        if (not(sel)) {
+            el = this[0];
+        } else if (sel instanceof $ && sel.length > 0) {
+            el = sel[0];
+        } else if (typeof sel === "string") {
+            el = $(sel)[0];
+        } else {
+            el = undefined;
+        }
+
+        if (not(el)) {
+            return _index;
+        }
+
+        this.each(function(i){
+            if (this === el) {
+                _index = i;
+            }
+        });
+        
+        return _index;
+    },
+
     get: function(i){
         if (i === undefined) {
             return this.items();

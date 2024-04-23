@@ -23,8 +23,6 @@ $.fn = $.prototype = {
     sort: [].sort,
     splice: [].splice,
     slice: [].slice,
-    indexOf: [].indexOf,
-    lastIndexOf: [].lastIndexOf,
     reverse: [].reverse,
     map: [].map,
     pop: [].pop,

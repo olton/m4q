@@ -158,8 +158,8 @@ var $ = function(selector, context){
     return new $.init(selector, context);
 };
 
-$.version = "2.0.0-rc5";
-$.build_time = "23.04.2024, 15:20:58";
+$.version = "2.0.0-rc6";
+$.build_time = "23.04.2024, 15:58:40";
 $.info = () => console.info(`%c M4Q %c v${$.version} %c ${$.build_time} `, "color: white; font-weight: bold; background: #fd6a02", "color: white; background: darkgreen", "color: white; background: #0080fe;")
 
 $.fn = $.prototype = {
@@ -172,8 +172,6 @@ $.fn = $.prototype = {
     sort: [].sort,
     splice: [].splice,
     slice: [].slice,
-    indexOf: [].indexOf,
-    lastIndexOf: [].lastIndexOf,
     reverse: [].reverse,
     map: [].map,
     pop: [].pop,
@@ -417,6 +415,36 @@ $.fn.extend({
                 _index = i;
             }
         });
+        return _index;
+    },
+
+    indexOf: function(sel){
+        var el, _index = -1;
+
+        if (this.length === 0) {
+            return _index;
+        }
+
+        if (not(sel)) {
+            el = this[0];
+        } else if (sel instanceof $ && sel.length > 0) {
+            el = sel[0];
+        } else if (typeof sel === "string") {
+            el = $(sel)[0];
+        } else {
+            el = undefined;
+        }
+
+        if (not(el)) {
+            return _index;
+        }
+
+        this.each(function(i){
+            if (this === el) {
+                _index = i;
+            }
+        });
+        
         return _index;
     },
 
