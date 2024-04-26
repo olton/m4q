@@ -24,12 +24,14 @@ $.extend({
     hide: function(el, cb){
         var $el = $(el);
 
-        var display = el.style.display; el.style.display = ''
-        var cssDisplay = getComputedStyle(el, null).display
+        el = $el[0]
+
+        var inline = el.style.display
+        var css = getComputedStyle(el, null).display
 
         $el.origin('display', {
-            display,
-            cssDisplay
+            inline,
+            css
         });
 
         el.style.display = 'none';
@@ -46,15 +48,17 @@ $.extend({
         var $el = $(el);
         var display = $el.origin('display');
 
-        if (display) {
-            if (display.cssDisplay) {
-                $el.css({
-                    display: display.cssDisplay
-                })
-            }
+        el = $(el)[0]
 
-            if (!display.cssDisplay && display.display) {
-                el.style.display = display.display === 'none' ? 'block' : display.display
+        el.style.display = ''
+
+        if (display) {
+            const inline = display.inline || ''
+            const css = display.css || ''
+            if (inline && inline !== 'none') {
+                el.style.display = inline
+            } else if (css === 'none') {
+                el.style.display = 'block';
             }
         } else {
             el.style.display = 'block'

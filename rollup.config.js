@@ -65,7 +65,7 @@ const plugins = [
 ]
 
 const watch = {
-    clearScreen: false
+    clearScreen: false,
 }
 
 export default [
