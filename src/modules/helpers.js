@@ -128,7 +128,7 @@ function hasProp(obj, prop){
 }
 
 function isLocalhost(host){
-    var hostname = host || window.location.hostname;
+    var hostname = host || globalThis.location.hostname;
     return (
         hostname === "localhost" ||
         hostname === "127.0.0.1" ||
@@ -142,4 +142,9 @@ function isTouch() {
     return (('ontouchstart' in window)
         || (navigator.maxTouchPoints > 0)
         || (navigator.msMaxTouchPoints > 0));
+}
+
+function isPrivateAddress (host) {
+    var hostname = host || globalThis.location.hostname;
+    return /(^localhost)|(^127\.)|(^192\.168\.)|(^10\.)|(^172\.1[6-9]\.)|(^172\.2\d\.)|(^172\.3[0-1]\.)|(^::1$)|(^[fF][cCdD])/.test(host)
 }

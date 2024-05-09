@@ -4,6 +4,7 @@ $.extend({
     localhost: isLocalhost(),
     isLocalhost: isLocalhost,
     touchable: isTouch(),
+    isPrivateAddress: isPrivateAddress,
 
     uniqueId: function (prefix) {
         var d = new Date().getTime();
@@ -75,8 +76,6 @@ $.extend({
         return $(s).remove();
     },
 
-    camelCase: camelCase,
-    dashedName: dashedName,
     isPlainObject: isPlainObject,
     isEmptyObject: isEmptyObject,
     isArrayLike: isArrayLike,
@@ -94,9 +93,8 @@ $.extend({
         }
         return Math.floor(Math.random()*(to-from+1)+from);
     },
-    strip: strip,
-    normName: normName,
     hasProp: hasProp,
+    dark: globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: dark)').matches,
 
     serializeToArray: function(form){
         var _form = $(form)[0];

@@ -113,10 +113,12 @@ $.extend({
     },
 
     charset: function(val){
-        var meta = $("meta[charset]");
         if (val) {
-            meta.attr("charset", val);
+            const m = $('meta[charset]')
+            if (m.length > 0) {
+                m.attr('charset', val)
+            }
         }
-        return meta.attr("charset");
+        return document.characterSet
     }
 });

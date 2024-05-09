@@ -130,7 +130,7 @@ function hasProp(obj, prop){
 }
 
 function isLocalhost(host){
-    var hostname = host || window.location.hostname;
+    var hostname = host || globalThis.location.hostname;
     return (
         hostname === "localhost" ||
         hostname === "127.0.0.1" ||
@@ -146,6 +146,10 @@ function isTouch() {
         || (navigator.msMaxTouchPoints > 0));
 }
 
+function isPrivateAddress (host) {
+    var hostname = host || globalThis.location.hostname;
+    return /(^localhost)|(^127\.)|(^192\.168\.)|(^10\.)|(^172\.1[6-9]\.)|(^172\.2\d\.)|(^172\.3[0-1]\.)|(^::1$)|(^[fF][cCdD])/.test(host)
+}
 
 var matches = Element.prototype.matches
     || Element.prototype.matchesSelector
@@ -158,8 +162,8 @@ var $ = function(selector, context){
     return new $.init(selector, context);
 };
 
-$.version = "2.0.0-rc7";
-$.build_time = "26.04.2024, 15:04:26";
+$.version = "2.0.0-rc8";
+$.build_time = "09.05.2024, 22:51:16";
 $.info = () => console.info(`%c M4Q %c v${$.version} %c ${$.build_time} `, "color: white; font-weight: bold; background: #fd6a02", "color: white; background: darkgreen", "color: white; background: #0080fe;")
 
 $.fn = $.prototype = {
@@ -1183,6 +1187,7 @@ $.extend({
     localhost: isLocalhost(),
     isLocalhost: isLocalhost,
     touchable: isTouch(),
+    isPrivateAddress: isPrivateAddress,
 
     uniqueId: function (prefix) {
         var d = new Date().getTime();
@@ -1254,8 +1259,6 @@ $.extend({
         return $(s).remove();
     },
 
-    camelCase: camelCase,
-    dashedName: dashedName,
     isPlainObject: isPlainObject,
     isEmptyObject: isEmptyObject,
     isArrayLike: isArrayLike,
@@ -1273,9 +1276,8 @@ $.extend({
         }
         return Math.floor(Math.random()*(to-from+1)+from);
     },
-    strip: strip,
-    normName: normName,
     hasProp: hasProp,
+    dark: globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: dark)').matches,
 
     serializeToArray: function(form){
         var _form = $(form)[0];
@@ -2393,11 +2395,13 @@ $.extend({
     },
 
     charset: function(val){
-        var meta = $("meta[charset]");
         if (val) {
-            meta.attr("charset", val);
+            const m = $('meta[charset]')
+            if (m.length > 0) {
+                m.attr('charset', val)
+            }
         }
-        return meta.attr("charset");
+        return document.characterSet
     }
 });
 
