@@ -153,7 +153,13 @@ $.extend({
     },
     serialize: function(form){
         return $.serializeToArray(form).join("&");
-    }
+    },
+    compose: function(...functions){
+        return (first) => functions.reduceRight((acc, fn) => fn(acc), first);
+    },
+    pipe: function(...functions){
+        return (first) => functions.reduce((acc, fn) => fn(acc), first);
+    },
 });
 
 $.fn.extend({
