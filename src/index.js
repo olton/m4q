@@ -162,8 +162,8 @@ var $ = function(selector, context){
     return new $.init(selector, context);
 };
 
-$.version = "2.1.0";
-$.build_time = "11.05.2024, 23:50:51";
+$.version = "2.1.1";
+$.build_time = "12.05.2024, 14:54:16";
 $.info = () => console.info(`%c M4Q %c v${$.version} %c ${$.build_time} `, "color: white; font-weight: bold; background: #fd6a02", "color: white; background: darkgreen", "color: white; background: #0080fe;")
 
 $.fn = $.prototype = {
@@ -1342,6 +1342,17 @@ $.extend({
     },
     pipe: function(...functions){
         return (first) => functions.reduce((acc, fn) => fn(acc), first);
+    },
+    curry: function(func){
+        return function curried(...args) {
+            if (args.length >= func.length) {
+                return func.apply(this, args);
+            } else {
+                return function(...args2) {
+                    return curried.apply(this, args.concat(args2));
+                };
+            }
+        };
     },
 });
 
