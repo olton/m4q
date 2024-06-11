@@ -171,6 +171,19 @@ $.extend({
             }
         };
     },
+    memoize: function(fn){
+        const cache = new Map()
+        return function (...args) {
+            const key = "" + args.length + args.join("+")
+            if (cache.has(key)) {
+                return cache.get(key);
+            } else {
+                const result = fn.apply(this, args)
+                cache.set(key, result);
+                return result
+            }
+        }
+    }
 });
 
 $.fn.extend({
