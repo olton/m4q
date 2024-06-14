@@ -107,14 +107,13 @@ $.ajax = function(p){
     });
 };
 
-['get', 'post', 'put', 'patch', 'delete', 'json'].forEach(function(method){
+['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'JSON'].forEach(function(method){
     $[method] = function(url, data, options){
-        var _method = method.toUpperCase();
         var _options = {
-            method: _method === 'JSON' ? 'GET' : _method,
+            method: method === 'JSON' ? 'GET' : method,
             url: url,
             data: data,
-            parseJson: _method === 'JSON'
+            parseJson: method === 'JSON'
         };
         return $.ajax($.extend({}, _options, options));
     };
