@@ -162,8 +162,8 @@ var $ = function(selector, context){
     return new $.init(selector, context);
 };
 
-$.version = "2.2.2";
-$.build_time = "01.07.2024, 17:55:41";
+$.version = "2.3.0";
+$.build_time = "01.07.2024, 19:15:03";
 $.info = () => console.info(`%c M4Q %c v${$.version} %c ${$.build_time} `, "color: white; font-weight: bold; background: #fd6a02", "color: white; background: darkgreen", "color: white; background: #0080fe;")
 
 $.fn = $.prototype = {
@@ -1367,15 +1367,38 @@ $.extend({
             }
         }
     },
-    debounce: function (fn, timeout) {
+    debounce: function (fn, wait) {
         let timer;
         return function() {
             const func = () => {
                 fn.apply(this, arguments);
             }
             clearTimeout(timer);
-            timer = setTimeout(func, timeout);
+            timer = setTimeout(func, wait);
         };
+    },
+    throttle: function (fn, wait) {
+        let isThrottled = false
+        let saveThis, saveArgs
+
+        function wrapper() {
+            if (isThrottled) {
+                saveThis = this
+                saveArgs = arguments
+                return
+            }
+
+            fn.apply(this, arguments)
+            isThrottled = true
+            setTimeout(function (){
+                if (saveArgs) {
+                    wrapper.apply(saveThis, saveArgs)
+                    saveArgs = saveThis = null
+                }
+            }, wait)
+        }
+
+        return wrapper;
     }
 });
 

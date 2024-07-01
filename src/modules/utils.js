@@ -184,15 +184,38 @@ $.extend({
             }
         }
     },
-    debounce: function (fn, timeout) {
+    debounce: function (fn, wait) {
         let timer;
         return function() {
             const func = () => {
                 fn.apply(this, arguments);
             }
             clearTimeout(timer);
-            timer = setTimeout(func, timeout);
+            timer = setTimeout(func, wait);
         };
+    },
+    throttle: function (fn, wait) {
+        let isThrottled = false
+        let saveThis, saveArgs
+
+        function wrapper() {
+            if (isThrottled) {
+                saveThis = this
+                saveArgs = arguments
+                return
+            }
+
+            fn.apply(this, arguments)
+            isThrottled = true
+            setTimeout(function (){
+                if (saveArgs) {
+                    wrapper.apply(saveThis, saveArgs)
+                    saveArgs = saveThis = null
+                }
+            }, wait)
+        }
+
+        return wrapper;
     }
 });
 
