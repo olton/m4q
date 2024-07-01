@@ -162,8 +162,8 @@ var $ = function(selector, context){
     return new $.init(selector, context);
 };
 
-$.version = "2.1.2";
-$.build_time = "11.06.2024, 16:41:02";
+$.version = "2.2.2";
+$.build_time = "01.07.2024, 17:55:41";
 $.info = () => console.info(`%c M4Q %c v${$.version} %c ${$.build_time} `, "color: white; font-weight: bold; background: #fd6a02", "color: white; background: darkgreen", "color: white; background: #0080fe;")
 
 $.fn = $.prototype = {
@@ -1366,6 +1366,16 @@ $.extend({
                 return result
             }
         }
+    },
+    debounce: function (fn, timeout) {
+        let timer;
+        return function() {
+            const func = () => {
+                fn.apply(this, arguments);
+            }
+            clearTimeout(timer);
+            timer = setTimeout(func, timeout);
+        };
     }
 });
 
@@ -1849,14 +1859,13 @@ $.ajax = function(p){
     });
 };
 
-['get', 'post', 'put', 'patch', 'delete', 'json'].forEach(function(method){
+['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'JSON'].forEach(function(method){
     $[method] = function(url, data, options){
-        var _method = method.toUpperCase();
         var _options = {
-            method: _method === 'JSON' ? 'GET' : _method,
+            method: method === 'JSON' ? 'GET' : method,
             url: url,
             data: data,
-            parseJson: _method === 'JSON'
+            parseJson: method === 'JSON'
         };
         return $.ajax($.extend({}, _options, options));
     };

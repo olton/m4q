@@ -183,6 +183,16 @@ $.extend({
                 return result
             }
         }
+    },
+    debounce: function (fn, timeout) {
+        let timer;
+        return function() {
+            const func = () => {
+                fn.apply(this, arguments);
+            }
+            clearTimeout(timer);
+            timer = setTimeout(func, timeout);
+        };
     }
 });
 
