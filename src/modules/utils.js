@@ -153,69 +153,6 @@ $.extend({
     },
     serialize: function(form){
         return $.serializeToArray(form).join("&");
-    },
-    compose: function(...functions){
-        return (first) => functions.reduceRight((acc, fn) => fn(acc), first);
-    },
-    pipe: function(...functions){
-        return (first) => functions.reduce((acc, fn) => fn(acc), first);
-    },
-    curry: function(func){
-        return function curried(...args) {
-            if (args.length >= func.length) {
-                return func.apply(this, args);
-            } else {
-                return function(...args2) {
-                    return curried.apply(this, args.concat(args2));
-                };
-            }
-        };
-    },
-    memoize: function(fn){
-        const cache = new Map()
-        return function (...args) {
-            const key = "" + args.length + args.join("+")
-            if (cache.has(key)) {
-                return cache.get(key);
-            } else {
-                const result = fn.apply(this, args)
-                cache.set(key, result);
-                return result
-            }
-        }
-    },
-    debounce: function (fn, wait) {
-        let timer;
-        return function() {
-            const func = () => {
-                fn.apply(this, arguments);
-            }
-            clearTimeout(timer);
-            timer = setTimeout(func, wait);
-        };
-    },
-    throttle: function (fn, wait) {
-        let isThrottled = false
-        let saveThis, saveArgs
-
-        function wrapper() {
-            if (isThrottled) {
-                saveThis = this
-                saveArgs = arguments
-                return
-            }
-
-            fn.apply(this, arguments)
-            isThrottled = true
-            setTimeout(function (){
-                if (saveArgs) {
-                    wrapper.apply(saveThis, saveArgs)
-                    saveArgs = saveThis = null
-                }
-            }, wait)
-        }
-
-        return wrapper;
     }
 });
 
