@@ -42,23 +42,23 @@ const source_files = [
     'src/modules/init.js',
 ];
 
-let lib = ``, index = ``
+let lib = ``, ind = ``
 
 ;[...source_files, 'src/modules/populate.js'].forEach(file => {
     lib += fs.readFileSync(file, 'utf8').toString() + "\n\n";
 })
 
 ;[...source_files, 'src/modules/export.js'].forEach(file => {
-    index += fs.readFileSync(file, 'utf8').toString() + "\n\n";
+    ind += fs.readFileSync(file, 'utf8').toString() + "\n\n";
 })
 
-lib = lib.replace('@@VERSION', pkg.version)
-lib = lib.replace('@@BUILD_TIME', new Date().toLocaleString())
-index = index.replace('@@VERSION', pkg.version)
-index = index.replace('@@BUILD_TIME', new Date().toLocaleString())
+lib = lib.replace(/version = ".+"/g, `version = "${pkg.version}"`)
+lib = lib.replace(/build_time = ".+"/g, `build_time = "${new Date().toLocaleString()}"`)
+ind = ind.replace(/version = ".+"/g, `version = "${pkg.version}"`)
+ind = ind.replace(/build_time = ".+"/g, `build_time = "${new Date().toLocaleString()}"`)
 
 fs.writeFileSync('src/lib.js', lib, {encoding: 'utf8', flag: 'w+'});
-fs.writeFileSync('src/index.js', index, {encoding: 'utf8', flag: 'w+'});
+fs.writeFileSync('src/index.js', ind, {encoding: 'utf8', flag: 'w+'});
 
 const plugins = [
     progress({clearLine: true})
@@ -77,20 +77,6 @@ export default [
             file: 'lib/m4q.js',
             format: 'iife',
             name: 'm4q',
-            sourcemap: false,
-            banner,
-            plugins: [
-            ]
-        }
-    },
-    {
-        input: 'src/lib.js',
-        watch,
-        plugins,
-        output: {
-            file: 'lib/m4q.min.js',
-            format: 'iife',
-            name: 'm4q',
             sourcemap,
             banner,
             plugins: [
@@ -105,20 +91,17 @@ export default [
         input: 'src/index.js',
         watch,
         plugins,
-        output: {
-            file: 'dist/m4q.cjs.js',
-            format: 'cjs',
-            banner,
-        }
-    },
-    {
-        input: 'src/index.js',
-        watch,
-        plugins,
-        output: {
-            file: 'dist/m4q.esm.js',
-            format: 'esm',
-            banner,
-        }
+        output: [
+            {
+                file: 'dist/m4q.cjs.js',
+                format: 'cjs',
+                banner,
+            },
+            {
+                file: 'dist/m4q.esm.js',
+                format: 'esm',
+                banner,
+            },
+        ]
     },
 ]

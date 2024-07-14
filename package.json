@@ -36,7 +36,8 @@
   "scripts": {
     "clean": "shx rm -rf dist/* lib/*",
     "build": "npm run clean && cross-env NODE_ENV=production rollup -c",
-    "dev": "cross-env NODE_ENV=development rollup -c -w",
+    "dev": "cross-env NODE_ENV=development rollup -c",
+    "watch": "cross-env NODE_ENV=development rollup -c -w",
     "pub": "npm publish --access public",
     "deploy:dev": "node deploy-dev.cjs",
     "deploy": "node deploy.cjs"
@@ -49,5 +50,8 @@
     "rollup-plugin-concat": "^1.0.3",
     "rollup-plugin-progress": "^1.1.2",
     "shx": "^0.3.4"
+  },
+  "dependencies": {
+    "@rollup/plugin-node-resolve": "^15.2.3"
   }
 }

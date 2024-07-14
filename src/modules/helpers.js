@@ -119,7 +119,7 @@ function normName(name) {
     return typeof name !== "string" ? undefined : name.replace(/-/g, "").toLowerCase();
 }
 
-function strip(name, what) {
+function    strip(name, what) {
     return typeof name !== "string" ? undefined : name.replace(what, "");
 }
 

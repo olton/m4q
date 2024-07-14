@@ -1,4 +1,4 @@
-var _$ = window.$;
+let _$ = window.$;
 
 window.m4q = $;
 window.$ = $;
@@ -15,4 +15,3 @@ $.noConflict = function() {
 
     return $;
 };
-

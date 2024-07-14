@@ -121,7 +121,7 @@ function normName(name) {
     return typeof name !== "string" ? undefined : name.replace(/-/g, "").toLowerCase();
 }
 
-function strip(name, what) {
+function    strip(name, what) {
     return typeof name !== "string" ? undefined : name.replace(what, "");
 }
 
@@ -152,10 +152,6 @@ function isPrivateAddress (host) {
 const matches = Element.prototype.matches;
 
 const $ = (selector, context) => new $.init(selector, context)
-
-$.version = "2.5.0";
-$.build_time = "14.07.2024, 14:16:00";
-$.info = () => console.info(`%c M4Q %c v${$.version} %c ${$.build_time} `, "color: white; font-weight: bold; background: #fd6a02", "color: white; background: darkgreen", "color: white; background: #0080fe;")
 
 $.fn = $.prototype = Object.create(Array.prototype);
 
@@ -2692,7 +2688,9 @@ const floatProps = ['opacity', 'volume'];
 const scrollProps = ["scrollLeft", "scrollTop"];
 const reverseProps = ["opacity", "volume"];
 
-const _validElement = (el) => el instanceof HTMLElement || el instanceof SVGElement
+function _validElement(el) {
+    return el instanceof HTMLElement || el instanceof SVGElement;
+}
 
 /**
  *
@@ -2730,7 +2728,7 @@ function _getRelativeValue (to, from) {
 function _getStyle (el, prop, pseudo){
     if (typeof el[prop] !== "undefined") {
         if (scrollProps.indexOf(prop) > -1) {
-            return prop === "scrollLeft" ? el === window ? scrollX : el.scrollLeft : el === window ? scrollY : el.scrollTop;
+            return prop === "scrollLeft" ? el === window ? pageXOffset : el.scrollLeft : el === window ? pageYOffset : el.scrollTop;
         } else {
             return el[prop] || 0;
         }
@@ -2811,7 +2809,9 @@ function _getElementTransforms (el) {
  */
 function _getColorArrayFromHex (val){
     const a = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(val ? val : "#000000");
-    return a.slice(1).map((v) => parseInt(v, 16));
+    return a.slice(1).map(function(v) {
+        return parseInt(v, 16);
+    });
 }
 
 /**
@@ -2822,7 +2822,9 @@ function _getColorArrayFromHex (val){
  * @private
  */
 function _getColorArrayFromElement (el, key) {
-    return getComputedStyle(el)[key].replace(/[^\d.,]/g, '').split(',').map(v => parseInt(""+v));
+    return getComputedStyle(el)[key].replace(/[^\d.,]/g, '').split(',').map(function(v) {
+        return parseInt(v);
+    });
 }
 
 /**
@@ -3021,7 +3023,6 @@ const eases = {
     Bounce: function(){
         return function(t){
             let pow2, b = 4;
-            // eslint-disable-next-line
             while (t < (( pow2 = Math.pow(2, --b)) - 1) / 11) {}
             return 1 / Math.pow(4, 3 - b) - 7.5625 * Math.pow(( pow2 * 3 - 2 ) / 22 - t, 2);
         };
@@ -3034,8 +3035,8 @@ const eases = {
         if (not(period)) {
             period = 0.5;
         }
-        let a = minMax(amplitude, 1, 10);
-        let p = minMax(period, 0.1, 2);
+        const a = minMax(amplitude, 1, 10);
+        const p = minMax(period, 0.1, 2);
         return function(t){
             return (t === 0 || t === 1) ? t :
                 -a * Math.pow(2, 10 * (t - 1)) * Math.sin((((t - 1) - (p / (Math.PI * 2) * Math.asin(1 / a))) * (Math.PI * 2)) / p);
@@ -3091,15 +3092,14 @@ function animate(args){
     return new Promise(function(resolve){
         const that = this;
         const props = $.assign({}, defaultAnimationProps, {dur: $.animation.duration, ease: $.animation.ease}, args);
-        let {id, el, draw, dur, ease, loop, onStart, onFrame, onDone, pause: pauseStart, dir, defer} = props
+        let id = props.id, el = props.el, draw = props.draw, dur = props.dur, ease = props.ease, loop = props.loop,
+            onStart = props.onStart, onFrame = props.onFrame, onDone = props.onDone,
+            pauseStart = props.pause, dir = props.dir, defer = props.defer;
         let map = {};
-        let easeName = "linear"
-        let easeArgs = []
-        let easeFn = Easing.linear
-        let matchArgs;
+        let easeName = "linear", easeArgs = [], easeFn = Easing.linear, matchArgs;
         let direction = dir === "alternate" ? "normal" : dir;
         let replay = false;
-        const animationID = id ? id : +(performance.now() * Math.pow(10, 14));
+        let animationID = id ? id : +(performance.now() * Math.pow(10, 14));
 
         if (not(el)) {
             throw new Error("Unknown element!");
@@ -3172,7 +3172,7 @@ function animate(args){
 
         const animate = function(time) {
             let p, t;
-            let {stop, pause, start} = $.animation.elements[animationID]
+            let {stop, pause, started: start} = $.animation.elements[animationID]
 
             if ($.animation.elements[animationID].paused) {
                 start = time - $.animation.elements[animationID].t * dur;
@@ -3191,7 +3191,6 @@ function animate(args){
 
             if (pause) {
                 $.animation.elements[animationID].id = requestAnimationFrame(animate);
-                // $.animation.elements[animationID].started = performance.now();
                 return;
             }
 
@@ -3463,15 +3462,15 @@ $.fn.extend({
      *
 
      args = {
-         draw: {} | function,
-         dur: 1000,
-         ease: "linear",
-         loop: 0,
-         pause: 0,
-         dir: "normal",
-         defer: 0,
-         onFrame: function,
-         onDone: function
+     draw: {} | function,
+     dur: 1000,
+     ease: "linear",
+     loop: 0,
+     pause: 0,
+     dir: "normal",
+     defer: 0,
+     onFrame: function,
+     onDone: function
      }
 
      * @returns {this}
@@ -3479,7 +3478,7 @@ $.fn.extend({
     animate: function(args){
         const that = this;
         let draw, dur, easing, cb;
-        let a = args;
+        const a = args;
         let compatibilityMode;
 
         compatibilityMode = !Array.isArray(args) && (arguments.length > 1 || (arguments.length === 1 && typeof arguments[0].draw === 'undefined'));
@@ -3577,7 +3576,6 @@ $.fn.extend({
         });
     }
 });
-
 
 $.extend({
     hidden: function(el, val, cb){
@@ -4140,7 +4138,7 @@ $.init = function(sel, ctx){
 $.init.prototype = $.fn;
 
 
-var _$ = window.$;
+let _$ = window.$;
 
 window.m4q = $;
 window.$ = $;
@@ -4157,6 +4155,4 @@ $.noConflict = function() {
 
     return $;
 };
-
-
 
