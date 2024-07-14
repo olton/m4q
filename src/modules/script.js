@@ -1,10 +1,10 @@
 function createScript(script){
-    var s = document.createElement('script');
+    const s = document.createElement('script');
     s.type = 'text/javascript';
 
     if (not(script)) return $(s);
 
-    var _script = $(script)[0];
+    const _script = $(script)[0];
 
     if (_script.src) {
         s.src = _script.src;
@@ -26,7 +26,7 @@ $.extend({
             return createScript();
         }
 
-        var _el = $(el)[0];
+        const _el = $(el)[0];
 
         if (_el.tagName && _el.tagName === "SCRIPT") {
             createScript(_el);

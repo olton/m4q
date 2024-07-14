@@ -1,18 +1,18 @@
 $.fn.extend({
     offset: function(val){
-        var rect;
+        let rect;
 
         if (not(val)) {
             if (this.length === 0) return undefined;
             rect = this[0].getBoundingClientRect();
             return {
-                top: rect.top + pageYOffset,
-                left: rect.left + pageXOffset
+                top: rect.top + scrollY,
+                left: rect.left + scrollX
             };
         }
 
         return this.each(function(){ //?
-            var el = $(this),
+            let el = $(this),
                 top = val.top,
                 left = val.left,
                 position = getComputedStyle(this).position,
@@ -35,7 +35,7 @@ $.fn.extend({
     },
 
     position: function(margin){
-        var ml = 0, mt = 0, el, style;
+        let ml = 0, mt = 0, el, style;
 
         if (not(margin) || typeof margin !== "boolean") {
             margin = false;

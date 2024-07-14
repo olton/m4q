@@ -9,7 +9,7 @@ $.fn.extend({
         }
 
         return this.each(function(){
-            var el = this;
+            const el = this;
 
             el[prop] = value;
 
@@ -29,7 +29,7 @@ $.fn.extend({
         }
 
         return this.each(function(){
-            var el = $(this);
+            const el = $(this);
             if (typeof this.value !== "undefined") {
                 this.value = value;
             } else {
@@ -39,7 +39,7 @@ $.fn.extend({
     },
 
     html: function(value){
-        var that = this, v = [];
+        const that = this, v = [];
 
         if (arguments.length === 0) {
             return this._prop('innerHTML');

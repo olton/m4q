@@ -34,7 +34,7 @@ const source_files = [
     'src/modules/size.js',
     'src/modules/position.js',
     'src/modules/attr.js',
-    'src/modules/proxy.js',
+    'src/modules/bind.js',
     'src/modules/manipulation.js',
     'src/modules/animation.js',
     'src/modules/visibility.js',
