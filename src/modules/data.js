@@ -4,7 +4,7 @@
  * Copyright (c) Copyright JS Foundation and other contributors, https://js.foundation/
  * Licensed under MIT
  */
-var Data = function(ns){
+const Data = function(ns){
     this.expando = "DATASET:UID:" + ns.toUpperCase();
     Data.uid++;
 };
@@ -13,7 +13,7 @@ Data.uid = -1;
 
 Data.prototype = {
     cache: function(owner){
-        var value = owner[this.expando];
+        let value = owner[this.expando];
         if (!value) {
             value = {};
             if (acceptData(owner)) {
@@ -31,7 +31,7 @@ Data.prototype = {
     },
 
     set: function(owner, data, value){
-        var prop, cache = this.cache(owner);
+        let prop, cache = this.cache(owner);
 
         if (typeof data === "string") {
             cache[camelCase(data)] = value;
@@ -57,7 +57,7 @@ Data.prototype = {
     },
 
     remove: function(owner, key){
-        var i, cache = owner[this.expando];
+        let i, cache = owner[this.expando];
         if (cache === undefined) {
             return ;
         }
@@ -87,12 +87,12 @@ Data.prototype = {
     },
 
     hasData: function(owner){
-        var cache = owner[ this.expando ];
+        const cache = owner[ this.expando ];
         return cache !== undefined && !isEmptyObject( cache );
     }
 };
 
-var dataSet = new Data('m4q');
+const dataSet = new Data('m4q');
 
 $.extend({
     hasData: function(elem){
@@ -118,7 +118,7 @@ $.extend({
 
 $.fn.extend({
     data: function(key, val){
-        var res, elem, data, attrs, name, i;
+        let res, elem, data, attrs, name, i;
 
         if (this.length === 0) {
             return ;
@@ -182,7 +182,7 @@ $.fn.extend({
         }
 
         if (not(value)) {
-            var res = $.data(this[0], "origin-"+name);
+            const res = $.data(this[0], "origin-"+name);
             return !not(res) ? res : def;
         }
 

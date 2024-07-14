@@ -7,9 +7,9 @@ $.extend({
 $.fn.extend({
     fadeIn: function(dur, easing, cb){
         return this.each(function(){
-            var el = this;
-            var $el = $(el);
-            var visible = !(!isVisible(el) || (isVisible(el) && +($el.style('opacity')) === 0));
+            const el = this;
+            const $el = $(el);
+            const visible = !(!isVisible(el) || (isVisible(el) && +($el.style('opacity')) === 0));
 
             if (not(dur) && not(easing) && not(cb)) {
                 cb = null;
@@ -35,17 +35,17 @@ $.fn.extend({
                 return this;
             }
 
-            var originDisplay = $el.origin("display", undefined, 'block');
+            const originDisplay = $el.origin("display", undefined, 'block');
 
             el.style.opacity = "0";
             el.style.display = originDisplay;
 
             return $.animate({
-                el: el,
+                el,
                 draw: {
                     opacity: 1
                 },
-                dur: dur,
+                dur,
                 ease: easing,
                 onDone: function(){
                     if (typeof cb === 'function') {
@@ -58,8 +58,8 @@ $.fn.extend({
 
     fadeOut: function(dur, easing, cb){
         return this.each(function(){
-            var el = this;
-            var $el = $(el);
+            const el = this;
+            const $el = $(el);
 
             if (not(dur) && not(easing) && not(cb)) {
                 cb = null;
@@ -84,11 +84,11 @@ $.fn.extend({
             }
 
             return $.animate({
-                el: el,
+                el,
                 draw: {
                     opacity: 0
                 },
-                dur: dur,
+                dur,
                 ease: easing,
                 onDone: function(){
                     this.style.display = 'none';
@@ -103,9 +103,9 @@ $.fn.extend({
 
     slideUp: function(dur, easing, cb){
         return this.each(function(){
-            var el = this;
-            var $el = $(el);
-            var currHeight;
+            const el = this;
+            const $el = $(el);
+            let currHeight;
 
             if ($el.height() === 0) return ;
 
@@ -131,11 +131,11 @@ $.fn.extend({
             });
 
             return $.animate({
-                el: el,
+                el,
                 draw: {
                     height: 0
                 },
-                dur: dur,
+                dur,
                 ease: easing,
                 onDone: function(){
                     $el.hide().removeStyleProperty("overflow, height");
@@ -149,9 +149,9 @@ $.fn.extend({
 
     slideDown: function(dur, easing, cb){
         return this.each(function(){
-            var el = this;
-            var $el = $(el);
-            var targetHeight, originDisplay;
+            const el = this;
+            const $el = $(el);
+            let targetHeight, originDisplay;
 
             if (not(dur) && not(easing) && not(cb)) {
                 cb = null;
@@ -180,11 +180,11 @@ $.fn.extend({
             });
 
             return $.animate({
-                el: el,
+                el,
                 draw: {
                     height: targetHeight
                 },
-                dur: dur,
+                dur,
                 ease: easing,
                 onDone: function(){
                     $(el).removeStyleProperty("overflow, height, visibility");
@@ -196,8 +196,8 @@ $.fn.extend({
         });
     },
 
-    moveTo: function(x, y, dur, easing, cb){
-        var draw = {
+    moveTo: function(x, y, dur, ease, cb){
+        const draw = {
             top: y,
             left: x
         };
@@ -205,54 +205,54 @@ $.fn.extend({
         if (typeof dur === "function") {
             cb = dur;
             dur = $.animation.duration;
-            easing = $.animation.ease;
+            ease = $.animation.ease;
         }
 
-        if (typeof easing === "function") {
-            cb = easing;
-            easing = $.animation.ease;
+        if (typeof ease === "function") {
+            cb = ease;
+            ease = $.animation.ease;
         }
 
         return this.each(function(){
             $.animate({
                 el: this,
-                draw: draw,
-                dur: dur,
-                ease: easing,
+                draw,
+                dur,
+                ease,
                 onDone: cb
             });
         });
     },
 
-    centerTo: function(x, y, dur, easing, cb){
+    centerTo: function(x, y, dur, ease, cb){
         if (typeof dur === "function") {
             cb = dur;
             dur = $.animation.duration;
-            easing = $.animation.ease;
+            ease = $.animation.ease;
         }
 
-        if (typeof easing === "function") {
-            cb = easing;
-            easing = $.animation.ease;
+        if (typeof ease === "function") {
+            cb = ease;
+            ease = $.animation.ease;
         }
 
         return this.each(function(){
-            var draw = {
+            const draw = {
                 left: x - this.clientWidth / 2,
                 top: y - this.clientHeight / 2
             };
             $.animate({
                 el: this,
-                draw: draw,
-                dur: dur,
-                ease: easing,
+                draw,
+                dur,
+                ease,
                 onDone: cb
             });
         });
     },
 
     colorTo: function(color, dur, easing, cb){
-        var draw = {
+        const draw = {
             color: color
         };
 
@@ -270,8 +270,8 @@ $.fn.extend({
         return this.each(function(){
             $.animate({
                 el: this,
-                draw: draw,
-                dur: dur,
+                draw,
+                dur,
                 ease: easing,
                 onDone: cb
             });
@@ -279,7 +279,7 @@ $.fn.extend({
     },
 
     backgroundTo: function(color, dur, easing, cb){
-        var draw = {
+        const draw = {
             backgroundColor: color
         };
 
@@ -297,8 +297,8 @@ $.fn.extend({
         return this.each(function(){
             $.animate({
                 el: this,
-                draw: draw,
-                dur: dur,
+                draw,
+                dur,
                 ease: easing,
                 onDone: cb
             });

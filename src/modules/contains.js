@@ -1,6 +1,6 @@
 $.fn.extend({
     index: function(sel){
-        var el, _index = -1;
+        let el, _index = -1;
 
         if (this.length === 0) {
             return _index;
@@ -29,7 +29,7 @@ $.fn.extend({
     },
 
     indexOf: function(sel){
-        var el, _index = -1;
+        let el, _index = -1;
 
         if (this.length === 0) {
             return _index;
@@ -70,7 +70,7 @@ $.fn.extend({
     },
 
     is: function(s){
-        var result = false;
+        let result = false;
 
         if (this.length === 0) {
             return false;
@@ -100,7 +100,7 @@ $.fn.extend({
 
         if (s === ":hidden") {
             this.each(function(){
-                var styles = getComputedStyle(this);
+                const styles = getComputedStyle(this);
                 if (
                     this.getAttribute('type') === 'hidden'
                         || this.hidden
@@ -121,9 +121,9 @@ $.fn.extend({
 
         if (isArrayLike(s)) {
             this.each(function(){
-                var el = this;
+                const el = this;
                 $.each(s, function(){
-                    var sel = this;
+                    const sel = this;
                     if (el === sel) {
                         result = true;
                     }
@@ -143,7 +143,7 @@ $.fn.extend({
     },
 
     same: function(o){
-        var result = true;
+        let result = true;
 
         if (!(o instanceof $)) {
             o = $(o);
@@ -169,14 +169,14 @@ $.fn.extend({
     },
 
     odd: function(){
-        var result = this.filter(function(el, i){
+        const result = this.filter(function(el, i){
             return i % 2 === 0;
         });
         return $.extend(result, {_prevObj: this});
     },
 
     even: function(){
-        var result = this.filter(function(el, i){
+        const result = this.filter(function(el, i){
             return i % 2 !== 0;
         });
         return $.extend(result, {_prevObj: this});
@@ -184,7 +184,7 @@ $.fn.extend({
 
     filter: function(fn){
         if (typeof fn === "string") {
-            var sel = fn;
+            const sel = fn;
             fn = function(el){
                 return matches.call(el, sel);
             };
@@ -194,7 +194,7 @@ $.fn.extend({
     },
 
     find: function(s){
-        var res = [], result;
+        let res = [], result;
 
         if (s instanceof $) return s;
 
@@ -202,7 +202,7 @@ $.fn.extend({
             result = this;
         } else {
             this.each(function () {
-                var el = this;
+                const el = this;
                 if (typeof el.querySelectorAll === "undefined") {
                     return ;
                 }
@@ -219,12 +219,12 @@ $.fn.extend({
     },
 
     children: function(s){
-        var i, res = [];
+        let i, res = [];
 
         if (s instanceof $) return s;
 
         this.each(function(){
-            var el = this;
+            const el = this;
             for(i = 0; i < el.children.length; i++) {
                 if (el.children[i].nodeType === 1)
                     res.push(el.children[i]);
@@ -238,7 +238,7 @@ $.fn.extend({
     },
 
     parent: function(s){
-        var res = [];
+        let res = [];
         if (this.length === 0) {
             return ;
         }
@@ -258,7 +258,7 @@ $.fn.extend({
     },
 
     parents: function(s){
-        var res = [];
+        let res = [];
 
         if (this.length === 0) {
             return ;
@@ -267,7 +267,7 @@ $.fn.extend({
         if (s instanceof $) return s;
 
         this.each(function(){
-            var par = this.parentNode;
+            let par = this.parentNode;
             while (par) {
                 if (par.nodeType === 1 && res.indexOf(par) === -1) {
                     if (!not(s)) {
@@ -286,7 +286,7 @@ $.fn.extend({
     },
 
     siblings: function(s){
-        var res = [];
+        let res = [];
 
         if (this.length === 0) {
             return ;
@@ -295,7 +295,7 @@ $.fn.extend({
         if (s instanceof $) return s;
 
         this.each(function(){
-            var el = this;
+            const el = this;
             if (el.parentNode) {
                 $.each(el.parentNode.children, function(){
                     if (el !== this) res.push(this);
@@ -313,7 +313,7 @@ $.fn.extend({
     },
 
     _siblingAll: function(dir, s){
-        var res = [];
+        let res = [];
 
         if (this.length === 0) {
             return ;
@@ -322,7 +322,7 @@ $.fn.extend({
         if (s instanceof $) return s;
 
         this.each(function(){
-            var el = this;
+            let el = this;
             while (el) {
                 el = el[dir];
                 if (!el) break;
@@ -340,7 +340,7 @@ $.fn.extend({
     },
 
     _sibling: function(dir, s){
-        var res = [];
+        let res = [];
 
         if (this.length === 0) {
             return ;
@@ -349,7 +349,7 @@ $.fn.extend({
         if (s instanceof $) return s;
 
         this.each(function(){
-            var el = this[dir];
+            const el = this[dir];
             if (el && el.nodeType === 1) {
                 res.push(el);
             }
@@ -381,7 +381,7 @@ $.fn.extend({
     },
 
     closest: function(s){
-        var res = [];
+        let res = [];
 
         if (this.length === 0) {
             return ;
@@ -394,7 +394,7 @@ $.fn.extend({
         }
 
         this.each(function(){
-            var el = this;
+            let el = this;
             while (el) {
                 if (!el) break;
                 if (matches.call(el, s)) {
@@ -409,15 +409,15 @@ $.fn.extend({
     },
 
     has: function(selector){
-        var res = [];
+        let res = [];
 
         if (this.length === 0) {
             return ;
         }
 
         this.each(function(){
-            var el = $(this);
-            var child = el.children(selector);
+            const el = $(this);
+            const child = el.children(selector);
             if (child.length > 0) {
                 res.push(this);
             }
@@ -427,7 +427,7 @@ $.fn.extend({
     },
 
     back: function(to_start){
-        var ret;
+        let ret;
         if (to_start === true) {
             ret = this._prevObj;
             while (ret) {

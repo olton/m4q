@@ -151,42 +151,41 @@ function isPrivateAddress (host) {
     return /(^localhost)|(^127\.)|(^192\.168\.)|(^10\.)|(^172\.1[6-9]\.)|(^172\.2\d\.)|(^172\.3[0-1]\.)|(^::1$)|(^[fF][cCdD])/.test(host)
 }
 
-var matches = Element.prototype.matches
-    || Element.prototype.matchesSelector
-    || Element.prototype.webkitMatchesSelector
-    || Element.prototype.mozMatchesSelector
-    || Element.prototype.msMatchesSelector
-    || Element.prototype.oMatchesSelector;
+const matches = Element.prototype.matches;
 
-var $ = function(selector, context){
-    return new $.init(selector, context);
-};
+const $ = (selector, context) => new $.init(selector, context)
 
 $.version = "2.4.0";
-$.build_time = "08.07.2024, 10:59:21";
+$.build_time = "14.07.2024, 13:06:06";
 $.info = () => console.info(`%c M4Q %c v${$.version} %c ${$.build_time} `, "color: white; font-weight: bold; background: #fd6a02", "color: white; background: darkgreen", "color: white; background: #0080fe;")
 
-$.fn = $.prototype = {
-    [Symbol.isConcatSpreadable]: true,
-    constructor: $,
-    length: 0,
-    uid: "",
+$.fn = $.prototype = Object.create(Array.prototype);
 
-    push: [].push,
-    sort: [].sort,
-    splice: [].splice,
-    slice: [].slice,
-    reverse: [].reverse,
-    map: [].map,
-    pop: [].pop,
-    shift: [].shift,
-    unshift: [].unshift,
-    concat: [].concat,
-    includes: [].includes,
-};
+$.prototype.constructor = $
+$.prototype.uid = ""
+
+// $.fn = $.prototype = {
+//     [Symbol.isConcatSpreadable]: true,
+//     [Symbol.iterator]: Array[Symbol.iterator],
+//     constructor: $,
+//     length: 0,
+//     uid: "",
+//
+//     push: [].push,
+//     sort: [].sort,
+//     splice: [].splice,
+//     slice: [].slice,
+//     reverse: [].reverse,
+//     map: [].map,
+//     pop: [].pop,
+//     shift: [].shift,
+//     unshift: [].unshift,
+//     concat: [].concat,
+//     includes: [].includes,
+// };
 
 $.extend = $.fn.extend = function(){
-    var options, name,
+    let options, name,
         target = arguments[ 0 ] || {},
         i = 1,
         length = arguments.length;
@@ -213,7 +212,7 @@ $.extend = $.fn.extend = function(){
 };
 
 $.assign = function(){
-    var options, name,
+    let options, name,
         target = arguments[ 0 ] || {},
         i = 1,
         length = arguments.length;

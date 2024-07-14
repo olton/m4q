@@ -1,6 +1,6 @@
 $.fn.extend({
     attr: function(name, val){
-        var attributes = {};
+        const attributes = {};
 
         if (this.length === 0 && arguments.length === 0) {
             return undefined;
@@ -18,7 +18,7 @@ $.fn.extend({
         }
 
         return this.each(function(){
-            var el = this;
+            const el = this;
             if (isPlainObject(name)) {
                 $.each(name, function(k, v){
                     el.setAttribute(k, v);
@@ -31,11 +31,11 @@ $.fn.extend({
     },
 
     removeAttr: function(name){
-        var attributes;
+        let attributes;
 
         if (not(name)) {
             return this.each(function(){
-                var el = this;
+                const el = this;
                 $.each(this.attributes, function(){
                     el.removeAttribute(this);
                 });
@@ -47,7 +47,7 @@ $.fn.extend({
         }) : name;
 
         return this.each(function(){
-            var el = this;
+            const el = this;
             $.each(attributes, function(){
                 if (el.hasAttribute(this)) el.removeAttribute(this);
             });
@@ -56,7 +56,7 @@ $.fn.extend({
 
     toggleAttr: function(name, val){
         return this.each(function(){
-            var el = this;
+            const el = this;
 
             if (not(val)) {
                 el.removeAttribute(name);

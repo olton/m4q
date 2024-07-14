@@ -8,8 +8,8 @@ $.fn.extend({
     },
 
     hasClass: function(cls){
-        var result = false;
-        var classes = cls.split(" ").filter(function(v){
+        let result = false;
+        const classes = cls.split(" ").filter(function(v){
             return (""+v).trim() !== "";
         });
 
@@ -18,7 +18,7 @@ $.fn.extend({
         }
 
         this.each(function(){
-            var el = this;
+            const el = this;
 
             $.each(classes, function(){
                 if (!result && el.classList && el.classList.contains(this)) {
@@ -42,10 +42,10 @@ $.fn.extend({
 
     removeClassBy: function(mask){
         return this.each(function(){
-            var el = $(this);
-            var classes = el.cls(true);
+            const el = $(this);
+            const classes = el.cls(true);
             $.each(classes, function(){
-                var elClass = this;
+                const elClass = this;
                 if (elClass.indexOf(mask) > -1) {
                     el.removeClass(elClass);
                 }
@@ -54,8 +54,8 @@ $.fn.extend({
     },
 
     classNames: function(){
-        var args = Array.prototype.slice.call(arguments, 0);
-        var classes = []
+        const args = Array.prototype.slice.call(arguments, 0);
+        const classes = []
         $.each(args, function(_, a){
             if (typeof a === "string") {
                 classes.push(a)
@@ -77,15 +77,15 @@ $.fn.extend({
 
 ['add', 'remove', 'toggle'].forEach(function (method) {
     $.fn[method + "Class"] = function(cls){
-        var _classes = !cls
+        const _classes = !cls
             ? []
             : Array.isArray(cls)
                 ? cls
                 : cls.split(" ").filter(function (v) { return !!v; })
         if (!_classes.length) return this;
         return this.each(function(){
-            var el = this;
-            var hasClassList = typeof el.classList !== "undefined";
+            const el = this;
+            const hasClassList = typeof el.classList !== "undefined";
 
             if (hasClassList) {
                 $.each(_classes, function(_, v){

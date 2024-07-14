@@ -1,36 +1,38 @@
 $.ajax = function(p){
     return new Promise(function(resolve, reject){
-        var xhr = new XMLHttpRequest(), data;
-        var method = (p.method || "GET").toUpperCase();
-        var headers = [];
-        var async = not(p.async) ? true : p.async;
-        var url = p.url;
+        const xhr = new XMLHttpRequest()
+        let method = (p.method || "GET").toUpperCase();
+        const headers = [];
+        const async = not(p.async) ? true : p.async;
+        let url = p.url;
 
-        var exec = function(fn, params){
+        let data;
+
+        const exec = function(fn, params){
             if (typeof fn === "function") {
                 fn.apply(null, params);
             }
         };
 
-        var isGet = function(method){
+        const isGet = function(method){
             return ["GET", "JSON"].indexOf(method) !== -1;
         };
 
-        var plainObjectToData = function(obj){
-            var _data = [];
+        const plainObjectToData = function(obj){
+            const _data = [];
             $.each(obj, function(k, v){
-                var _v = isSimple(v) ? v : JSON.stringify(v);
+                const _v = isSimple(v) ? v : JSON.stringify(v);
                 _data.push(k+"=" + _v);
             });
             return _data.join("&");
         };
 
         if (p.data instanceof HTMLFormElement) {
-            var _action = p.data.getAttribute("action");
-            var _method = p.data.getAttribute("method");
+            let _action = p.data.getAttribute("action").trim();
+            let _method = p.data.getAttribute("method").trim();
 
-            if (not(url) && _action && _action.trim() !== "") {url = _action;}
-            if (_method && _method.trim() !== "") {method = _method.toUpperCase();}
+            if (not(url) && _action) {url = _action;}
+            if (_method) {method = _method.toUpperCase();}
         }
 
 
@@ -45,9 +47,9 @@ $.ajax = function(p){
         if (p.data instanceof HTMLFormElement) {
             data = $.serialize(p.data);
         } else if (p.data instanceof HTMLElement && p.data.getAttribute("type") && p.data.getAttribute("type").toLowerCase() === "file") {
-            var _name = p.data.getAttribute("name");
+            const _name = p.data.getAttribute("name");
             data = new FormData();
-            for (var i = 0; i < p.data.files.length; i++) {
+            for (let i = 0; i < p.data.files.length; i++) {
                 data.append(_name, p.data.files[i]);
             }
         } else if (isPlainObject(p.data)) {
@@ -81,7 +83,7 @@ $.ajax = function(p){
 
         xhr.addEventListener("load", function(e){
             if (xhr.readyState === 4 && xhr.status < 300) {
-                var _return = p.returnValue && p.returnValue === 'xhr' ? xhr : xhr.response;
+                let _return = p.returnValue && p.returnValue === 'xhr' ? xhr : xhr.response;
                 if (p.parseJson) {
                     try {
                         _return = JSON.parse(_return);
@@ -99,7 +101,7 @@ $.ajax = function(p){
         });
 
         $.each(["readystatechange", "error", "timeout", "progress", "loadstart", "loadend", "abort"], function(){
-            var ev = camelCase("on-"+(this === 'readystatechange' ? 'state' : this));
+            const ev = camelCase("on-"+(this === 'readystatechange' ? 'state' : this));
             xhr.addEventListener(ev, function(e){
                 exec(p[ev], [e, xhr]);
             });
@@ -109,7 +111,7 @@ $.ajax = function(p){
 
 ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'JSON'].forEach(function(method){
     $[method] = function(url, data, options){
-        var _options = {
+        const _options = {
             method: method === 'JSON' ? 'GET' : method,
             url: url,
             data: data,
@@ -121,7 +123,7 @@ $.ajax = function(p){
 
 $.fn.extend({
     load: function(url, data, options){
-        var that = this;
+        const that = this;
 
         if (this.length && this[0].self === window ) {
             return $.load(url);

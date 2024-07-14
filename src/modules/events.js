@@ -1,20 +1,5 @@
-(function () {
-    if ( typeof window.CustomEvent === "function" ) return false;
-
-    function CustomEvent ( event, params ) {
-        params = params || { bubbles: false, cancelable: false, detail: null };
-        var evt = document.createEvent( 'CustomEvent' );
-        evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
-        return evt;
-    }
-
-    CustomEvent.prototype = window.Event.prototype;
-
-    window.CustomEvent = CustomEvent;
-})();
-
-var overriddenStop =  Event.prototype.stopPropagation;
-var overriddenPrevent =  Event.prototype.preventDefault;
+const overriddenStop =  Event.prototype.stopPropagation;
+const overriddenPrevent =  Event.prototype.preventDefault;
 
 Event.prototype.stopPropagation = function(){
     this.isPropagationStopped = true;
@@ -39,7 +24,7 @@ $.extend({
     * el, eventName, handler, selector, ns, id, options
     * */
     setEventHandler: function(obj){
-        var i, freeIndex = -1, eventObj, resultIndex;
+        let i, freeIndex = -1, eventObj, resultIndex;
         if (this.events.length > 0) {
             for(i = 0; i < this.events.length; i++) {
                 if (this.events[i].handler === null) {
@@ -115,7 +100,7 @@ $.extend({
     },
 
     removeEventHooks: function(event){
-        var that = this;
+        const that = this;
         if (not(event)) {
             this.eventHooks = {};
         } else {
@@ -145,9 +130,9 @@ $.fn.extend({
         }
 
         return this.each(function(){
-            var el = this;
+            const el = this;
             $.each(str2arr(eventsList), function(){
-                var h, ev = this,
+                let h, ev = this,
                     event = ev.split("."),
                     name = normName(event[0]),
                     ns = options.ns ? options.ns : event[1],
@@ -156,9 +141,9 @@ $.fn.extend({
                 $.eventUID++;
 
                 h = function(e){
-                    var target = e.target;
-                    var beforeHook = $.eventHooks[camelCase("before-"+name)];
-                    var afterHook = $.eventHooks[camelCase("after-"+name)];
+                    let target = e.target;
+                    const beforeHook = $.eventHooks[camelCase("before-"+name)];
+                    const afterHook = $.eventHooks[camelCase("after-"+name)];
 
                     if (typeof beforeHook === "function") {
                         beforeHook.call(target, e);
@@ -234,9 +219,9 @@ $.fn.extend({
 
         if (not(eventsList) || eventsList.toLowerCase() === 'all') {
             return this.each(function(){
-                var el = this;
+                const el = this;
                 $.each($.events, function(){
-                    var e = this;
+                    const e = this;
                     if (e.element === el) {
                         el.removeEventListener(e.event, e.handler, e.options);
                         e.handler = null;
@@ -247,9 +232,9 @@ $.fn.extend({
         }
 
         return this.each(function(){
-            var el = this;
+            const el = this;
             $.each(str2arr(eventsList), function(){
-                var evMap = this.split("."),
+                let evMap = this.split("."),
                     name = normName(evMap[0]),
                     ns = options.ns ? options.ns : evMap[1],
                     originEvent, index;
@@ -272,7 +257,7 @@ $.fn.extend({
     },
 
     fire: function(name, data){
-        var _name, e;
+        let _name, e;
 
         if (this.length === 0) {
             return ;
@@ -285,17 +270,11 @@ $.fn.extend({
             return this;
         }
 
-        if (typeof CustomEvent !== "undefined") {
-            e = new CustomEvent(_name, {
-                bubbles: true,
-                cancelable: true,
-                detail: data
-            });
-        } else {
-            e = document.createEvent('Events');
-            e.detail = data;
-            e.initEvent(_name, true, true);
-        }
+        e = new CustomEvent(_name, {
+            bubbles: true,
+            cancelable: true,
+            detail: data
+        });
 
         return this.each(function(){
             this.dispatchEvent(e);

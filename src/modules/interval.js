@@ -42,7 +42,7 @@
         workerScript = window.URL.createObjectURL(blob);
     } catch (error) {}
 
-    var worker,
+    let worker,
         fakeIdToCallback = {},
         lastFakeId = 0,
         maxFakeId = 0x7FFFFFFF,
@@ -63,7 +63,7 @@
         try {
             worker = new Worker (workerScript);
             window.setInterval = function (callback, time /* , parameters */) {
-                var fakeId = getFakeId ();
+                const fakeId = getFakeId ();
                 fakeIdToCallback[fakeId] = {
                     callback: callback,
                     parameters: Array.prototype.slice.call(arguments, 2)
@@ -85,7 +85,7 @@
                 }
             };
             window.setTimeout = function (callback, time /* , parameters */) {
-                var fakeId = getFakeId ();
+                const fakeId = getFakeId ();
                 fakeIdToCallback[fakeId] = {
                     callback: callback,
                     parameters: Array.prototype.slice.call(arguments, 2),
@@ -114,7 +114,7 @@
                 clearTimeout(fakeId)
             }
             worker.onmessage = function (event) {
-                var data = event.data,
+                let data = event.data,
                     fakeId = data.fakeId,
                     request,
                     parameters,
