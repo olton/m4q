@@ -153,6 +153,10 @@ const matches = Element.prototype.matches;
 
 const $ = (selector, context) => new $.init(selector, context)
 
+$.version = "3.0.0";
+$.build_time = "17.07.2024, 10:11:34";
+$.info = () => console.info(`%c M4Q %c v${$.version} %c ${$.build_time} `, "color: white; font-weight: bold; background: #fd6a02", "color: white; background: darkgreen", "color: white; background: #0080fe;")
+
 $.fn = $.prototype = Object.create(Array.prototype);
 
 $.prototype.constructor = $
