@@ -3755,7 +3755,7 @@ $.fn.extend({
 
             if (visible) {
                 if (typeof cb === 'function') {
-                    $.proxy(cb, this)();
+                    $.bind(cb, this)();
                 }
                 return this;
             }
@@ -3774,7 +3774,7 @@ $.fn.extend({
                 ease: easing,
                 onDone: function(){
                     if (typeof cb === 'function') {
-                        $.proxy(cb, this)();
+                        $.bind(cb, this)();
                     }
                 }
             });
@@ -3803,7 +3803,7 @@ $.fn.extend({
 
             if ( !isVisible(el) ) {
                 if (typeof cb === 'function') {
-                    $.proxy(cb, this)();
+                    $.bind(cb, this)();
                 }
                 return this;
             }
@@ -3819,7 +3819,7 @@ $.fn.extend({
                     this.style.display = 'none';
 
                     if (typeof cb === 'function') {
-                        $.proxy(cb, this)();
+                        $.bind(cb, this)();
                     }
                 }
             });
@@ -3865,7 +3865,7 @@ $.fn.extend({
                 onDone: function(){
                     $el.hide().removeStyleProperty("overflow, height");
                     if (typeof cb === 'function') {
-                        $.proxy(cb, this)();
+                        $.bind(cb, this)();
                     }
                 }
             });
@@ -3914,7 +3914,7 @@ $.fn.extend({
                 onDone: function(){
                     $(el).removeStyleProperty("overflow, height, visibility");
                     if (typeof cb === 'function') {
-                        $.proxy(cb, this)();
+                        $.bind(cb, this)();
                     }
                 }
             });
