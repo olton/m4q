@@ -153,8 +153,8 @@ const matches = Element.prototype.matches;
 
 const $ = (selector, context) => new $.init(selector, context)
 
-$.version = "3.0.3";
-$.build_time = "17.07.2024, 10:20:08";
+$.version = "3.0.4";
+$.build_time = "11.08.2024, 23:12:11";
 $.info = () => console.info(`%c M4Q %c v${$.version} %c ${$.build_time} `, "color: white; font-weight: bold; background: #fd6a02", "color: white; background: darkgreen", "color: white; background: #0080fe;")
 
 $.fn = $.prototype = Object.create(Array.prototype);
@@ -1778,7 +1778,7 @@ $.ajax = function(p){
 };
 
 ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'JSON'].forEach(function(method){
-    $[method] = function(url, data, options){
+    $[method.toLowerCase()] = function(url, data, options){
         const _options = {
             method: method === 'JSON' ? 'GET' : method,
             url: url,

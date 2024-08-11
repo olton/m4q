@@ -110,7 +110,7 @@ $.ajax = function(p){
 };
 
 ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'JSON'].forEach(function(method){
-    $[method] = function(url, data, options){
+    $[method.toLowerCase()] = function(url, data, options){
         const _options = {
             method: method === 'JSON' ? 'GET' : method,
             url: url,
