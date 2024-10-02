@@ -1,39 +1,18 @@
-var matches = Element.prototype.matches
-    || Element.prototype.matchesSelector
-    || Element.prototype.webkitMatchesSelector
-    || Element.prototype.mozMatchesSelector
-    || Element.prototype.msMatchesSelector
-    || Element.prototype.oMatchesSelector;
+const matches = Element.prototype.matches;
 
-var $ = function(selector, context){
-    return new $.init(selector, context);
-};
+const $ = (selector, context) => new $.init(selector, context)
 
-$.version = "@@VERSION";
-$.build_time = "@@BUILD_TIME";
+$.version = "2.1.2";
+$.build_time = "06.07.2024, 13:17:58";
 $.info = () => console.info(`%c M4Q %c v${$.version} %c ${$.build_time} `, "color: white; font-weight: bold; background: #fd6a02", "color: white; background: darkgreen", "color: white; background: #0080fe;")
 
-$.fn = $.prototype = {
-    [Symbol.isConcatSpreadable]: true,
-    constructor: $,
-    length: 0,
-    uid: "",
+$.fn = $.prototype = Object.create(Array.prototype);
 
-    push: [].push,
-    sort: [].sort,
-    splice: [].splice,
-    slice: [].slice,
-    reverse: [].reverse,
-    map: [].map,
-    pop: [].pop,
-    shift: [].shift,
-    unshift: [].unshift,
-    concat: [].concat,
-    includes: [].includes,
-};
+$.prototype.constructor = $
+$.prototype.uid = ""
 
 $.extend = $.fn.extend = function(){
-    var options, name,
+    let options, name,
         target = arguments[ 0 ] || {},
         i = 1,
         length = arguments.length;
@@ -60,7 +39,7 @@ $.extend = $.fn.extend = function(){
 };
 
 $.assign = function(){
-    var options, name,
+    let options, name,
         target = arguments[ 0 ] || {},
         i = 1,
         length = arguments.length;

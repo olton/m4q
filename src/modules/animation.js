@@ -13,11 +13,11 @@ if (typeof window["setupAnimation"] === 'object') {
     });
 }
 
-var transformProps = ['translateX', 'translateY', 'translateZ', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'scale', 'scaleX', 'scaleY', 'scaleZ', 'skew', 'skewX', 'skewY'];
-var numberProps = ['opacity', 'zIndex'];
-var floatProps = ['opacity', 'volume'];
-var scrollProps = ["scrollLeft", "scrollTop"];
-var reverseProps = ["opacity", "volume"];
+const transformProps = ['translateX', 'translateY', 'translateZ', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'scale', 'scaleX', 'scaleY', 'scaleZ', 'skew', 'skewX', 'skewY'];
+const numberProps = ['opacity', 'zIndex'];
+const floatProps = ['opacity', 'volume'];
+const scrollProps = ["scrollLeft", "scrollTop"];
+const reverseProps = ["opacity", "volume"];
 
 function _validElement(el) {
     return el instanceof HTMLElement || el instanceof SVGElement;
@@ -31,11 +31,11 @@ function _validElement(el) {
  * @private
  */
 function _getRelativeValue (to, from) {
-    var operator = /^(\*=|\+=|-=)/.exec(to);
+    const operator = /^(\*=|\+=|-=)/.exec(to);
     if (!operator) return to;
-    var u = getUnit(to) || 0;
-    var x = parseFloat(from);
-    var y = parseFloat(to.replace(operator[0], ''));
+    const u = getUnit(to) || 0;
+    const x = parseFloat(from);
+    const y = parseFloat(to.replace(operator[0], ''));
     switch (operator[0][0]) {
         case '+':
             return x + y + u;
@@ -121,16 +121,13 @@ function _applyStyles (el, mapProps, p) {
  */
 function _getElementTransforms (el) {
     if (!_validElement(el)) return {};
-    var str = el.style.transform || '';
-    var reg = /(\w+)\(([^)]*)\)/g;
-    var transforms = {};
-    var m;
+    const str = el.style.transform || '';
+    const reg = /(\w+)\(([^)]*)\)/g;
+    const transforms = {};
+    let m;
 
-    /* jshint ignore:start */
-    // eslint-disable-next-line
     while (m = reg.exec(str))
         transforms[m[1]] = m[2];
-    /* jshint ignore:end */
 
     return transforms;
 }
@@ -142,9 +139,9 @@ function _getElementTransforms (el) {
  * @private
  */
 function _getColorArrayFromHex (val){
-    var a = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(val ? val : "#000000");
+    const a = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(val ? val : "#000000");
     return a.slice(1).map(function(v) {
-            return parseInt(v, 16);
+        return parseInt(v, 16);
     });
 }
 
@@ -169,11 +166,11 @@ function _getColorArrayFromElement (el, key) {
  * @private
  */
 function _applyTransform (el, mapProps, p) {
-    var t = [];
-    var elTransforms = _getElementTransforms(el);
+    const t = [];
+    const elTransforms = _getElementTransforms(el);
 
     $.each(mapProps, function(key, val) {
-        var from = val[0], to = val[1], delta = val[2], unit = val[3];
+        let from = val[0], to = val[1], delta = val[2], unit = val[3];
         key = "" + key;
 
         if ( key.indexOf("rotate") > -1 || key.indexOf("skew") > -1) {
@@ -213,7 +210,7 @@ function _applyTransform (el, mapProps, p) {
  */
 function _applyColors (el, mapProps, p) {
     $.each(mapProps, function (key, val) {
-        var i, result = [0, 0, 0], v;
+        let i, result = [0, 0, 0], v;
         for (i = 0; i < 3; i++) {
             result[i] = Math.floor(val[0][i] + (val[2][i] * p));
         }
@@ -229,7 +226,7 @@ function _applyColors (el, mapProps, p) {
  * @private
  */
 function _expandColorValue (val) {
-    var regExp = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    const regExp = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
     if (val[0] === "#" && val.length === 4) {
         return "#" + val.replace(regExp, function(m, r, g, b) {
             return r + r + g + g + b + b;
@@ -258,13 +255,13 @@ function applyProps (el, map, p) {
  * @returns {{transform: {}, color: {}, props: {}}}
  */
 function createAnimationMap (el, draw, dir) {
-    var map = {
+    const map = {
         props: {},
         transform: {},
         color: {}
     };
-    var i, from, to, delta, unit, temp;
-    var elTransforms = _getElementTransforms(el);
+    let i, from, to, delta, unit, temp;
+    const elTransforms = _getElementTransforms(el);
 
     if (not(dir)) {
         dir = "normal";
@@ -272,9 +269,9 @@ function createAnimationMap (el, draw, dir) {
 
     $.each(draw, function(key, val) {
 
-        var isTransformProp = transformProps.indexOf(""+key) > -1;
-        var isNumProp = numberProps.indexOf(""+key) > -1;
-        var isColorProp = (""+key).toLowerCase().indexOf("color") > -1;
+        const isTransformProp = transformProps.indexOf(""+key) > -1;
+        const isNumProp = numberProps.indexOf(""+key) > -1;
+        const isColorProp = (""+key).toLowerCase().indexOf("color") > -1;
 
         if (Array.isArray(val) && val.length === 1) {
             val = val[0];
@@ -286,7 +283,7 @@ function createAnimationMap (el, draw, dir) {
             } else if (isColorProp) {
                 from = _getColorArrayFromElement(el, key);
             } else {
-                from = _getStyle(el, key);
+                from = _getStyle(el, key, undefined);
             }
             from = !isColorProp ? parseUnit(from) : from;
             to = !isColorProp ? parseUnit(_getRelativeValue(val, Array.isArray(from) ? from[0] : from)) : _getColorArrayFromHex(val);
@@ -332,13 +329,13 @@ function minMax(val, min, max) {
     return Math.min(Math.max(val, min), max);
 }
 
-var Easing = {
+const Easing = {
     linear: function(){return function(t) {return t;};}
 };
 
 Easing.default = Easing.linear;
 
-var eases = {
+const eases = {
     Sine: function(){
         return function(t){
             return 1 - Math.cos(t * Math.PI / 2);
@@ -356,8 +353,7 @@ var eases = {
     },
     Bounce: function(){
         return function(t){
-            var pow2, b = 4;
-            // eslint-disable-next-line
+            let pow2, b = 4;
             while (t < (( pow2 = Math.pow(2, --b)) - 1) / 11) {}
             return 1 / Math.pow(4, 3 - b) - 7.5625 * Math.pow(( pow2 * 3 - 2 ) / 22 - t, 2);
         };
@@ -370,8 +366,8 @@ var eases = {
         if (not(period)) {
             period = 0.5;
         }
-        var a = minMax(amplitude, 1, 10);
-        var p = minMax(period, 0.1, 2);
+        const a = minMax(amplitude, 1, 10);
+        const p = minMax(period, 0.1, 2);
         return function(t){
             return (t === 0 || t === 1) ? t :
                 -a * Math.pow(2, 10 * (t - 1)) * Math.sin((((t - 1) - (p / (Math.PI * 2) * Math.asin(1 / a))) * (Math.PI * 2)) / p);
@@ -388,7 +384,7 @@ var eases = {
 });
 
 Object.keys(eases).forEach(function(name) {
-    var easeIn = eases[name];
+    const easeIn = eases[name];
     Easing['easeIn' + name] = easeIn;
     Easing['easeOut' + name] = function(a, b){
         return function(t){
@@ -402,7 +398,7 @@ Object.keys(eases).forEach(function(name) {
     };
 });
 
-var defaultAnimationProps = {
+let defaultAnimationProps = {
     id: null,
     el: null,
     draw: {},
@@ -425,16 +421,16 @@ var defaultAnimationProps = {
 
 function animate(args){
     return new Promise(function(resolve){
-        var that = this;
-        var props = $.assign({}, defaultAnimationProps, {dur: $.animation.duration, ease: $.animation.ease}, args);
-        var id = props.id, el = props.el, draw = props.draw, dur = props.dur, ease = props.ease, loop = props.loop,
+        const that = this;
+        const props = $.assign({}, defaultAnimationProps, {dur: $.animation.duration, ease: $.animation.ease}, args);
+        let id = props.id, el = props.el, draw = props.draw, dur = props.dur, ease = props.ease, loop = props.loop,
             onStart = props.onStart, onFrame = props.onFrame, onDone = props.onDone,
             pauseStart = props.pause, dir = props.dir, defer = props.defer;
-        var map = {};
-        var easeName = "linear", easeArgs = [], easeFn = Easing.linear, matchArgs;
-        var direction = dir === "alternate" ? "normal" : dir;
-        var replay = false;
-        var animationID = id ? id : +(performance.now() * Math.pow(10, 14));
+        let map = {};
+        let easeName = "linear", easeArgs = [], easeFn = Easing.linear, matchArgs;
+        let direction = dir === "alternate" ? "normal" : dir;
+        let replay = false;
+        let animationID = id ? id : +(performance.now() * Math.pow(10, 14));
 
         if (not(el)) {
             throw new Error("Unknown element!");
@@ -478,7 +474,7 @@ function animate(args){
             paused: 0
         };
 
-        var play = function() {
+        const play = function() {
             if (typeof draw === "object") {
                 map = createAnimationMap(el, draw, direction);
             }
@@ -494,7 +490,7 @@ function animate(args){
             $.animation.elements[animationID].id = requestAnimationFrame(animate);
         };
 
-        var done = function() {
+        const done = function() {
             cancelAnimationFrame($.animation.elements[animationID].id);
             delete $.animation.elements[id];
 
@@ -505,11 +501,9 @@ function animate(args){
             resolve(that);
         };
 
-        var animate = function(time) {
-            var p, t;
-            var stop = $.animation.elements[animationID].stop;
-            var pause = $.animation.elements[animationID].pause;
-            var start = $.animation.elements[animationID].started;
+        const animate = function(time) {
+            let p, t;
+            let {stop, pause, started: start} = $.animation.elements[animationID]
 
             if ($.animation.elements[animationID].paused) {
                 start = time - $.animation.elements[animationID].t * dur;
@@ -528,7 +522,6 @@ function animate(args){
 
             if (pause) {
                 $.animation.elements[animationID].id = requestAnimationFrame(animate);
-                // $.animation.elements[animationID].started = performance.now();
                 return;
             }
 
@@ -600,7 +593,7 @@ function animate(args){
 
 // Stop animation
 function stopAnimation(id, done){
-    var an = $.animation.elements[id];
+    const an = $.animation.elements[id];
 
     if (typeof an === "undefined") {
         return ;
@@ -638,7 +631,7 @@ function stopAnimationAll(done, filter){
 
 // Pause and resume animation
 function pauseAnimation(id){
-    var an = $.animation.elements[id];
+    const an = $.animation.elements[id];
 
     if (typeof an === "undefined") {
         return ;
@@ -672,7 +665,7 @@ function pauseAnimationAll(filter){
 // end of pause
 
 function resumeAnimation(id){
-    var an = $.animation.elements[id];
+    const an = $.animation.elements[id];
 
     if (typeof an === "undefined") {
         return ;
@@ -706,7 +699,7 @@ function resumeAnimationAll(filter){
 
 /* eslint-enable */
 
-var defaultChainOptions = {
+let defaultChainOptions = {
     loop: false,
     onChainItem: null,
     onChainItemComplete: null,
@@ -714,7 +707,7 @@ var defaultChainOptions = {
 }
 
 function chain(arr, opt){
-    var o = $.extend({}, defaultChainOptions, opt);
+    const o = $.extend({}, defaultChainOptions, opt);
 
     if (typeof o.loop !== "boolean") {
         o.loop--;
@@ -725,7 +718,7 @@ function chain(arr, opt){
         return false;
     }
 
-    var reducer = function(acc, item){
+    const reducer = function(acc, item){
         return acc.then(function(){
             if (typeof o["onChainItem"] === "function") {
                 o["onChainItem"](item);
@@ -755,7 +748,7 @@ $.extend($.easing, Easing);
 
 $.extend({
     animate: function(args){
-        var el, draw, dur, ease, cb;
+        let el, draw, dur, ease, cb;
 
         if (arguments.length > 1) {
             el = $(arguments[0])[0];
@@ -800,24 +793,24 @@ $.fn.extend({
      *
 
      args = {
-         draw: {} | function,
-         dur: 1000,
-         ease: "linear",
-         loop: 0,
-         pause: 0,
-         dir: "normal",
-         defer: 0,
-         onFrame: function,
-         onDone: function
+     draw: {} | function,
+     dur: 1000,
+     ease: "linear",
+     loop: 0,
+     pause: 0,
+     dir: "normal",
+     defer: 0,
+     onFrame: function,
+     onDone: function
      }
 
      * @returns {this}
      */
     animate: function(args){
-        var that = this;
-        var draw, dur, easing, cb;
-        var a = args;
-        var compatibilityMode;
+        const that = this;
+        let draw, dur, easing, cb;
+        const a = args;
+        let compatibilityMode;
 
         compatibilityMode = !Array.isArray(args) && (arguments.length > 1 || (arguments.length === 1 && typeof arguments[0].draw === 'undefined'));
 
@@ -851,7 +844,7 @@ $.fn.extend({
 
         if (Array.isArray(args)) {
             $.each(args, function(){
-                var a = this;
+                const a = this;
                 that.each(function(){
                     a.el = this;
                     $.animate(a);
@@ -868,7 +861,7 @@ $.fn.extend({
 
     chain: function(arr, loop){
         return this.each(function(){
-            var el = this;
+            const el = this;
             $.each(arr, function(){
                 this.el = el;
             });
@@ -883,7 +876,7 @@ $.fn.extend({
      */
     stop: function(done){
         return this.each(function(){
-            var el = this;
+            const el = this;
             $.each($.animation.elements, function(k, o){
                 if (o.element === el) {
                     stopAnimation(k, done);
@@ -894,7 +887,7 @@ $.fn.extend({
 
     pause: function(){
         return this.each(function(){
-            var el = this;
+            const el = this;
             $.each($.animation.elements, function(k, o){
                 if (o.element === el) {
                     pauseAnimation(k);
@@ -905,7 +898,7 @@ $.fn.extend({
 
     resume: function(){
         return this.each(function(){
-            var el = this;
+            const el = this;
             $.each($.animation.elements, function(k, o){
                 if (o.element === el) {
                     resumeAnimation(k);

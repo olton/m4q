@@ -1,6 +1,6 @@
 'use strict';
 
-var numProps = ['opacity', 'zIndex'];
+const numProps = ['opacity', 'zIndex'];
 
 function nothing(){
     return null
@@ -15,7 +15,7 @@ function isVisible(elem) {
 }
 
 function isHidden(elem) {
-    var s = getComputedStyle(elem);
+    const s = getComputedStyle(elem);
     return !isVisible(elem) || +s.opacity === 0 || elem.hidden || s.visibility === "hidden";
 }
 
@@ -34,7 +34,7 @@ function dashedName(str){
 }
 
 function isPlainObject( obj ) {
-    var proto;
+    let proto;
     if ( !obj || Object.prototype.toString.call( obj ) !== "[object Object]" ) {
         return false;
     }
@@ -46,7 +46,7 @@ function isPlainObject( obj ) {
 }
 
 function isEmptyObject( obj ) {
-    for (var name in obj ) {
+    for (const name in obj ) {
         if (hasProp(obj, name)) return false;
     }
     return true;
@@ -74,7 +74,7 @@ function parseUnit(str, out) {
 }
 
 function getUnit(val, und){
-    var split = /[+-]?\d*\.?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?(%|px|pt|em|rem|in|cm|mm|ex|ch|pc|vw|vh|vmin|vmax|deg|rad|turn)?$/.exec(val);
+    const split = /[+-]?\d*\.?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?(%|px|pt|em|rem|in|cm|mm|ex|ch|pc|vw|vh|vmin|vmax|deg|rad|turn)?$/.exec(val);
     return typeof split[1] !== "undefined" ? split[1] : und;
 }
 
@@ -101,7 +101,7 @@ function getData(data){
 }
 
 function dataAttr(elem, key, data){
-    var name;
+    let name;
 
     if ( not(data) && elem.nodeType === 1 ) {
         name = "data-" + key.replace( /[A-Z]/g, "-$&" ).toLowerCase();
@@ -121,7 +121,7 @@ function normName(name) {
     return typeof name !== "string" ? undefined : name.replace(/-/g, "").toLowerCase();
 }
 
-function strip(name, what) {
+function    strip(name, what) {
     return typeof name !== "string" ? undefined : name.replace(what, "");
 }
 
@@ -130,7 +130,7 @@ function hasProp(obj, prop){
 }
 
 function isLocalhost(host){
-    var hostname = host || globalThis.location.hostname;
+    const hostname = host || globalThis.location.hostname;
     return (
         hostname === "localhost" ||
         hostname === "127.0.0.1" ||
@@ -141,52 +141,29 @@ function isLocalhost(host){
 }
 
 function isTouch() {
-    return (('ontouchstart' in window)
-        || (navigator.maxTouchPoints > 0)
-        || (navigator.msMaxTouchPoints > 0));
+    return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
 }
 
 function isPrivateAddress (host) {
-    var hostname = host || globalThis.location.hostname;
-    return /(^localhost)|(^127\.)|(^192\.168\.)|(^10\.)|(^172\.1[6-9]\.)|(^172\.2\d\.)|(^172\.3[0-1]\.)|(^::1$)|(^[fF][cCdD])/.test(host)
+    const hostname = host || globalThis.location.hostname;
+    return /(^localhost)|(^127\.)|(^192\.168\.)|(^10\.)|(^172\.1[6-9]\.)|(^172\.2\d\.)|(^172\.3[0-1]\.)|(^::1$)|(^[fF][cCdD])/.test(hostname)
 }
 
-var matches = Element.prototype.matches
-    || Element.prototype.matchesSelector
-    || Element.prototype.webkitMatchesSelector
-    || Element.prototype.mozMatchesSelector
-    || Element.prototype.msMatchesSelector
-    || Element.prototype.oMatchesSelector;
+const matches = Element.prototype.matches;
 
-var $ = function(selector, context){
-    return new $.init(selector, context);
-};
+const $ = (selector, context) => new $.init(selector, context)
 
-$.version = "2.1.2";
-$.build_time = "06.07.2024, 13:17:58";
+$.version = "3.0.4";
+$.build_time = "02.10.2024, 13:28:51";
 $.info = () => console.info(`%c M4Q %c v${$.version} %c ${$.build_time} `, "color: white; font-weight: bold; background: #fd6a02", "color: white; background: darkgreen", "color: white; background: #0080fe;")
 
-$.fn = $.prototype = {
-    [Symbol.isConcatSpreadable]: true,
-    constructor: $,
-    length: 0,
-    uid: "",
+$.fn = $.prototype = Object.create(Array.prototype);
 
-    push: [].push,
-    sort: [].sort,
-    splice: [].splice,
-    slice: [].slice,
-    reverse: [].reverse,
-    map: [].map,
-    pop: [].pop,
-    shift: [].shift,
-    unshift: [].unshift,
-    concat: [].concat,
-    includes: [].includes,
-};
+$.prototype.constructor = $
+$.prototype.uid = ""
 
 $.extend = $.fn.extend = function(){
-    var options, name,
+    let options, name,
         target = arguments[ 0 ] || {},
         i = 1,
         length = arguments.length;
@@ -213,7 +190,7 @@ $.extend = $.fn.extend = function(){
 };
 
 $.assign = function(){
-    var options, name,
+    let options, name,
         target = arguments[ 0 ] || {},
         i = 1,
         length = arguments.length;
@@ -283,7 +260,7 @@ $.assign = function(){
         workerScript = window.URL.createObjectURL(blob);
     } catch (error) {}
 
-    var worker,
+    let worker,
         fakeIdToCallback = {},
         lastFakeId = 0,
         maxFakeId = 0x7FFFFFFF,
@@ -304,7 +281,7 @@ $.assign = function(){
         try {
             worker = new Worker (workerScript);
             window.setInterval = function (callback, time /* , parameters */) {
-                var fakeId = getFakeId ();
+                const fakeId = getFakeId ();
                 fakeIdToCallback[fakeId] = {
                     callback: callback,
                     parameters: Array.prototype.slice.call(arguments, 2)
@@ -326,7 +303,7 @@ $.assign = function(){
                 }
             };
             window.setTimeout = function (callback, time /* , parameters */) {
-                var fakeId = getFakeId ();
+                const fakeId = getFakeId ();
                 fakeIdToCallback[fakeId] = {
                     callback: callback,
                     parameters: Array.prototype.slice.call(arguments, 2),
@@ -355,7 +332,7 @@ $.assign = function(){
                 clearTimeout(fakeId)
             }
             worker.onmessage = function (event) {
-                var data = event.data,
+                let data = event.data,
                     fakeId = data.fakeId,
                     request,
                     parameters,
@@ -394,7 +371,7 @@ $.assign = function(){
 
 $.fn.extend({
     index: function(sel){
-        var el, _index = -1;
+        let el, _index = -1;
 
         if (this.length === 0) {
             return _index;
@@ -423,7 +400,7 @@ $.fn.extend({
     },
 
     indexOf: function(sel){
-        var el, _index = -1;
+        let el, _index = -1;
 
         if (this.length === 0) {
             return _index;
@@ -464,7 +441,7 @@ $.fn.extend({
     },
 
     is: function(s){
-        var result = false;
+        let result = false;
 
         if (this.length === 0) {
             return false;
@@ -494,7 +471,7 @@ $.fn.extend({
 
         if (s === ":hidden") {
             this.each(function(){
-                var styles = getComputedStyle(this);
+                const styles = getComputedStyle(this);
                 if (
                     this.getAttribute('type') === 'hidden'
                         || this.hidden
@@ -515,9 +492,9 @@ $.fn.extend({
 
         if (isArrayLike(s)) {
             this.each(function(){
-                var el = this;
+                const el = this;
                 $.each(s, function(){
-                    var sel = this;
+                    const sel = this;
                     if (el === sel) {
                         result = true;
                     }
@@ -537,7 +514,7 @@ $.fn.extend({
     },
 
     same: function(o){
-        var result = true;
+        let result = true;
 
         if (!(o instanceof $)) {
             o = $(o);
@@ -563,14 +540,14 @@ $.fn.extend({
     },
 
     odd: function(){
-        var result = this.filter(function(el, i){
+        const result = this.filter(function(el, i){
             return i % 2 === 0;
         });
         return $.extend(result, {_prevObj: this});
     },
 
     even: function(){
-        var result = this.filter(function(el, i){
+        const result = this.filter(function(el, i){
             return i % 2 !== 0;
         });
         return $.extend(result, {_prevObj: this});
@@ -578,7 +555,7 @@ $.fn.extend({
 
     filter: function(fn){
         if (typeof fn === "string") {
-            var sel = fn;
+            const sel = fn;
             fn = function(el){
                 return matches.call(el, sel);
             };
@@ -588,7 +565,7 @@ $.fn.extend({
     },
 
     find: function(s){
-        var res = [], result;
+        let res = [], result;
 
         if (s instanceof $) return s;
 
@@ -596,7 +573,7 @@ $.fn.extend({
             result = this;
         } else {
             this.each(function () {
-                var el = this;
+                const el = this;
                 if (typeof el.querySelectorAll === "undefined") {
                     return ;
                 }
@@ -613,12 +590,12 @@ $.fn.extend({
     },
 
     children: function(s){
-        var i, res = [];
+        let i, res = [];
 
         if (s instanceof $) return s;
 
         this.each(function(){
-            var el = this;
+            const el = this;
             for(i = 0; i < el.children.length; i++) {
                 if (el.children[i].nodeType === 1)
                     res.push(el.children[i]);
@@ -632,7 +609,7 @@ $.fn.extend({
     },
 
     parent: function(s){
-        var res = [];
+        let res = [];
         if (this.length === 0) {
             return ;
         }
@@ -652,7 +629,7 @@ $.fn.extend({
     },
 
     parents: function(s){
-        var res = [];
+        let res = [];
 
         if (this.length === 0) {
             return ;
@@ -661,7 +638,7 @@ $.fn.extend({
         if (s instanceof $) return s;
 
         this.each(function(){
-            var par = this.parentNode;
+            let par = this.parentNode;
             while (par) {
                 if (par.nodeType === 1 && res.indexOf(par) === -1) {
                     if (!not(s)) {
@@ -680,7 +657,7 @@ $.fn.extend({
     },
 
     siblings: function(s){
-        var res = [];
+        let res = [];
 
         if (this.length === 0) {
             return ;
@@ -689,7 +666,7 @@ $.fn.extend({
         if (s instanceof $) return s;
 
         this.each(function(){
-            var el = this;
+            const el = this;
             if (el.parentNode) {
                 $.each(el.parentNode.children, function(){
                     if (el !== this) res.push(this);
@@ -707,7 +684,7 @@ $.fn.extend({
     },
 
     _siblingAll: function(dir, s){
-        var res = [];
+        let res = [];
 
         if (this.length === 0) {
             return ;
@@ -716,7 +693,7 @@ $.fn.extend({
         if (s instanceof $) return s;
 
         this.each(function(){
-            var el = this;
+            let el = this;
             while (el) {
                 el = el[dir];
                 if (!el) break;
@@ -734,7 +711,7 @@ $.fn.extend({
     },
 
     _sibling: function(dir, s){
-        var res = [];
+        let res = [];
 
         if (this.length === 0) {
             return ;
@@ -743,7 +720,7 @@ $.fn.extend({
         if (s instanceof $) return s;
 
         this.each(function(){
-            var el = this[dir];
+            const el = this[dir];
             if (el && el.nodeType === 1) {
                 res.push(el);
             }
@@ -775,7 +752,7 @@ $.fn.extend({
     },
 
     closest: function(s){
-        var res = [];
+        let res = [];
 
         if (this.length === 0) {
             return ;
@@ -788,7 +765,7 @@ $.fn.extend({
         }
 
         this.each(function(){
-            var el = this;
+            let el = this;
             while (el) {
                 if (!el) break;
                 if (matches.call(el, s)) {
@@ -803,15 +780,15 @@ $.fn.extend({
     },
 
     has: function(selector){
-        var res = [];
+        let res = [];
 
         if (this.length === 0) {
             return ;
         }
 
         this.each(function(){
-            var el = $(this);
-            var child = el.children(selector);
+            const el = $(this);
+            const child = el.children(selector);
             if (child.length > 0) {
                 res.push(this);
             }
@@ -821,7 +798,7 @@ $.fn.extend({
     },
 
     back: function(to_start){
-        var ret;
+        let ret;
         if (to_start === true) {
             ret = this._prevObj;
             while (ret) {
@@ -836,12 +813,12 @@ $.fn.extend({
 });
 
 function createScript(script){
-    var s = document.createElement('script');
+    const s = document.createElement('script');
     s.type = 'text/javascript';
 
     if (not(script)) return $(s);
 
-    var _script = $(script)[0];
+    const _script = $(script)[0];
 
     if (_script.src) {
         s.src = _script.src;
@@ -863,7 +840,7 @@ $.extend({
             return createScript();
         }
 
-        var _el = $(el)[0];
+        const _el = $(el)[0];
 
         if (_el.tagName && _el.tagName === "SCRIPT") {
             createScript(_el);
@@ -892,7 +869,7 @@ $.fn.extend({
         }
 
         return this.each(function(){
-            var el = this;
+            const el = this;
 
             el[prop] = value;
 
@@ -912,7 +889,7 @@ $.fn.extend({
         }
 
         return this.each(function(){
-            var el = $(this);
+            const el = $(this);
             if (typeof this.value !== "undefined") {
                 this.value = value;
             } else {
@@ -922,7 +899,7 @@ $.fn.extend({
     },
 
     html: function(value){
-        var that = this, v = [];
+        const that = this, v = [];
 
         if (arguments.length === 0) {
             return this._prop('innerHTML');
@@ -965,13 +942,13 @@ $.fn.extend({
 });
 
 $.each = function(ctx, cb){
-    var index = 0;
+    let index = 0;
     if (isArrayLike(ctx)) {
         [].forEach.call(ctx, function(val, key) {
             cb.apply(val, [key, val]);
         });
     } else {
-        for(var key in ctx) {
+        for(const key in ctx) {
             if (hasProp(ctx, key))
                 cb.apply(ctx[key], [key, ctx[key],  index++]);
         }
@@ -993,7 +970,7 @@ $.fn.extend({
  * Copyright (c) Copyright JS Foundation and other contributors, https://js.foundation/
  * Licensed under MIT
  */
-var Data = function(ns){
+const Data = function(ns){
     this.expando = "DATASET:UID:" + ns.toUpperCase();
     Data.uid++;
 };
@@ -1002,7 +979,7 @@ Data.uid = -1;
 
 Data.prototype = {
     cache: function(owner){
-        var value = owner[this.expando];
+        let value = owner[this.expando];
         if (!value) {
             value = {};
             if (acceptData(owner)) {
@@ -1020,7 +997,7 @@ Data.prototype = {
     },
 
     set: function(owner, data, value){
-        var prop, cache = this.cache(owner);
+        let prop, cache = this.cache(owner);
 
         if (typeof data === "string") {
             cache[camelCase(data)] = value;
@@ -1046,7 +1023,7 @@ Data.prototype = {
     },
 
     remove: function(owner, key){
-        var i, cache = owner[this.expando];
+        let i, cache = owner[this.expando];
         if (cache === undefined) {
             return ;
         }
@@ -1076,12 +1053,12 @@ Data.prototype = {
     },
 
     hasData: function(owner){
-        var cache = owner[ this.expando ];
+        const cache = owner[ this.expando ];
         return cache !== undefined && !isEmptyObject( cache );
     }
 };
 
-var dataSet = new Data('m4q');
+const dataSet = new Data('m4q');
 
 $.extend({
     hasData: function(elem){
@@ -1107,7 +1084,7 @@ $.extend({
 
 $.fn.extend({
     data: function(key, val){
-        var res, elem, data, attrs, name, i;
+        let res, elem, data, attrs, name, i;
 
         if (this.length === 0) {
             return ;
@@ -1171,7 +1148,7 @@ $.fn.extend({
         }
 
         if (not(value)) {
-            var res = $.data(this[0], "origin-"+name);
+            const res = $.data(this[0], "origin-"+name);
             return !not(res) ? res : def;
         }
 
@@ -1190,19 +1167,19 @@ $.extend({
     isPrivateAddress: isPrivateAddress,
 
     uniqueId: function (prefix) {
-        var d = new Date().getTime();
+        let d = new Date().getTime();
         if (not(prefix)) {
             prefix = 'm4q';
         }
         return (prefix !== '' ? prefix + '-' : '') + 'xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            var r = (d + Math.random() * 16) % 16 | 0;
+            const r = (d + Math.random() * 16) % 16 | 0;
             d = Math.floor(d / 16);
             return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
         });
     },
 
     toArray: function(n){
-        var i, out = [];
+        let i, out = [];
 
         for (i = 0 ; i < n.length; i++ ) {
             out.push(n[i]);
@@ -1212,7 +1189,7 @@ $.extend({
     },
 
     import: function(ctx){
-        var res = [];
+        const res = [];
         this.each(ctx, function(){
             res.push(this);
         });
@@ -1220,7 +1197,7 @@ $.extend({
     },
 
     merge: function( first, second ) {
-        var len = +second.length,
+        let len = +second.length,
             j = 0,
             i = first.length;
 
@@ -1280,12 +1257,12 @@ $.extend({
     dark: globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: dark)').matches,
 
     serializeToArray: function(form){
-        var _form = $(form)[0];
+        const _form = $(form)[0];
         if (!_form || _form.nodeName !== "FORM") {
             console.warn("Element is not a HTMLFromElement");
             return;
         }
-        var i, j, q = [];
+        let i, j, q = [];
         for (i = _form.elements.length - 1; i >= 0; i = i - 1) {
             if (_form.elements[i].name === "") {
                 continue;
@@ -1336,36 +1313,6 @@ $.extend({
     },
     serialize: function(form){
         return $.serializeToArray(form).join("&");
-    },
-    compose: function(...functions){
-        return (first) => functions.reduceRight((acc, fn) => fn(acc), first);
-    },
-    pipe: function(...functions){
-        return (first) => functions.reduce((acc, fn) => fn(acc), first);
-    },
-    curry: function(func){
-        return function curried(...args) {
-            if (args.length >= func.length) {
-                return func.apply(this, args);
-            } else {
-                return function(...args2) {
-                    return curried.apply(this, args.concat(args2));
-                };
-            }
-        };
-    },
-    memoize: function(fn){
-        const cache = new Map()
-        return function (...args) {
-            const key = "" + args.length + args.join("+")
-            if (cache.has(key)) {
-                return cache.get(key);
-            } else {
-                const result = fn.apply(this, args)
-                cache.set(key, result);
-                return result
-            }
-        }
     }
 });
 
@@ -1375,23 +1322,8 @@ $.fn.extend({
     }
 });
 
-(function () {
-    if ( typeof window.CustomEvent === "function" ) return false;
-
-    function CustomEvent ( event, params ) {
-        params = params || { bubbles: false, cancelable: false, detail: null };
-        var evt = document.createEvent( 'CustomEvent' );
-        evt.initCustomEvent( event, params.bubbles, params.cancelable, params.detail );
-        return evt;
-    }
-
-    CustomEvent.prototype = window.Event.prototype;
-
-    window.CustomEvent = CustomEvent;
-})();
-
-var overriddenStop =  Event.prototype.stopPropagation;
-var overriddenPrevent =  Event.prototype.preventDefault;
+const overriddenStop =  Event.prototype.stopPropagation;
+const overriddenPrevent =  Event.prototype.preventDefault;
 
 Event.prototype.stopPropagation = function(){
     this.isPropagationStopped = true;
@@ -1416,7 +1348,7 @@ $.extend({
     * el, eventName, handler, selector, ns, id, options
     * */
     setEventHandler: function(obj){
-        var i, freeIndex = -1, eventObj, resultIndex;
+        let i, freeIndex = -1, eventObj, resultIndex;
         if (this.events.length > 0) {
             for(i = 0; i < this.events.length; i++) {
                 if (this.events[i].handler === null) {
@@ -1492,7 +1424,7 @@ $.extend({
     },
 
     removeEventHooks: function(event){
-        var that = this;
+        const that = this;
         if (not(event)) {
             this.eventHooks = {};
         } else {
@@ -1522,9 +1454,9 @@ $.fn.extend({
         }
 
         return this.each(function(){
-            var el = this;
+            const el = this;
             $.each(str2arr(eventsList), function(){
-                var h, ev = this,
+                let h, ev = this,
                     event = ev.split("."),
                     name = normName(event[0]),
                     ns = options.ns ? options.ns : event[1],
@@ -1533,9 +1465,9 @@ $.fn.extend({
                 $.eventUID++;
 
                 h = function(e){
-                    var target = e.target;
-                    var beforeHook = $.eventHooks[camelCase("before-"+name)];
-                    var afterHook = $.eventHooks[camelCase("after-"+name)];
+                    let target = e.target;
+                    const beforeHook = $.eventHooks[camelCase("before-"+name)];
+                    const afterHook = $.eventHooks[camelCase("after-"+name)];
 
                     if (typeof beforeHook === "function") {
                         beforeHook.call(target, e);
@@ -1611,9 +1543,9 @@ $.fn.extend({
 
         if (not(eventsList) || eventsList.toLowerCase() === 'all') {
             return this.each(function(){
-                var el = this;
+                const el = this;
                 $.each($.events, function(){
-                    var e = this;
+                    const e = this;
                     if (e.element === el) {
                         el.removeEventListener(e.event, e.handler, e.options);
                         e.handler = null;
@@ -1624,9 +1556,9 @@ $.fn.extend({
         }
 
         return this.each(function(){
-            var el = this;
+            const el = this;
             $.each(str2arr(eventsList), function(){
-                var evMap = this.split("."),
+                let evMap = this.split("."),
                     name = normName(evMap[0]),
                     ns = options.ns ? options.ns : evMap[1],
                     originEvent, index;
@@ -1649,7 +1581,7 @@ $.fn.extend({
     },
 
     fire: function(name, data){
-        var _name, e;
+        let _name, e;
 
         if (this.length === 0) {
             return ;
@@ -1662,17 +1594,11 @@ $.fn.extend({
             return this;
         }
 
-        if (typeof CustomEvent !== "undefined") {
-            e = new CustomEvent(_name, {
-                bubbles: true,
-                cancelable: true,
-                detail: data
-            });
-        } else {
-            e = document.createEvent('Events');
-            e.detail = data;
-            e.initEvent(_name, true, true);
-        }
+        e = new CustomEvent(_name, {
+            bubbles: true,
+            cancelable: true,
+            detail: data
+        });
 
         return this.each(function(){
             this.dispatchEvent(e);
@@ -1742,37 +1668,39 @@ $.fn.extend({
 
 $.ajax = function(p){
     return new Promise(function(resolve, reject){
-        var xhr = new XMLHttpRequest(), data;
-        var method = (p.method || "GET").toUpperCase();
-        var headers = [];
-        var async = not(p.async) ? true : p.async;
-        var url = p.url;
+        const xhr = new XMLHttpRequest()
+        let method = (p.method || "GET").toUpperCase();
+        const headers = [];
+        const async = not(p.async) ? true : p.async;
+        let url = p.url;
 
-        var exec = function(fn, params){
+        let data;
+
+        const exec = function(fn, params){
             if (typeof fn === "function") {
                 fn.apply(null, params);
             }
         };
 
-        var isGet = function(method){
+        const isGet = function(method){
             return ["GET", "JSON"].indexOf(method) !== -1;
         };
 
-        var plainObjectToData = function(obj){
-            var _data = [];
+        const plainObjectToData = function(obj){
+            const _data = [];
             $.each(obj, function(k, v){
-                var _v = isSimple(v) ? v : JSON.stringify(v);
+                const _v = isSimple(v) ? v : JSON.stringify(v);
                 _data.push(k+"=" + _v);
             });
             return _data.join("&");
         };
 
         if (p.data instanceof HTMLFormElement) {
-            var _action = p.data.getAttribute("action");
-            var _method = p.data.getAttribute("method");
+            let _action = p.data.getAttribute("action").trim();
+            let _method = p.data.getAttribute("method").trim();
 
-            if (not(url) && _action && _action.trim() !== "") {url = _action;}
-            if (_method && _method.trim() !== "") {method = _method.toUpperCase();}
+            if (not(url) && _action) {url = _action;}
+            if (_method) {method = _method.toUpperCase();}
         }
 
 
@@ -1787,9 +1715,9 @@ $.ajax = function(p){
         if (p.data instanceof HTMLFormElement) {
             data = $.serialize(p.data);
         } else if (p.data instanceof HTMLElement && p.data.getAttribute("type") && p.data.getAttribute("type").toLowerCase() === "file") {
-            var _name = p.data.getAttribute("name");
+            const _name = p.data.getAttribute("name");
             data = new FormData();
-            for (var i = 0; i < p.data.files.length; i++) {
+            for (let i = 0; i < p.data.files.length; i++) {
                 data.append(_name, p.data.files[i]);
             }
         } else if (isPlainObject(p.data)) {
@@ -1823,7 +1751,7 @@ $.ajax = function(p){
 
         xhr.addEventListener("load", function(e){
             if (xhr.readyState === 4 && xhr.status < 300) {
-                var _return = p.returnValue && p.returnValue === 'xhr' ? xhr : xhr.response;
+                let _return = p.returnValue && p.returnValue === 'xhr' ? xhr : xhr.response;
                 if (p.parseJson) {
                     try {
                         _return = JSON.parse(_return);
@@ -1841,7 +1769,7 @@ $.ajax = function(p){
         });
 
         $.each(["readystatechange", "error", "timeout", "progress", "loadstart", "loadend", "abort"], function(){
-            var ev = camelCase("on-"+(this === 'readystatechange' ? 'state' : this));
+            const ev = camelCase("on-"+(this === 'readystatechange' ? 'state' : this));
             xhr.addEventListener(ev, function(e){
                 exec(p[ev], [e, xhr]);
             });
@@ -1849,14 +1777,13 @@ $.ajax = function(p){
     });
 };
 
-['get', 'post', 'put', 'patch', 'delete', 'json'].forEach(function(method){
-    $[method] = function(url, data, options){
-        var _method = method.toUpperCase();
-        var _options = {
-            method: _method === 'JSON' ? 'GET' : _method,
+['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'JSON'].forEach(function(method){
+    $[method.toLowerCase()] = function(url, data, options){
+        const _options = {
+            method: method === 'JSON' ? 'GET' : method,
             url: url,
             data: data,
-            parseJson: _method === 'JSON'
+            parseJson: method === 'JSON'
         };
         return $.ajax($.extend({}, _options, options));
     };
@@ -1864,7 +1791,7 @@ $.ajax = function(p){
 
 $.fn.extend({
     load: function(url, data, options){
-        var that = this;
+        const that = this;
 
         if (this.length && this[0].self === window ) {
             return $.load(url);
@@ -1881,7 +1808,7 @@ $.fn.extend({
 $.fn.extend({
 
     style: function(name, pseudo){
-        var el;
+        let el;
 
         function _getStyle(el, prop, pseudo){
             return ["scrollLeft", "scrollTop"].indexOf(prop) > -1 ? $(el)[prop]() : getComputedStyle(el, pseudo)[prop];
@@ -1900,14 +1827,14 @@ $.fn.extend({
         if (not(name) || name === "all") {
             return getComputedStyle(el, pseudo);
         } else {
-            var result = {}, names = name.split(", ").map(function(el){
+            let result = {}, names = name.split(", ").map(function(el){
                 return (""+el).trim();
             });
             if (names.length === 1)  {
                 return _getStyle(el, names[0], pseudo);
             } else {
                 $.each(names, function () {
-                    var prop = this;
+                    const prop = this;
                     result[this] = _getStyle(el, prop, pseudo);
                 });
                 return result;
@@ -1917,12 +1844,12 @@ $.fn.extend({
 
     removeStyleProperty: function(name){
         if (not(name) || this.length === 0) return this;
-        var names = name.split(", ").map(function(el){
+        const names = name.split(", ").map(function(el){
             return (""+el).trim();
         });
 
         return this.each(function(){
-            var el = this;
+            const el = this;
             $.each(names, function(){
                 el.style.removeProperty(this);
             });
@@ -1937,7 +1864,7 @@ $.fn.extend({
         }
 
         return this.each(function(){
-            var el = this;
+            const el = this;
             if (typeof key === "object") {
                 $.each(key, function(key, val){
                     setStyleProp(el, key, val);
@@ -1950,7 +1877,7 @@ $.fn.extend({
 
     scrollTop: function(val){
         if (not(val)) {
-            return this.length === 0 ? undefined : this[0] === window ? pageYOffset : this[0].scrollTop;
+            return this.length === 0 ? undefined : this[0] === window ? scrollY : this[0].scrollTop;
         }
         return this.each(function(){
             this.scrollTop = val;
@@ -1959,7 +1886,7 @@ $.fn.extend({
 
     scrollLeft: function(val){
         if (not(val)) {
-            return this.length === 0 ? undefined : this[0] === window ? pageXOffset : this[0].scrollLeft;
+            return this.length === 0 ? undefined : this[0] === window ? scrollX : this[0].scrollLeft;
         }
         return this.each(function(){
             this.scrollLeft = val;
@@ -1979,8 +1906,8 @@ $.fn.extend({
     },
 
     hasClass: function(cls){
-        var result = false;
-        var classes = cls.split(" ").filter(function(v){
+        let result = false;
+        const classes = cls.split(" ").filter(function(v){
             return (""+v).trim() !== "";
         });
 
@@ -1989,7 +1916,7 @@ $.fn.extend({
         }
 
         this.each(function(){
-            var el = this;
+            const el = this;
 
             $.each(classes, function(){
                 if (!result && el.classList && el.classList.contains(this)) {
@@ -2013,10 +1940,10 @@ $.fn.extend({
 
     removeClassBy: function(mask){
         return this.each(function(){
-            var el = $(this);
-            var classes = el.cls(true);
+            const el = $(this);
+            const classes = el.cls(true);
             $.each(classes, function(){
-                var elClass = this;
+                const elClass = this;
                 if (elClass.indexOf(mask) > -1) {
                     el.removeClass(elClass);
                 }
@@ -2025,8 +1952,8 @@ $.fn.extend({
     },
 
     classNames: function(){
-        var args = Array.prototype.slice.call(arguments, 0);
-        var classes = []
+        const args = Array.prototype.slice.call(arguments, 0);
+        const classes = []
         $.each(args, function(_, a){
             if (typeof a === "string") {
                 classes.push(a)
@@ -2048,15 +1975,15 @@ $.fn.extend({
 
 ['add', 'remove', 'toggle'].forEach(function (method) {
     $.fn[method + "Class"] = function(cls){
-        var _classes = !cls
+        const _classes = !cls
             ? []
             : Array.isArray(cls)
                 ? cls
                 : cls.split(" ").filter(function (v) { return !!v; })
         if (!_classes.length) return this;
         return this.each(function(){
-            var el = this;
-            var hasClassList = typeof el.classList !== "undefined";
+            const el = this;
+            const hasClassList = typeof el.classList !== "undefined";
 
             if (hasClassList) {
                 $.each(_classes, function(_, v){
@@ -2071,8 +1998,8 @@ $.fn.extend({
 
 
 $.parseHTML = function(data){
-    var base, singleTag, result = [], ctx, _context;
-    var regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i; // eslint-disable-line
+    let base, singleTag, result = [], ctx, _context;
+    const regexpSingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i; // eslint-disable-line
 
     if (typeof data !== "string") {
         return [];
@@ -2092,7 +2019,7 @@ $.parseHTML = function(data){
         result.push(document.createElement(singleTag[1]));
     } else {
         _context.innerHTML = data;
-        for(var i = 0; i < _context.childNodes.length; i++) {
+        for(let i = 0; i < _context.childNodes.length; i++) {
             result.push(_context.childNodes[i]);
         }
     }
@@ -2107,7 +2034,7 @@ $.fn.extend({
 
         if (not(val)) {
 
-            var el = this[0];
+            const el = this[0];
 
             if (prop === 'height') {
                 return el === window ? window.innerHeight : el === document ? el.body.clientHeight : parseInt(getComputedStyle(el).height);
@@ -2118,7 +2045,7 @@ $.fn.extend({
         }
 
         return this.each(function(){
-            var el = this;
+            const el = this;
             if (el === window || el === document) {return ;}
             el.style[prop] = isNaN(val) ? val : val + 'px';
         });
@@ -2133,7 +2060,7 @@ $.fn.extend({
     },
 
     _sizeOut: function(prop, val){
-        var el, size, style, result;
+        let el, size, style, result;
 
         if (this.length === 0) {
             return ;
@@ -2141,9 +2068,9 @@ $.fn.extend({
 
         if (!not(val) && typeof val !== "boolean") {
             return this.each(function(){
-                var el = this;
+                const el = this;
                 if (el === window || el === document) {return ;}
-                var h, style = getComputedStyle(el),
+                let h, style = getComputedStyle(el),
                     bs = prop === 'width' ? parseInt(style['border-left-width']) + parseInt(style['border-right-width']) : parseInt(style['border-top-width']) + parseInt(style['border-bottom-width']),
                     pa = prop === 'width' ? parseInt(style['padding-left']) + parseInt(style['padding-right']) : parseInt(style['padding-top']) + parseInt(style['padding-bottom']);
 
@@ -2169,7 +2096,7 @@ $.fn.extend({
 
     padding: function(p){
         if (this.length === 0) return;
-        var s = getComputedStyle(this[0], p);
+        const s = getComputedStyle(this[0], p);
 
         return {
             top: parseInt(s["padding-top"]),
@@ -2181,7 +2108,7 @@ $.fn.extend({
 
     margin: function(p){
         if (this.length === 0) return;
-        var s = getComputedStyle(this[0], p);
+        const s = getComputedStyle(this[0], p);
 
         return {
             top: parseInt(s["margin-top"]),
@@ -2193,7 +2120,7 @@ $.fn.extend({
 
     border: function(p){
         if (this.length === 0) return;
-        var s = getComputedStyle(this[0], p);
+        const s = getComputedStyle(this[0], p);
 
         return {
             top: parseInt(s["border-top-width"]),
@@ -2206,19 +2133,19 @@ $.fn.extend({
 
 $.fn.extend({
     offset: function(val){
-        var rect;
+        let rect;
 
         if (not(val)) {
             if (this.length === 0) return undefined;
             rect = this[0].getBoundingClientRect();
             return {
-                top: rect.top + pageYOffset,
-                left: rect.left + pageXOffset
+                top: rect.top + scrollY,
+                left: rect.left + scrollX
             };
         }
 
         return this.each(function(){ //?
-            var el = $(this),
+            let el = $(this),
                 top = val.top,
                 left = val.left,
                 position = getComputedStyle(this).position,
@@ -2241,7 +2168,7 @@ $.fn.extend({
     },
 
     position: function(margin){
-        var ml = 0, mt = 0, el, style;
+        let ml = 0, mt = 0, el, style;
 
         if (not(margin) || typeof margin !== "boolean") {
             margin = false;
@@ -2312,7 +2239,7 @@ $.fn.extend({
 
 $.fn.extend({
     attr: function(name, val){
-        var attributes = {};
+        const attributes = {};
 
         if (this.length === 0 && arguments.length === 0) {
             return undefined;
@@ -2330,7 +2257,7 @@ $.fn.extend({
         }
 
         return this.each(function(){
-            var el = this;
+            const el = this;
             if (isPlainObject(name)) {
                 $.each(name, function(k, v){
                     el.setAttribute(k, v);
@@ -2343,11 +2270,11 @@ $.fn.extend({
     },
 
     removeAttr: function(name){
-        var attributes;
+        let attributes;
 
         if (not(name)) {
             return this.each(function(){
-                var el = this;
+                const el = this;
                 $.each(this.attributes, function(){
                     el.removeAttribute(this);
                 });
@@ -2359,7 +2286,7 @@ $.fn.extend({
         }) : name;
 
         return this.each(function(){
-            var el = this;
+            const el = this;
             $.each(attributes, function(){
                 if (el.hasAttribute(this)) el.removeAttribute(this);
             });
@@ -2368,7 +2295,7 @@ $.fn.extend({
 
     toggleAttr: function(name, val){
         return this.each(function(){
-            var el = this;
+            const el = this;
 
             if (not(val)) {
                 el.removeAttribute(name);
@@ -2436,13 +2363,7 @@ $.extend({
 });
 
 $.extend({
-    proxy: function(fn, ctx){
-        return typeof fn !== "function" ? undefined : fn.bind(ctx);
-    },
-
-    bind: function(fn, ctx){
-        return this.proxy(fn, ctx);
-    }
+    bind: (fn, ctx) => fn.bind(ctx)
 });
 
 
@@ -2458,11 +2379,11 @@ $.extend({
                 enumerable: true,
                 writable: true,
                 value: function () {
-                    var argArr = Array.prototype.slice.call(arguments),
+                    const argArr = Array.prototype.slice.call(arguments),
                         docFrag = document.createDocumentFragment();
 
                     argArr.forEach(function (argItem) {
-                        var isNode = argItem instanceof Node;
+                        const isNode = argItem instanceof Node;
                         docFrag.appendChild(isNode ? argItem : document.createTextNode(String(argItem)));
                     });
 
@@ -2476,8 +2397,8 @@ $.extend({
     });
 })([Element.prototype, Document.prototype, DocumentFragment.prototype]);
 
-var normalizeElements = function(s){
-    var result;
+const normalizeElements = function(s){
+    let result;
 
     if (typeof s === "string") result = $.isSelector(s) ? $(s) : $.parseHTML(s);
     else if (s instanceof HTMLElement) result = [s];
@@ -2500,12 +2421,12 @@ $.fn.extend({
     },
 
     append: function(elements){
-        var _elements = normalizeElements(elements);
+        const _elements = normalizeElements(elements);
 
         return this.each(function(elIndex, el){
             $.each(_elements, function(){
                 if (el === this) return ;
-                var child = elIndex === 0 ? this : this.cloneNode(true);
+                const child = elIndex === 0 ? this : this.cloneNode(true);
                 $.script(child);
                 if (child.tagName && child.tagName !== "SCRIPT") el.append(child);
             });
@@ -2513,10 +2434,10 @@ $.fn.extend({
     },
 
     appendTo: function(elements){
-        var _elements = normalizeElements(elements);
+        const _elements = normalizeElements(elements);
 
         return this.each(function(){
-            var el = this;
+            const el = this;
             $.each(_elements, function(parIndex, parent){
                 if (el === this) return ;
                 parent.append(parIndex === 0 ? el : el.cloneNode(true));
@@ -2525,12 +2446,12 @@ $.fn.extend({
     },
 
     prepend: function(elements){
-        var _elements = normalizeElements(elements);
+        const _elements = normalizeElements(elements);
 
         return this.each(function (elIndex, el) {
             $.each(_elements, function(){
                 if (el === this) return ;
-                var child = elIndex === 0 ? this : this.cloneNode(true);
+                const child = elIndex === 0 ? this : this.cloneNode(true);
                 $.script(child);
                 if (child.tagName && child.tagName !== "SCRIPT") el.prepend(child);
             });
@@ -2538,10 +2459,10 @@ $.fn.extend({
     },
 
     prependTo: function(elements){
-        var _elements = normalizeElements(elements);
+        const _elements = normalizeElements(elements);
 
         return this.each(function(){
-            var el = this;
+            const el = this;
             $.each(_elements, function(parIndex, parent){
                 if (el === this) return ;
                 $(parent).prepend(parIndex === 0 ? el : el.cloneNode(true));
@@ -2550,13 +2471,13 @@ $.fn.extend({
     },
 
     insertBefore: function(elements){
-        var _elements = normalizeElements(elements);
+        const _elements = normalizeElements(elements);
 
         return this.each(function(){
-            var el = this;
+            const el = this;
             $.each(_elements, function(elIndex){
                 if (el === this) return ;
-                var parent = this.parentNode;
+                const parent = this.parentNode;
                 if (parent) {
                     parent.insertBefore(elIndex === 0 ? el : el.cloneNode(true), this);
                 }
@@ -2565,13 +2486,13 @@ $.fn.extend({
     },
 
     insertAfter: function(elements){
-        var _elements = normalizeElements(elements);
+        const _elements = normalizeElements(elements);
 
         return this.each(function(){
-            var el = this;
+            const el = this;
             $.each(_elements, function(elIndex, element){
                 if (el === this) return ;
-                var parent = this.parentNode;
+                const parent = this.parentNode;
                 if (parent) {
                     parent.insertBefore(elIndex === 0 ? el : el.cloneNode(true), element.nextSibling);
                 }
@@ -2581,7 +2502,7 @@ $.fn.extend({
 
     after: function(html){
         return this.each(function(){
-            var el = this;
+            const el = this;
             if (typeof html === "string") {
                 el.insertAdjacentHTML('afterend', html);
             } else {
@@ -2592,7 +2513,7 @@ $.fn.extend({
 
     before: function(html){
         return this.each(function(){
-            var el = this;
+            const el = this;
             if (typeof html === "string") {
                 el.insertAdjacentHTML('beforebegin', html);
             } else {
@@ -2602,7 +2523,7 @@ $.fn.extend({
     },
 
     clone: function(deep, withData){
-        var res = [];
+        const res = [];
         if (not(deep)) {
             deep = false;
         }
@@ -2610,9 +2531,9 @@ $.fn.extend({
             withData = false;
         }
         this.each(function(){
-            var el = this.cloneNode(deep);
-            var $el = $(el);
-            var data;
+            const el = this.cloneNode(deep);
+            const $el = $(el);
+            let data;
             if (withData && $.hasData(this)) {
                 data = $(this).data();
                 $.each(data, function(k, v){
@@ -2625,7 +2546,7 @@ $.fn.extend({
     },
 
     import: function(deep){
-        var res = [];
+        const res = [];
         if (not(deep)) {
             deep = false;
         }
@@ -2636,7 +2557,7 @@ $.fn.extend({
     },
 
     adopt: function(){
-        var res = [];
+        const res = [];
         this.each(function(){
             res.push(document.adoptNode(this));
         });
@@ -2644,7 +2565,7 @@ $.fn.extend({
     },
 
     remove: function(selector){
-        var i = 0, node, out, res = [];
+        let i = 0, node, out, res = [];
 
         if (this.length === 0) {
             return ;
@@ -2669,16 +2590,16 @@ $.fn.extend({
             return ;
         }
 
-        var wrapper = $(normalizeElements(el));
+        const wrapper = $(normalizeElements(el));
 
         if (!wrapper.length) {
             return ;
         }
 
-        var res = [];
+        const res = [];
 
         this.each(function(){
-            var _target, _wrapper;
+            let _target, _wrapper;
 
             _wrapper = wrapper.clone(true, true);
             _wrapper.insertBefore(this);
@@ -2696,7 +2617,7 @@ $.fn.extend({
     },
 
     wrapAll: function( el ){
-        var wrapper, _wrapper, _target;
+        let wrapper, _wrapper, _target;
 
         if (this.length === 0) {
             return ;
@@ -2728,18 +2649,18 @@ $.fn.extend({
             return ;
         }
 
-        var wrapper = $(normalizeElements(el));
+        const wrapper = $(normalizeElements(el));
 
         if (!wrapper.length) {
             return ;
         }
 
-        var res = [];
+        const res = [];
 
         this.each(function(){
-            var elem = $(this);
-            var html = elem.html();
-            var wrp = wrapper.clone(true, true);
+            const elem = $(this);
+            const html = elem.html();
+            const wrp = wrapper.clone(true, true);
             elem.html(wrp.html(html));
             res.push(wrp);
         });
@@ -2763,11 +2684,11 @@ if (typeof window["setupAnimation"] === 'object') {
     });
 }
 
-var transformProps = ['translateX', 'translateY', 'translateZ', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'scale', 'scaleX', 'scaleY', 'scaleZ', 'skew', 'skewX', 'skewY'];
-var numberProps = ['opacity', 'zIndex'];
-var floatProps = ['opacity', 'volume'];
-var scrollProps = ["scrollLeft", "scrollTop"];
-var reverseProps = ["opacity", "volume"];
+const transformProps = ['translateX', 'translateY', 'translateZ', 'rotate', 'rotateX', 'rotateY', 'rotateZ', 'scale', 'scaleX', 'scaleY', 'scaleZ', 'skew', 'skewX', 'skewY'];
+const numberProps = ['opacity', 'zIndex'];
+const floatProps = ['opacity', 'volume'];
+const scrollProps = ["scrollLeft", "scrollTop"];
+const reverseProps = ["opacity", "volume"];
 
 function _validElement(el) {
     return el instanceof HTMLElement || el instanceof SVGElement;
@@ -2781,11 +2702,11 @@ function _validElement(el) {
  * @private
  */
 function _getRelativeValue (to, from) {
-    var operator = /^(\*=|\+=|-=)/.exec(to);
+    const operator = /^(\*=|\+=|-=)/.exec(to);
     if (!operator) return to;
-    var u = getUnit(to) || 0;
-    var x = parseFloat(from);
-    var y = parseFloat(to.replace(operator[0], ''));
+    const u = getUnit(to) || 0;
+    const x = parseFloat(from);
+    const y = parseFloat(to.replace(operator[0], ''));
     switch (operator[0][0]) {
         case '+':
             return x + y + u;
@@ -2871,16 +2792,13 @@ function _applyStyles (el, mapProps, p) {
  */
 function _getElementTransforms (el) {
     if (!_validElement(el)) return {};
-    var str = el.style.transform || '';
-    var reg = /(\w+)\(([^)]*)\)/g;
-    var transforms = {};
-    var m;
+    const str = el.style.transform || '';
+    const reg = /(\w+)\(([^)]*)\)/g;
+    const transforms = {};
+    let m;
 
-    /* jshint ignore:start */
-    // eslint-disable-next-line
     while (m = reg.exec(str))
         transforms[m[1]] = m[2];
-    /* jshint ignore:end */
 
     return transforms;
 }
@@ -2892,9 +2810,9 @@ function _getElementTransforms (el) {
  * @private
  */
 function _getColorArrayFromHex (val){
-    var a = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(val ? val : "#000000");
+    const a = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(val ? val : "#000000");
     return a.slice(1).map(function(v) {
-            return parseInt(v, 16);
+        return parseInt(v, 16);
     });
 }
 
@@ -2919,11 +2837,11 @@ function _getColorArrayFromElement (el, key) {
  * @private
  */
 function _applyTransform (el, mapProps, p) {
-    var t = [];
-    var elTransforms = _getElementTransforms(el);
+    const t = [];
+    const elTransforms = _getElementTransforms(el);
 
     $.each(mapProps, function(key, val) {
-        var from = val[0], to = val[1], delta = val[2], unit = val[3];
+        let from = val[0], to = val[1], delta = val[2], unit = val[3];
         key = "" + key;
 
         if ( key.indexOf("rotate") > -1 || key.indexOf("skew") > -1) {
@@ -2963,7 +2881,7 @@ function _applyTransform (el, mapProps, p) {
  */
 function _applyColors (el, mapProps, p) {
     $.each(mapProps, function (key, val) {
-        var i, result = [0, 0, 0], v;
+        let i, result = [0, 0, 0], v;
         for (i = 0; i < 3; i++) {
             result[i] = Math.floor(val[0][i] + (val[2][i] * p));
         }
@@ -2979,7 +2897,7 @@ function _applyColors (el, mapProps, p) {
  * @private
  */
 function _expandColorValue (val) {
-    var regExp = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    const regExp = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
     if (val[0] === "#" && val.length === 4) {
         return "#" + val.replace(regExp, function(m, r, g, b) {
             return r + r + g + g + b + b;
@@ -3008,13 +2926,13 @@ function applyProps (el, map, p) {
  * @returns {{transform: {}, color: {}, props: {}}}
  */
 function createAnimationMap (el, draw, dir) {
-    var map = {
+    const map = {
         props: {},
         transform: {},
         color: {}
     };
-    var i, from, to, delta, unit, temp;
-    var elTransforms = _getElementTransforms(el);
+    let i, from, to, delta, unit, temp;
+    const elTransforms = _getElementTransforms(el);
 
     if (not(dir)) {
         dir = "normal";
@@ -3022,9 +2940,9 @@ function createAnimationMap (el, draw, dir) {
 
     $.each(draw, function(key, val) {
 
-        var isTransformProp = transformProps.indexOf(""+key) > -1;
-        var isNumProp = numberProps.indexOf(""+key) > -1;
-        var isColorProp = (""+key).toLowerCase().indexOf("color") > -1;
+        const isTransformProp = transformProps.indexOf(""+key) > -1;
+        const isNumProp = numberProps.indexOf(""+key) > -1;
+        const isColorProp = (""+key).toLowerCase().indexOf("color") > -1;
 
         if (Array.isArray(val) && val.length === 1) {
             val = val[0];
@@ -3036,7 +2954,7 @@ function createAnimationMap (el, draw, dir) {
             } else if (isColorProp) {
                 from = _getColorArrayFromElement(el, key);
             } else {
-                from = _getStyle(el, key);
+                from = _getStyle(el, key, undefined);
             }
             from = !isColorProp ? parseUnit(from) : from;
             to = !isColorProp ? parseUnit(_getRelativeValue(val, Array.isArray(from) ? from[0] : from)) : _getColorArrayFromHex(val);
@@ -3082,13 +3000,13 @@ function minMax(val, min, max) {
     return Math.min(Math.max(val, min), max);
 }
 
-var Easing = {
+const Easing = {
     linear: function(){return function(t) {return t;};}
 };
 
 Easing.default = Easing.linear;
 
-var eases = {
+const eases = {
     Sine: function(){
         return function(t){
             return 1 - Math.cos(t * Math.PI / 2);
@@ -3106,8 +3024,7 @@ var eases = {
     },
     Bounce: function(){
         return function(t){
-            var pow2, b = 4;
-            // eslint-disable-next-line
+            let pow2, b = 4;
             while (t < (( pow2 = Math.pow(2, --b)) - 1) / 11) {}
             return 1 / Math.pow(4, 3 - b) - 7.5625 * Math.pow(( pow2 * 3 - 2 ) / 22 - t, 2);
         };
@@ -3120,8 +3037,8 @@ var eases = {
         if (not(period)) {
             period = 0.5;
         }
-        var a = minMax(amplitude, 1, 10);
-        var p = minMax(period, 0.1, 2);
+        const a = minMax(amplitude, 1, 10);
+        const p = minMax(period, 0.1, 2);
         return function(t){
             return (t === 0 || t === 1) ? t :
                 -a * Math.pow(2, 10 * (t - 1)) * Math.sin((((t - 1) - (p / (Math.PI * 2) * Math.asin(1 / a))) * (Math.PI * 2)) / p);
@@ -3138,7 +3055,7 @@ var eases = {
 });
 
 Object.keys(eases).forEach(function(name) {
-    var easeIn = eases[name];
+    const easeIn = eases[name];
     Easing['easeIn' + name] = easeIn;
     Easing['easeOut' + name] = function(a, b){
         return function(t){
@@ -3152,7 +3069,7 @@ Object.keys(eases).forEach(function(name) {
     };
 });
 
-var defaultAnimationProps = {
+let defaultAnimationProps = {
     id: null,
     el: null,
     draw: {},
@@ -3175,16 +3092,16 @@ var defaultAnimationProps = {
 
 function animate(args){
     return new Promise(function(resolve){
-        var that = this;
-        var props = $.assign({}, defaultAnimationProps, {dur: $.animation.duration, ease: $.animation.ease}, args);
-        var id = props.id, el = props.el, draw = props.draw, dur = props.dur, ease = props.ease, loop = props.loop,
+        const that = this;
+        const props = $.assign({}, defaultAnimationProps, {dur: $.animation.duration, ease: $.animation.ease}, args);
+        let id = props.id, el = props.el, draw = props.draw, dur = props.dur, ease = props.ease, loop = props.loop,
             onStart = props.onStart, onFrame = props.onFrame, onDone = props.onDone,
             pauseStart = props.pause, dir = props.dir, defer = props.defer;
-        var map = {};
-        var easeName = "linear", easeArgs = [], easeFn = Easing.linear, matchArgs;
-        var direction = dir === "alternate" ? "normal" : dir;
-        var replay = false;
-        var animationID = id ? id : +(performance.now() * Math.pow(10, 14));
+        let map = {};
+        let easeName = "linear", easeArgs = [], easeFn = Easing.linear, matchArgs;
+        let direction = dir === "alternate" ? "normal" : dir;
+        let replay = false;
+        let animationID = id ? id : +(performance.now() * Math.pow(10, 14));
 
         if (not(el)) {
             throw new Error("Unknown element!");
@@ -3228,7 +3145,7 @@ function animate(args){
             paused: 0
         };
 
-        var play = function() {
+        const play = function() {
             if (typeof draw === "object") {
                 map = createAnimationMap(el, draw, direction);
             }
@@ -3244,7 +3161,7 @@ function animate(args){
             $.animation.elements[animationID].id = requestAnimationFrame(animate);
         };
 
-        var done = function() {
+        const done = function() {
             cancelAnimationFrame($.animation.elements[animationID].id);
             delete $.animation.elements[id];
 
@@ -3255,11 +3172,9 @@ function animate(args){
             resolve(that);
         };
 
-        var animate = function(time) {
-            var p, t;
-            var stop = $.animation.elements[animationID].stop;
-            var pause = $.animation.elements[animationID].pause;
-            var start = $.animation.elements[animationID].started;
+        const animate = function(time) {
+            let p, t;
+            let {stop, pause, started: start} = $.animation.elements[animationID]
 
             if ($.animation.elements[animationID].paused) {
                 start = time - $.animation.elements[animationID].t * dur;
@@ -3278,7 +3193,6 @@ function animate(args){
 
             if (pause) {
                 $.animation.elements[animationID].id = requestAnimationFrame(animate);
-                // $.animation.elements[animationID].started = performance.now();
                 return;
             }
 
@@ -3350,7 +3264,7 @@ function animate(args){
 
 // Stop animation
 function stopAnimation(id, done){
-    var an = $.animation.elements[id];
+    const an = $.animation.elements[id];
 
     if (typeof an === "undefined") {
         return ;
@@ -3388,7 +3302,7 @@ function stopAnimationAll(done, filter){
 
 // Pause and resume animation
 function pauseAnimation(id){
-    var an = $.animation.elements[id];
+    const an = $.animation.elements[id];
 
     if (typeof an === "undefined") {
         return ;
@@ -3422,7 +3336,7 @@ function pauseAnimationAll(filter){
 // end of pause
 
 function resumeAnimation(id){
-    var an = $.animation.elements[id];
+    const an = $.animation.elements[id];
 
     if (typeof an === "undefined") {
         return ;
@@ -3456,7 +3370,7 @@ function resumeAnimationAll(filter){
 
 /* eslint-enable */
 
-var defaultChainOptions = {
+let defaultChainOptions = {
     loop: false,
     onChainItem: null,
     onChainItemComplete: null,
@@ -3464,7 +3378,7 @@ var defaultChainOptions = {
 }
 
 function chain(arr, opt){
-    var o = $.extend({}, defaultChainOptions, opt);
+    const o = $.extend({}, defaultChainOptions, opt);
 
     if (typeof o.loop !== "boolean") {
         o.loop--;
@@ -3475,7 +3389,7 @@ function chain(arr, opt){
         return false;
     }
 
-    var reducer = function(acc, item){
+    const reducer = function(acc, item){
         return acc.then(function(){
             if (typeof o["onChainItem"] === "function") {
                 o["onChainItem"](item);
@@ -3505,7 +3419,7 @@ $.extend($.easing, Easing);
 
 $.extend({
     animate: function(args){
-        var el, draw, dur, ease, cb;
+        let el, draw, dur, ease, cb;
 
         if (arguments.length > 1) {
             el = $(arguments[0])[0];
@@ -3550,24 +3464,24 @@ $.fn.extend({
      *
 
      args = {
-         draw: {} | function,
-         dur: 1000,
-         ease: "linear",
-         loop: 0,
-         pause: 0,
-         dir: "normal",
-         defer: 0,
-         onFrame: function,
-         onDone: function
+     draw: {} | function,
+     dur: 1000,
+     ease: "linear",
+     loop: 0,
+     pause: 0,
+     dir: "normal",
+     defer: 0,
+     onFrame: function,
+     onDone: function
      }
 
      * @returns {this}
      */
     animate: function(args){
-        var that = this;
-        var draw, dur, easing, cb;
-        var a = args;
-        var compatibilityMode;
+        const that = this;
+        let draw, dur, easing, cb;
+        const a = args;
+        let compatibilityMode;
 
         compatibilityMode = !Array.isArray(args) && (arguments.length > 1 || (arguments.length === 1 && typeof arguments[0].draw === 'undefined'));
 
@@ -3601,7 +3515,7 @@ $.fn.extend({
 
         if (Array.isArray(args)) {
             $.each(args, function(){
-                var a = this;
+                const a = this;
                 that.each(function(){
                     a.el = this;
                     $.animate(a);
@@ -3618,7 +3532,7 @@ $.fn.extend({
 
     chain: function(arr, loop){
         return this.each(function(){
-            var el = this;
+            const el = this;
             $.each(arr, function(){
                 this.el = el;
             });
@@ -3633,7 +3547,7 @@ $.fn.extend({
      */
     stop: function(done){
         return this.each(function(){
-            var el = this;
+            const el = this;
             $.each($.animation.elements, function(k, o){
                 if (o.element === el) {
                     stopAnimation(k, done);
@@ -3644,7 +3558,7 @@ $.fn.extend({
 
     pause: function(){
         return this.each(function(){
-            var el = this;
+            const el = this;
             $.each($.animation.elements, function(k, o){
                 if (o.element === el) {
                     pauseAnimation(k);
@@ -3655,7 +3569,7 @@ $.fn.extend({
 
     resume: function(){
         return this.each(function(){
-            var el = this;
+            const el = this;
             $.each($.animation.elements, function(k, o){
                 if (o.element === el) {
                     resumeAnimation(k);
@@ -3664,7 +3578,6 @@ $.fn.extend({
         });
     }
 });
-
 
 $.extend({
     hidden: function(el, val, cb){
@@ -3690,12 +3603,12 @@ $.extend({
     },
 
     hide: function(el, cb){
-        var $el = $(el);
+        const $el = $(el);
 
         el = $el[0]
 
-        var inline = el.style.display
-        var css = getComputedStyle(el, null).display
+        const inline = el.style.display
+        const css = getComputedStyle(el, null).display
 
         $el.origin('display', {
             inline,
@@ -3713,8 +3626,8 @@ $.extend({
     },
 
     show: function(el, cb){
-        var $el = $(el);
-        var display = $el.origin('display');
+        const $el = $(el);
+        const display = $el.origin('display');
 
         el = $(el)[0]
 
@@ -3757,14 +3670,14 @@ $.extend({
     },
 
     toggle: function(el, cb){
-        var func = getComputedStyle(el, null).display !== 'none' ? 'hide' : 'show';
+        const func = getComputedStyle(el, null).display !== 'none' ? 'hide' : 'show';
         return $[func](el, cb);
     }
 });
 
 $.fn.extend({
     hide: function(){
-        var callback;
+        let callback;
 
         $.each(arguments, function(){
             if (typeof this === 'function') {
@@ -3778,7 +3691,7 @@ $.fn.extend({
     },
 
     show: function(){
-        var callback;
+        let callback;
 
         $.each(arguments, function(){
             if (typeof this === 'function') {
@@ -3821,9 +3734,9 @@ $.extend({
 $.fn.extend({
     fadeIn: function(dur, easing, cb){
         return this.each(function(){
-            var el = this;
-            var $el = $(el);
-            var visible = !(!isVisible(el) || (isVisible(el) && +($el.style('opacity')) === 0));
+            const el = this;
+            const $el = $(el);
+            const visible = !(!isVisible(el) || (isVisible(el) && +($el.style('opacity')) === 0));
 
             if (not(dur) && not(easing) && not(cb)) {
                 cb = null;
@@ -3844,26 +3757,26 @@ $.fn.extend({
 
             if (visible) {
                 if (typeof cb === 'function') {
-                    $.proxy(cb, this)();
+                    $.bind(cb, this)();
                 }
                 return this;
             }
 
-            var originDisplay = $el.origin("display", undefined, 'block');
+            const originDisplay = $el.origin("display", undefined, 'block');
 
             el.style.opacity = "0";
             el.style.display = originDisplay;
 
             return $.animate({
-                el: el,
+                el,
                 draw: {
                     opacity: 1
                 },
-                dur: dur,
+                dur,
                 ease: easing,
                 onDone: function(){
                     if (typeof cb === 'function') {
-                        $.proxy(cb, this)();
+                        $.bind(cb, this)();
                     }
                 }
             });
@@ -3872,8 +3785,8 @@ $.fn.extend({
 
     fadeOut: function(dur, easing, cb){
         return this.each(function(){
-            var el = this;
-            var $el = $(el);
+            const el = this;
+            const $el = $(el);
 
             if (not(dur) && not(easing) && not(cb)) {
                 cb = null;
@@ -3892,23 +3805,23 @@ $.fn.extend({
 
             if ( !isVisible(el) ) {
                 if (typeof cb === 'function') {
-                    $.proxy(cb, this)();
+                    $.bind(cb, this)();
                 }
                 return this;
             }
 
             return $.animate({
-                el: el,
+                el,
                 draw: {
                     opacity: 0
                 },
-                dur: dur,
+                dur,
                 ease: easing,
                 onDone: function(){
                     this.style.display = 'none';
 
                     if (typeof cb === 'function') {
-                        $.proxy(cb, this)();
+                        $.bind(cb, this)();
                     }
                 }
             });
@@ -3917,9 +3830,9 @@ $.fn.extend({
 
     slideUp: function(dur, easing, cb){
         return this.each(function(){
-            var el = this;
-            var $el = $(el);
-            var currHeight;
+            const el = this;
+            const $el = $(el);
+            let currHeight;
 
             if ($el.height() === 0) return ;
 
@@ -3945,16 +3858,16 @@ $.fn.extend({
             });
 
             return $.animate({
-                el: el,
+                el,
                 draw: {
                     height: 0
                 },
-                dur: dur,
+                dur,
                 ease: easing,
                 onDone: function(){
                     $el.hide().removeStyleProperty("overflow, height");
                     if (typeof cb === 'function') {
-                        $.proxy(cb, this)();
+                        $.bind(cb, this)();
                     }
                 }
             });
@@ -3963,9 +3876,9 @@ $.fn.extend({
 
     slideDown: function(dur, easing, cb){
         return this.each(function(){
-            var el = this;
-            var $el = $(el);
-            var targetHeight, originDisplay;
+            const el = this;
+            const $el = $(el);
+            let targetHeight, originDisplay;
 
             if (not(dur) && not(easing) && not(cb)) {
                 cb = null;
@@ -3994,24 +3907,24 @@ $.fn.extend({
             });
 
             return $.animate({
-                el: el,
+                el,
                 draw: {
                     height: targetHeight
                 },
-                dur: dur,
+                dur,
                 ease: easing,
                 onDone: function(){
                     $(el).removeStyleProperty("overflow, height, visibility");
                     if (typeof cb === 'function') {
-                        $.proxy(cb, this)();
+                        $.bind(cb, this)();
                     }
                 }
             });
         });
     },
 
-    moveTo: function(x, y, dur, easing, cb){
-        var draw = {
+    moveTo: function(x, y, dur, ease, cb){
+        const draw = {
             top: y,
             left: x
         };
@@ -4019,54 +3932,54 @@ $.fn.extend({
         if (typeof dur === "function") {
             cb = dur;
             dur = $.animation.duration;
-            easing = $.animation.ease;
+            ease = $.animation.ease;
         }
 
-        if (typeof easing === "function") {
-            cb = easing;
-            easing = $.animation.ease;
+        if (typeof ease === "function") {
+            cb = ease;
+            ease = $.animation.ease;
         }
 
         return this.each(function(){
             $.animate({
                 el: this,
-                draw: draw,
-                dur: dur,
-                ease: easing,
+                draw,
+                dur,
+                ease,
                 onDone: cb
             });
         });
     },
 
-    centerTo: function(x, y, dur, easing, cb){
+    centerTo: function(x, y, dur, ease, cb){
         if (typeof dur === "function") {
             cb = dur;
             dur = $.animation.duration;
-            easing = $.animation.ease;
+            ease = $.animation.ease;
         }
 
-        if (typeof easing === "function") {
-            cb = easing;
-            easing = $.animation.ease;
+        if (typeof ease === "function") {
+            cb = ease;
+            ease = $.animation.ease;
         }
 
         return this.each(function(){
-            var draw = {
+            const draw = {
                 left: x - this.clientWidth / 2,
                 top: y - this.clientHeight / 2
             };
             $.animate({
                 el: this,
-                draw: draw,
-                dur: dur,
-                ease: easing,
+                draw,
+                dur,
+                ease,
                 onDone: cb
             });
         });
     },
 
     colorTo: function(color, dur, easing, cb){
-        var draw = {
+        const draw = {
             color: color
         };
 
@@ -4084,8 +3997,8 @@ $.fn.extend({
         return this.each(function(){
             $.animate({
                 el: this,
-                draw: draw,
-                dur: dur,
+                draw,
+                dur,
                 ease: easing,
                 onDone: cb
             });
@@ -4093,7 +4006,7 @@ $.fn.extend({
     },
 
     backgroundTo: function(color, dur, easing, cb){
-        var draw = {
+        const draw = {
             backgroundColor: color
         };
 
@@ -4111,8 +4024,8 @@ $.fn.extend({
         return this.each(function(){
             $.animate({
                 el: this,
-                draw: draw,
-                dur: dur,
+                draw,
+                dur,
                 ease: easing,
                 onDone: cb
             });
@@ -4121,8 +4034,8 @@ $.fn.extend({
 });
 
 $.init = function(sel, ctx){
-    var parsed;
-    var that = this;
+    let parsed;
+    const that = this;
 
     if (typeof sel === "string") {
         sel = sel.trim();
@@ -4181,7 +4094,7 @@ $.init = function(sel, ctx){
     if (sel[0] === "@") {
 
         $("[data-role]").each(function(){
-            var roles = str2arr($(this).attr("data-role"), ",");
+            const roles = str2arr($(this).attr("data-role"), ",");
             if (roles.indexOf(sel.slice(1)) > -1) {
                 that.push(this);
             }
@@ -4212,7 +4125,7 @@ $.init = function(sel, ctx){
         } else {
             if (isPlainObject(ctx)) {
                 $.each(this,function(){
-                    for(var name in ctx) {
+                    for(const name in ctx) {
                         if (hasProp(ctx, name))
                             this.setAttribute(name, ctx[name]);
                     }
@@ -4227,11 +4140,7 @@ $.init = function(sel, ctx){
 $.init.prototype = $.fn;
 
 
-const m4q = $
-
 export {
-    $,
-    m4q
+    $
 }
-
 

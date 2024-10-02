@@ -22,12 +22,12 @@ $.extend({
     },
 
     hide: function(el, cb){
-        var $el = $(el);
+        const $el = $(el);
 
         el = $el[0]
 
-        var inline = el.style.display
-        var css = getComputedStyle(el, null).display
+        const inline = el.style.display
+        const css = getComputedStyle(el, null).display
 
         $el.origin('display', {
             inline,
@@ -45,8 +45,8 @@ $.extend({
     },
 
     show: function(el, cb){
-        var $el = $(el);
-        var display = $el.origin('display');
+        const $el = $(el);
+        const display = $el.origin('display');
 
         el = $(el)[0]
 
@@ -89,14 +89,14 @@ $.extend({
     },
 
     toggle: function(el, cb){
-        var func = getComputedStyle(el, null).display !== 'none' ? 'hide' : 'show';
+        const func = getComputedStyle(el, null).display !== 'none' ? 'hide' : 'show';
         return $[func](el, cb);
     }
 });
 
 $.fn.extend({
     hide: function(){
-        var callback;
+        let callback;
 
         $.each(arguments, function(){
             if (typeof this === 'function') {
@@ -110,7 +110,7 @@ $.fn.extend({
     },
 
     show: function(){
-        var callback;
+        let callback;
 
         $.each(arguments, function(){
             if (typeof this === 'function') {

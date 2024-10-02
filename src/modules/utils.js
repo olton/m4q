@@ -7,19 +7,19 @@ $.extend({
     isPrivateAddress: isPrivateAddress,
 
     uniqueId: function (prefix) {
-        var d = new Date().getTime();
+        let d = new Date().getTime();
         if (not(prefix)) {
             prefix = 'm4q';
         }
         return (prefix !== '' ? prefix + '-' : '') + 'xxxx-xxxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            var r = (d + Math.random() * 16) % 16 | 0;
+            const r = (d + Math.random() * 16) % 16 | 0;
             d = Math.floor(d / 16);
             return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
         });
     },
 
     toArray: function(n){
-        var i, out = [];
+        let i, out = [];
 
         for (i = 0 ; i < n.length; i++ ) {
             out.push(n[i]);
@@ -29,7 +29,7 @@ $.extend({
     },
 
     import: function(ctx){
-        var res = [];
+        const res = [];
         this.each(ctx, function(){
             res.push(this);
         });
@@ -37,7 +37,7 @@ $.extend({
     },
 
     merge: function( first, second ) {
-        var len = +second.length,
+        let len = +second.length,
             j = 0,
             i = first.length;
 
@@ -97,12 +97,12 @@ $.extend({
     dark: globalThis.matchMedia && globalThis.matchMedia('(prefers-color-scheme: dark)').matches,
 
     serializeToArray: function(form){
-        var _form = $(form)[0];
+        const _form = $(form)[0];
         if (!_form || _form.nodeName !== "FORM") {
             console.warn("Element is not a HTMLFromElement");
             return;
         }
-        var i, j, q = [];
+        let i, j, q = [];
         for (i = _form.elements.length - 1; i >= 0; i = i - 1) {
             if (_form.elements[i].name === "") {
                 continue;
@@ -153,36 +153,6 @@ $.extend({
     },
     serialize: function(form){
         return $.serializeToArray(form).join("&");
-    },
-    compose: function(...functions){
-        return (first) => functions.reduceRight((acc, fn) => fn(acc), first);
-    },
-    pipe: function(...functions){
-        return (first) => functions.reduce((acc, fn) => fn(acc), first);
-    },
-    curry: function(func){
-        return function curried(...args) {
-            if (args.length >= func.length) {
-                return func.apply(this, args);
-            } else {
-                return function(...args2) {
-                    return curried.apply(this, args.concat(args2));
-                };
-            }
-        };
-    },
-    memoize: function(fn){
-        const cache = new Map()
-        return function (...args) {
-            const key = "" + args.length + args.join("+")
-            if (cache.has(key)) {
-                return cache.get(key);
-            } else {
-                const result = fn.apply(this, args)
-                cache.set(key, result);
-                return result
-            }
-        }
     }
 });
 

@@ -1,6 +1,6 @@
 $.init = function(sel, ctx){
-    var parsed;
-    var that = this;
+    let parsed;
+    const that = this;
 
     if (typeof sel === "string") {
         sel = sel.trim();
@@ -59,7 +59,7 @@ $.init = function(sel, ctx){
     if (sel[0] === "@") {
 
         $("[data-role]").each(function(){
-            var roles = str2arr($(this).attr("data-role"), ",");
+            const roles = str2arr($(this).attr("data-role"), ",");
             if (roles.indexOf(sel.slice(1)) > -1) {
                 that.push(this);
             }
@@ -90,7 +90,7 @@ $.init = function(sel, ctx){
         } else {
             if (isPlainObject(ctx)) {
                 $.each(this,function(){
-                    for(var name in ctx) {
+                    for(const name in ctx) {
                         if (hasProp(ctx, name))
                             this.setAttribute(name, ctx[name]);
                     }

@@ -1,4 +1,4 @@
-var numProps = ['opacity', 'zIndex'];
+const numProps = ['opacity', 'zIndex'];
 
 function nothing(){
     return null
@@ -13,7 +13,7 @@ function isVisible(elem) {
 }
 
 function isHidden(elem) {
-    var s = getComputedStyle(elem);
+    const s = getComputedStyle(elem);
     return !isVisible(elem) || +s.opacity === 0 || elem.hidden || s.visibility === "hidden";
 }
 
@@ -32,7 +32,7 @@ function dashedName(str){
 }
 
 function isPlainObject( obj ) {
-    var proto;
+    let proto;
     if ( !obj || Object.prototype.toString.call( obj ) !== "[object Object]" ) {
         return false;
     }
@@ -44,7 +44,7 @@ function isPlainObject( obj ) {
 }
 
 function isEmptyObject( obj ) {
-    for (var name in obj ) {
+    for (const name in obj ) {
         if (hasProp(obj, name)) return false;
     }
     return true;
@@ -72,7 +72,7 @@ function parseUnit(str, out) {
 }
 
 function getUnit(val, und){
-    var split = /[+-]?\d*\.?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?(%|px|pt|em|rem|in|cm|mm|ex|ch|pc|vw|vh|vmin|vmax|deg|rad|turn)?$/.exec(val);
+    const split = /[+-]?\d*\.?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?(%|px|pt|em|rem|in|cm|mm|ex|ch|pc|vw|vh|vmin|vmax|deg|rad|turn)?$/.exec(val);
     return typeof split[1] !== "undefined" ? split[1] : und;
 }
 
@@ -99,7 +99,7 @@ function getData(data){
 }
 
 function dataAttr(elem, key, data){
-    var name;
+    let name;
 
     if ( not(data) && elem.nodeType === 1 ) {
         name = "data-" + key.replace( /[A-Z]/g, "-$&" ).toLowerCase();
@@ -119,7 +119,7 @@ function normName(name) {
     return typeof name !== "string" ? undefined : name.replace(/-/g, "").toLowerCase();
 }
 
-function strip(name, what) {
+function    strip(name, what) {
     return typeof name !== "string" ? undefined : name.replace(what, "");
 }
 
@@ -128,7 +128,7 @@ function hasProp(obj, prop){
 }
 
 function isLocalhost(host){
-    var hostname = host || globalThis.location.hostname;
+    const hostname = host || globalThis.location.hostname;
     return (
         hostname === "localhost" ||
         hostname === "127.0.0.1" ||
@@ -139,12 +139,10 @@ function isLocalhost(host){
 }
 
 function isTouch() {
-    return (('ontouchstart' in window)
-        || (navigator.maxTouchPoints > 0)
-        || (navigator.msMaxTouchPoints > 0));
+    return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
 }
 
 function isPrivateAddress (host) {
-    var hostname = host || globalThis.location.hostname;
-    return /(^localhost)|(^127\.)|(^192\.168\.)|(^10\.)|(^172\.1[6-9]\.)|(^172\.2\d\.)|(^172\.3[0-1]\.)|(^::1$)|(^[fF][cCdD])/.test(host)
+    const hostname = host || globalThis.location.hostname;
+    return /(^localhost)|(^127\.)|(^192\.168\.)|(^10\.)|(^172\.1[6-9]\.)|(^172\.2\d\.)|(^172\.3[0-1]\.)|(^::1$)|(^[fF][cCdD])/.test(hostname)
 }

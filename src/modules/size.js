@@ -4,7 +4,7 @@ $.fn.extend({
 
         if (not(val)) {
 
-            var el = this[0];
+            const el = this[0];
 
             if (prop === 'height') {
                 return el === window ? window.innerHeight : el === document ? el.body.clientHeight : parseInt(getComputedStyle(el).height);
@@ -15,7 +15,7 @@ $.fn.extend({
         }
 
         return this.each(function(){
-            var el = this;
+            const el = this;
             if (el === window || el === document) {return ;}
             el.style[prop] = isNaN(val) ? val : val + 'px';
         });
@@ -30,7 +30,7 @@ $.fn.extend({
     },
 
     _sizeOut: function(prop, val){
-        var el, size, style, result;
+        let el, size, style, result;
 
         if (this.length === 0) {
             return ;
@@ -38,9 +38,9 @@ $.fn.extend({
 
         if (!not(val) && typeof val !== "boolean") {
             return this.each(function(){
-                var el = this;
+                const el = this;
                 if (el === window || el === document) {return ;}
-                var h, style = getComputedStyle(el),
+                let h, style = getComputedStyle(el),
                     bs = prop === 'width' ? parseInt(style['border-left-width']) + parseInt(style['border-right-width']) : parseInt(style['border-top-width']) + parseInt(style['border-bottom-width']),
                     pa = prop === 'width' ? parseInt(style['padding-left']) + parseInt(style['padding-right']) : parseInt(style['padding-top']) + parseInt(style['padding-bottom']);
 
@@ -66,7 +66,7 @@ $.fn.extend({
 
     padding: function(p){
         if (this.length === 0) return;
-        var s = getComputedStyle(this[0], p);
+        const s = getComputedStyle(this[0], p);
 
         return {
             top: parseInt(s["padding-top"]),
@@ -78,7 +78,7 @@ $.fn.extend({
 
     margin: function(p){
         if (this.length === 0) return;
-        var s = getComputedStyle(this[0], p);
+        const s = getComputedStyle(this[0], p);
 
         return {
             top: parseInt(s["margin-top"]),
@@ -90,7 +90,7 @@ $.fn.extend({
 
     border: function(p){
         if (this.length === 0) return;
-        var s = getComputedStyle(this[0], p);
+        const s = getComputedStyle(this[0], p);
 
         return {
             top: parseInt(s["border-top-width"]),
