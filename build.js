@@ -1,7 +1,7 @@
 import {build} from "esbuild"
 import progress from "@olton/esbuild-plugin-progress"
 import fs from "fs"
-import * as pkg from "./package.json" with {type: "json"};
+import pkg from "./package.json" with {type: "json"}
 
 const production = process.env.NODE_ENV === 'production'
 

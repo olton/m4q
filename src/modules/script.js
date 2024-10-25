@@ -12,6 +12,9 @@ function createScript(script, into = document.body){
         s.textContent = _script.innerText;
     }
 
+    if (_script.type) s.type = _script.type;
+    if (_script.async) s.async = _script.async;
+
     into.appendChild(s);
 
     if (_script.parentNode) _script.parentNode.removeChild(_script);

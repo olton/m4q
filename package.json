@@ -2,7 +2,7 @@
   "name": "m4q",
   "title": "m4q",
   "description": "Helper for DOM manipulation, animation, and ajax routines. JQuery replacer.",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "main": "dist/m4q.esm.js",
   "export": {
     "import": "./dist/m4q.esm.js",
