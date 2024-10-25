@@ -1,4 +1,4 @@
-function createScript(script){
+function createScript(script, into = document.body){
     const s = document.createElement('script');
     s.type = 'text/javascript';
 
@@ -12,7 +12,7 @@ function createScript(script){
         s.textContent = _script.innerText;
     }
 
-    document.body.appendChild(s);
+    into.appendChild(s);
 
     if (_script.parentNode) _script.parentNode.removeChild(_script);
 
@@ -20,19 +20,18 @@ function createScript(script){
 }
 
 $.extend({
-    script: function(el){
+    script: function(el, into){
+        if (not(el)) { return }
+        if (el instanceof $) { el = el[0] }
 
-        if (not(el)) {
-            return createScript();
+        if (el.tagName && el.tagName === "SCRIPT") {
+            createScript(el, into);
+        } else {
+            const scripts = $(el).find("script");
+            $.each(scripts, function(){
+                createScript(this, into);
+            });
         }
-
-        const _el = $(el)[0];
-
-        if (_el.tagName && _el.tagName === "SCRIPT") {
-            createScript(_el);
-        } else $.each($(_el).find("script"), function(){
-            createScript(this);
-        });
     }
 });
 

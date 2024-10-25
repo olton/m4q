@@ -66,10 +66,10 @@ $.extend({
         }
         try {
             document.querySelector(selector);
+            return true;
         } catch(error) {
             return false;
         }
-        return true;
     },
 
     remove: function(s){

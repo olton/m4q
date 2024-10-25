@@ -58,8 +58,11 @@ $.fn.extend({
             $.each(_elements, function(){
                 if (el === this) return ;
                 const child = elIndex === 0 ? this : this.cloneNode(true);
-                $.script(child);
-                if (child.tagName && child.tagName !== "SCRIPT") el.append(child);
+                if (child.tagName && child.tagName === "SCRIPT") {
+                    $.script(child, el);
+                } else {
+                    el.append(child);
+                }
             });
         });
     },

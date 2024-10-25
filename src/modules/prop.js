@@ -10,11 +10,9 @@ $.fn.extend({
 
         return this.each(function(){
             const el = this;
-
             el[prop] = value;
-
             if (prop === "innerHTML") {
-                $.script(el);
+                $.script(el, el);
             }
         });
     },
@@ -53,7 +51,7 @@ $.fn.extend({
             v.push(value);
         }
 
-        that._prop('innerHTML', v.length === 1 && not(v[0]) ? "" : v.join("\n"));
+        that._prop('innerHTML', v.join("\n"));
 
         return this;
     },

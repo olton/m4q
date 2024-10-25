@@ -2,8 +2,12 @@
   "name": "m4q",
   "title": "m4q",
   "description": "Helper for DOM manipulation, animation, and ajax routines. JQuery replacer.",
-  "version": "3.0.5",
+  "version": "3.1.0",
   "main": "dist/m4q.esm.js",
+  "export": {
+    "import": "./dist/m4q.esm.js",
+    "require": "./dist/m4q.cjs.js"
+  },
   "type": "module",
   "types": "ts/m4q.d.ts",
   "files": [
@@ -35,22 +39,17 @@
   "license": "MIT",
   "scripts": {
     "clean": "shx rm -rf dist/* lib/*",
-    "build": "npm run clean && cross-env NODE_ENV=production rollup -c",
-    "dev": "cross-env NODE_ENV=development rollup -c",
-    "watch": "cross-env NODE_ENV=development rollup -c -w",
+    "build": "npm run clean && cross-env NODE_NO_WARNINGS=1 NODE_ENV=production node build.js",
+    "dev": "npm run clean && cross-env NODE_NO_WARNINGS=1 NODE_ENV=development node build.js",
     "pub": "npm publish --access public",
     "deploy:dev": "node deploy-dev.cjs",
     "deploy": "node deploy.cjs"
   },
   "devDependencies": {
-    "@rollup/plugin-node-resolve": "^15.3.0",
-    "@rollup/plugin-terser": "^0.4.4",
+    "@olton/esbuild-plugin-progress": "^0.3.0",
     "cross-env": "^7.0.3",
+    "esbuild": "^0.24.0",
     "ftp-deploy": "^2.4.7",
-    "rollup": "^4.14.2",
-    "rollup-plugin-concat": "^1.0.3",
-    "rollup-plugin-polyfill-node": "^0.13.0",
-    "rollup-plugin-progress": "^1.1.2",
     "shx": "^0.3.4"
   },
   "dependencies": {

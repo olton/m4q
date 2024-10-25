@@ -1,19 +1,16 @@
-import terser from '@rollup/plugin-terser'
-import progress from 'rollup-plugin-progress';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
-import nodePolyfills from 'rollup-plugin-polyfill-node';
-import pkg from './package.json' with {type: "json"};
-import fs from 'node:fs'
+import {build} from "esbuild"
+import progress from "@olton/esbuild-plugin-progress"
+import fs from "fs"
+import * as pkg from "./package.json" with {type: "json"};
 
-const production = process.env.NODE_ENV === 'production',
-    sourcemap = !production
+const production = process.env.NODE_ENV === 'production'
 
 const banner = `
 /*!
- * Module For Query (m4q, https://metroui.org.ua)
+ * Query DOM (m4q, https://metroui.org.ua)
  * Copyright 2012-${new Date().getFullYear()} by Serhii Pimenov
  * Licensed under MIT
- !*/
+ */
 `
 
 const source_files = [
@@ -62,50 +59,49 @@ ind = ind.replace(/build_time = ".+"/g, `build_time = "${new Date().toLocaleStri
 fs.writeFileSync('output/lib.js', lib, {encoding: 'utf8', flag: 'w+'});
 fs.writeFileSync('output/index.js', ind, {encoding: 'utf8', flag: 'w+'});
 
-const plugins = [
-    progress({clearLine: true}),
-    nodeResolve(),
-    nodePolyfills()
-]
-
-const watch = {
-    clearScreen: false,
+const defaults = {
+    bundle: true,
+    sourcemap: false,
+    minify: false,
+    banner: {js: banner},
 }
 
-export default [
-    {
-        input: 'output/lib.js',
-        watch,
-        plugins,
-        output: {
-            file: 'lib/m4q.js',
-            format: 'iife',
-            name: 'm4q',
-            sourcemap,
-            banner,
-            plugins: [
-                terser({
-                    keep_classnames: true,
-                    keep_fnames: true,
-                })
-            ]
-        }
-    },
-    {
-        input: 'output/index.js',
-        watch,
-        plugins,
-        output: [
-            {
-                file: 'dist/m4q.cjs.js',
-                format: 'cjs',
-                banner,
-            },
-            {
-                file: 'dist/m4q.esm.js',
-                format: 'esm',
-                banner,
-            },
-        ]
-    },
-]
+await build({
+    ...defaults,
+    entryPoints: ['output/index.js'],
+    outfile: 'dist/m4q.esm.js',
+    format: 'esm',
+    plugins: [
+        progress({
+            text: 'Building m4q.esm.js...',
+            succeedText: `m4q.esm.js built successfully in %s ms!`
+        }),
+    ],
+})
+
+await build({
+    ...defaults,
+    entryPoints: ['output/index.js'],
+    outfile: 'dist/m4q.cjs.js',
+    format: 'cjs',
+    plugins: [
+        progress({
+            text: 'Building m4q.cjs.js...',
+            succeedText: `m4q.cjs.js built successfully in %s ms!`
+        }),
+    ],
+})
+
+await build({
+    ...defaults,
+    entryPoints: ['output/lib.js'],
+    outfile: 'lib/m4q.js',
+    format: 'iife',
+    minify: production,
+    plugins: [
+        progress({
+            text: 'Building lib m4q.js...',
+            succeedText: `Lib m4q.js built successfully in %s ms!`
+        }),
+    ],
+})

@@ -153,8 +153,8 @@ const matches = Element.prototype.matches;
 
 const $ = (selector, context) => new $.init(selector, context)
 
-$.version = "3.0.5";
-$.build_time = "02.10.2024, 17:48:45";
+$.version = "undefined";
+$.build_time = "25.10.2024, 12:57:03";
 $.info = () => console.info(`%c M4Q %c v${$.version} %c ${$.build_time} `, "color: white; font-weight: bold; background: #fd6a02", "color: white; background: darkgreen", "color: white; background: #0080fe;")
 
 $.fn = $.prototype = Object.create(Array.prototype);
@@ -811,7 +811,7 @@ $.fn.extend({
     }
 });
 
-function createScript(script){
+function createScript(script, into = document.body){
     const s = document.createElement('script');
     s.type = 'text/javascript';
 
@@ -825,7 +825,7 @@ function createScript(script){
         s.textContent = _script.innerText;
     }
 
-    document.body.appendChild(s);
+    into.appendChild(s);
 
     if (_script.parentNode) _script.parentNode.removeChild(_script);
 
@@ -833,19 +833,18 @@ function createScript(script){
 }
 
 $.extend({
-    script: function(el){
+    script: function(el, into){
+        if (not(el)) { return }
+        if (el instanceof $) { el = el[0] }
 
-        if (not(el)) {
-            return createScript();
+        if (el.tagName && el.tagName === "SCRIPT") {
+            createScript(el, into);
+        } else {
+            const scripts = $(el).find("script");
+            $.each(scripts, function(){
+                createScript(this, into);
+            });
         }
-
-        const _el = $(el)[0];
-
-        if (_el.tagName && _el.tagName === "SCRIPT") {
-            createScript(_el);
-        } else $.each($(_el).find("script"), function(){
-            createScript(this);
-        });
     }
 });
 
@@ -869,11 +868,9 @@ $.fn.extend({
 
         return this.each(function(){
             const el = this;
-
             el[prop] = value;
-
             if (prop === "innerHTML") {
-                $.script(el);
+                $.script(el, el);
             }
         });
     },
@@ -912,7 +909,7 @@ $.fn.extend({
             v.push(value);
         }
 
-        that._prop('innerHTML', v.length === 1 && not(v[0]) ? "" : v.join("\n"));
+        that._prop('innerHTML', v.join("\n"));
 
         return this;
     },
@@ -1225,10 +1222,10 @@ $.extend({
         }
         try {
             document.querySelector(selector);
+            return true;
         } catch(error) {
             return false;
         }
-        return true;
     },
 
     remove: function(s){
@@ -2426,8 +2423,11 @@ $.fn.extend({
             $.each(_elements, function(){
                 if (el === this) return ;
                 const child = elIndex === 0 ? this : this.cloneNode(true);
-                $.script(child);
-                if (child.tagName && child.tagName !== "SCRIPT") el.append(child);
+                if (child.tagName && child.tagName === "SCRIPT") {
+                    $.script(child, el);
+                } else {
+                    el.append(child);
+                }
             });
         });
     },
