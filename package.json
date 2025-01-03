@@ -2,7 +2,7 @@
   "name": "m4q",
   "title": "m4q",
   "description": "Helper for DOM manipulation, animation, and ajax routines. JQuery replacer.",
-  "version": "3.2.1",
+  "version": "3.2.0",
   "main": "dist/m4q.esm.js",
   "export": {
     "import": "./dist/m4q.esm.js",
@@ -41,9 +41,7 @@
     "clean": "shx rm -rf dist/* lib/*",
     "build": "npm run clean && cross-env NODE_NO_WARNINGS=1 NODE_ENV=production node build.js",
     "dev": "npm run clean && cross-env NODE_NO_WARNINGS=1 NODE_ENV=development node build.js",
-    "pub": "npm publish --access public",
-    "deploy:dev": "node deploy-dev.cjs",
-    "deploy": "node deploy.cjs"
+    "pub": "npm run build && npm publish --access public"
   },
   "devDependencies": {
     "@olton/esbuild-plugin-progress": "^0.3.0",

@@ -303,5 +303,57 @@ $.fn.extend({
                 onDone: cb
             });
         });
+    },
+    
+    zoomIn: function(dur, easing, cb){
+        const draw = {
+            scale: [0, 1]
+        };
+
+        if (typeof dur === "function") {
+            cb = dur;
+            dur = $.animation.duration;
+            easing = $.animation.ease;
+        }
+
+        if (typeof easing === "function") {
+            cb = easing;
+            easing = $.animation.ease;
+        }
+
+        return this.each(function(){
+            $.animate({
+                el: this,
+                draw,
+                dur,
+                ease: easing,
+                onDone: cb
+            });
+        });
+    },
+    
+    zoomOut: function(dur = 1000, ease = 'linear', cb = () => {}){
+        if (typeof dur === "function") {
+            cb = dur;
+            dur = $.animation.duration;
+            ease = $.animation.ease;
+        }
+
+        if (typeof ease === "function") {
+            cb = ease;
+            ease = $.animation.ease;
+        }
+
+        return this.each(function(){
+            $.animate({
+                el: this,
+                draw: {
+                    scale: 0
+                },
+                dur,
+                ease,
+                onDone: cb
+            });
+        });
     }
 });

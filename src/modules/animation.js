@@ -59,7 +59,7 @@ function _getRelativeValue (to, from) {
 function _getStyle (el, prop, pseudo){
     if (typeof el[prop] !== "undefined") {
         if (scrollProps.indexOf(prop) > -1) {
-            return prop === "scrollLeft" ? el === window ? pageXOffset : el.scrollLeft : el === window ? pageYOffset : el.scrollTop;
+            return prop === "scrollLeft" ? el === window ? scrollX : el.scrollLeft : el === window ? scrollY : el.scrollTop;
         } else {
             return el[prop] || 0;
         }
@@ -279,7 +279,7 @@ function createAnimationMap (el, draw, dir) {
 
         if (!Array.isArray(val)) {
             if (isTransformProp) {
-                from = elTransforms[key] || 0;
+                from = elTransforms[key] || key === "scale" ? 1 : 0;
             } else if (isColorProp) {
                 from = _getColorArrayFromElement(el, key);
             } else {

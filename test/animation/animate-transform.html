@@ -21,7 +21,7 @@
 <body>
     <img src="ball.svg" class="ball">
 
-    <script src="../../lib/m4q.min.js"></script>
+    <script src="../../lib/m4q.js"></script>
     <script>
         var field = document.querySelector("body");
         var w = field.clientWidth, h = field.clientHeight;
@@ -38,7 +38,8 @@
                 draw: {
                     translateX: x,
                     translateY: y,
-                    rotate: t + "turn"
+                    rotate: t + "turn",
+                    scale: Math.random() * 2
                 },
                 dur: 1000,
                 ease: "easeOutCirc"

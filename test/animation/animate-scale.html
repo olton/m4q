@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>Test index</title>
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .field {
+            width: 600px;
+            height: 400px;
+            position: relative;
+            border: 1px solid gray;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ball {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: black;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="field">
+        <img src="ball.svg" class="ball">
+    </div>
+    
+    <script src="../../lib/m4q.js"></script>
+    <script>
+        $(()=>{
+            const ball = $(".ball");
+            ball.zoomOut(10000);
+            
+        })
+    </script>
+</body>

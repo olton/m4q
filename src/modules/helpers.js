@@ -72,7 +72,7 @@ function parseUnit(str, out) {
 }
 
 function getUnit(val, und){
-    const split = /[+-]?\d*\.?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?(%|px|pt|em|rem|in|cm|mm|ex|ch|pc|vw|vh|vmin|vmax|deg|rad|turn)?$/.exec(val);
+    const split = /[+-]?\d*\.?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?(%|px|pt|em|rem|in|cm|mm|ex|ch|pc|vw|vh|vmin|vmax|deg|rad|turn|fr|lh|cqw|cqh|cqi|cqb|cqmin|cqmax|q)?$/.exec(val);
     return typeof split[1] !== "undefined" ? split[1] : und;
 }
 
@@ -119,7 +119,7 @@ function normName(name) {
     return typeof name !== "string" ? undefined : name.replace(/-/g, "").toLowerCase();
 }
 
-function    strip(name, what) {
+function strip(name, what) {
     return typeof name !== "string" ? undefined : name.replace(what, "");
 }
 
